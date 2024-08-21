@@ -1,0 +1,2 @@
+server.port: 1180
+server.tomcat.connection-timeout: 30000
