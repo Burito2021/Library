@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true">
+
+    <property name="DEV_HOME" value="log"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>utf-8</charset>
+            <Pattern>[%d][%-5level][%-10logger{0}][%X{cid}]:%msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="basicAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${DEV_HOME}/server/server.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${DEV_HOME}/server/server-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxHistory>20</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <charset>utf-8</charset>
+            <Pattern>[%d][%-5level][%-10logger{0}][%X{cid}]:%msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <!--***************************************************************************************************************-->
+
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework.web" level="WARN"/>
+
+    <logger name="net.library" level="DEBUG"/>
+    <logger name="org.apache.catalina.core.AprLifecycleListener" level="ERROR"/>
+    <!--  <logger name="org.apache" level="WARN"/>
+      <logger name="org.apache.tomcat.util.compat" level="INFO"/>
+      <logger name="org.apache.coyote.http11.Http11Processor" level="DEBUG"/>-->
+      <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+          <resetJUL>true</resetJUL>
+      </contextListener>
+
+      <springProfile name="local,test">
+          <root level="DEBUG">
+              <appender-ref ref="CONSOLE"/>
+          </root>
+      </springProfile>
+  </configuration>
