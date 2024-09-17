@@ -1,18 +1,20 @@
 package net.library.controller;
 
-import jakarta.annotation.PostConstruct;
-import net.library.object.User;
+import jakarta.validation.Valid;
+import net.library.exception.MdcUtils;
+import net.library.model.request.UserRequest;
+import net.library.model.response.LibraryResponse;
+import net.library.model.entity.User;
+import net.library.model.response.UserResponse;
 import net.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static net.library.util.HttpUtil.*;
+import static net.library.util.HttpUtil.USERS;
 
 @RestController
 @RequestMapping(USERS)
@@ -25,14 +27,23 @@ public class UserController {
         this.service = service;
     }
 
-    @PostConstruct
-    public void initUserList() {
-        service.initUserLst();
+    @GetMapping()
+    public ResponseEntity<UserResponse> getAllUsers() {
+
+        return new ResponseEntity<>(new UserResponse(MdcUtils.getCid(),service.getAllUsers()),HttpStatus.OK);
     }
 
-    @GetMapping()
-    public ResponseEntity<List<User>> getUsers() {
+    @PostMapping()
+    public ResponseEntity<LibraryResponse> addUser(@Valid @RequestBody UserRequest userRequest) {
 
-        return new ResponseEntity<>(service.getUsers(), HttpStatus.OK);
+         service.addUser(userRequest);
+        return ResponseEntity.ok(LibraryResponse.of(MdcUtils.getCid()));
+    }
+
+    @DeleteMapping()
+    public ResponseEntity<LibraryResponse>deleteAllUsers(){
+
+        service.deleteAll();
+        return ResponseEntity.ok((LibraryResponse.of(MdcUtils.getCid())));
     }
 }

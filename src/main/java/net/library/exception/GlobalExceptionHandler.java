@@ -1,6 +1,6 @@
 package net.library.exception;
 
-import net.library.interceptor.CorrelationInterceptor;
+import net.library.model.response.HttpErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
