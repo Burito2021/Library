@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:11.1:///integration-tests-db
+    username: testuser
+    password: testpass
+
+  jpa:
+    hibernate:
+      ddl-auto: none  # or 'create', 'create-drop', 'validate' , 'update'
+      show-sql: true
+  sql:
+    init:
+      mode: always
+      schema-locations: 'classpath:sql/schema.sql'
+      data-locations: 'classpath:sql/data.sql'
+
+  test:
+    database:
+      replace: none
