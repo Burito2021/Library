@@ -33,16 +33,16 @@
 
     <logger name="net.library" level="DEBUG"/>
     <logger name="org.apache.catalina.core.AprLifecycleListener" level="ERROR"/>
-   <logger name="org.apache" level="WARN"/>
+    <logger name="org.apache" level="WARN"/>
     <!--       <logger name="org.apache.tomcat.util.compat" level="INFO"/>
          <logger name="org.apache.coyote.http11.Http11Processor" level="INFO"/>-->
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
-             <resetJUL>true</resetJUL>
-         </contextListener>
+        <resetJUL>true</resetJUL>
+    </contextListener>
 
-         <springProfile name="local,test">
-             <root level="DEBUG">
-                 <appender-ref ref="CONSOLE"/>
-             </root>
-         </springProfile>
-     </configuration>
+    <springProfile name="local,test">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+</configuration>

@@ -1,13 +1,16 @@
-package net.library.exception;
+package net.library.model.response;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-public class HttpCidSuccessResponse {
+public class LibraryResponse {
 
+    @JsonProperty("cid")
     private String cid;
 
-    public static HttpCidSuccessResponse of(final String cid) {
-        final var response = new HttpCidSuccessResponse();
+    public static LibraryResponse of(final String cid) {
+        final var response = new LibraryResponse();
         response.setCid(cid);
 
         return response;
@@ -26,7 +29,7 @@ public class HttpCidSuccessResponse {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof HttpCidSuccessResponse that)) {
+        if (!(o instanceof LibraryResponse that)) {
             return false;
         }
         return Objects.equals(getCid(), that.getCid());
