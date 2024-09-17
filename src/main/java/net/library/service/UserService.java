@@ -1,39 +1,45 @@
 package net.library.service;
 
-import net.library.object.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.library.converter.UserConverter;
+import net.library.model.entity.User;
+import net.library.model.request.UserRequest;
+import net.library.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.StreamSupport;
 
 @Service
 public class UserService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
-    private final List<User> users = new ArrayList<>();
+    private final UserRepository userRepository;
 
-    public void initUserLst() {
-        users.add(new User("Smith1", "John1", 12));
-        users.add(new User("Smith2", "John2", 22));
-        users.add(new User("Smith3", "John3", 32));
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    public List<User> getUsers() {
-        LOGGER.debug("List of books returned: {} ",users);
-        return users;
+    public List<User> getAllUsers() {
+        return StreamSupport.stream(userRepository.findAll().spliterator(), false).toList();
     }
 
-    public void deleteAllUsers(){
+    public void addUser(final UserRequest userRequest) {
 
-        users.clear();
-        LOGGER.info("All the users deleted");
+        final var newUser = UserConverter.of(userRequest);
+        userRepository.save(newUser);
     }
 
-    public void addUser(User user){
+    public void deleteAll() {
+        userRepository.deleteAll();
+    }
 
-        users.add(user);
-        LOGGER.info("Such user added: {}", user);
+    public User getUserById(UUID id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    public void deleteById(UUID id) {
+        userRepository.deleteById(id);
     }
 }

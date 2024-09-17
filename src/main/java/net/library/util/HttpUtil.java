@@ -5,4 +5,5 @@ public class HttpUtil {
     public static final String BOOKS = "books";
     public static final String USERS = "users";
     public static final String URL_ALL = "/**";
+    public final static String CORRELATION_ID_HEADER_NAME = "X-Correlation-Id";
 }
