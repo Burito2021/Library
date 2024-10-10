@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: test
+    active: local
   application:
     name: library
 
@@ -16,6 +16,3 @@ info:
 banner:
   time-format: yyyy-MM-dd HH:mm:ss
   current-time: ${current.time}
-
-server:
-  max-http-header-size: 64KB

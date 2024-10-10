@@ -13,19 +13,38 @@ java {
 	}
 }
 
+sourceSets {
+	test {
+		java {
+			srcDirs = ['src/test/java']
+		}
+	}
+}
+
 repositories {
 	mavenCentral()
 }
 
 dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-web"
-	testImplementation "org.springframework.boot:spring-boot-starter-test"
-	testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
 	implementation "org.hibernate.validator:hibernate-validator:${hibernate}"
 	implementation "com.fasterxml.jackson.core:jackson-databind:${fasterxml}"
 	implementation "com.fasterxml.jackson.core:jackson-core"
 	implementation "com.fasterxml.jackson.core:jackson-annotations"
+	implementation "org.postgresql:postgresql:${postgresql}"
+	implementation "javax.annotation:jsr250-api:${javax}"
+	implementation "com.google.code.findbugs:jsr305:${findbugs}"
+	implementation "javax.servlet:javax.servlet-api:${servlet}"
+
+	testImplementation "org.springframework.boot:spring-boot-starter-test"
+	testImplementation "org.springframework.boot:spring-boot-testcontainers:${springbootcontainer}"
+	testImplementation "org.testcontainers:junit-jupiter:${junittestcontainer}"
+	testImplementation "org.testcontainers:postgresql:${testcontainerspostgresql}"
 	testImplementation "org.hamcrest:hamcrest:${hamcrest}"
+	testImplementation "org.junit.jupiter:junit-jupiter:${junit}"
+	testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+
 }
 
 tasks.named('test') {

@@ -1,38 +1,52 @@
 package net.library.controller;
 
-import jakarta.annotation.PostConstruct;
-import net.library.object.User;
+import jakarta.validation.Valid;
+import net.library.model.dto.UserDto;
+import net.library.model.request.UserRequest;
+import net.library.model.response.UserMapper;
 import net.library.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
-import static net.library.util.HttpUtil.*;
+import static net.library.util.HttpUtil.USERS;
 
 @RestController
 @RequestMapping(USERS)
 public class UserController {
 
-    @Autowired
     private final UserService service;
 
     public UserController(final UserService service) {
         this.service = service;
     }
 
-    @PostConstruct
-    public void initUserList() {
-        service.initUserLst();
+    @GetMapping
+    public List<UserDto> getAllUsers() {
+        return UserMapper.toDto(service.getAllUsers());
     }
 
-    @GetMapping()
-    public ResponseEntity<List<User>> getUsers() {
+    @PostMapping
+    public ResponseEntity<Void> addUser(@Valid @RequestBody UserRequest userRequest) {
+        service.addUser(userRequest);
+        return ResponseEntity.status(201).build();
+    }
 
-        return new ResponseEntity<>(service.getUsers(), HttpStatus.OK);
+    @DeleteMapping
+    public void deleteAllUsers() {
+        service.deleteAll();
+    }
+
+    @GetMapping("/{user_id}")
+    public UserDto getUserById(@PathVariable(required = false, value = "user_id") final UUID userId) {
+        return UserMapper.toDto(service.getUserById(userId));
+    }
+
+    @DeleteMapping("/{user_id}")
+    public void deleteById(@PathVariable(required = false, value = "user_id") final UUID userId) {
+        service.deleteById(userId);
     }
 }
+   
