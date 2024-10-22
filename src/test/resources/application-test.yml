@@ -7,6 +7,11 @@ spring:
     password: testpass
 
   jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
     hibernate:
       ddl-auto: none  # or 'create', 'create-drop', 'validate' , 'update'
       show-sql: true
@@ -14,7 +19,7 @@ spring:
     init:
       mode: always
       schema-locations: 'classpath:sql/schema.sql'
-      data-locations: 'classpath:sql/data.sql'
+  #     data-locations: 'classpath:sql/data.sql'
 
   test:
     database:

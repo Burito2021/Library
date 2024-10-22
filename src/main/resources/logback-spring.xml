@@ -30,7 +30,9 @@
 
     <logger name="org.springframework" level="WARN"/>
     <logger name="org.springframework.web" level="WARN"/>
-
+    <logger name="org.hibernate.SQL" level="INFO"/>
+    <!--  <logger name="org.hibernate.resource.jdbc.internal.ResourceRegistryStandardImpl" level="TRACE"/>-->
+    <logger name="org.hibernate.orm.jdbc.bind" level="TRACE"/>
     <logger name="net.library" level="DEBUG"/>
     <logger name="org.apache.catalina.core.AprLifecycleListener" level="ERROR"/>
     <logger name="org.apache" level="WARN"/>
@@ -41,7 +43,7 @@
     </contextListener>
 
     <springProfile name="local,test">
-        <root level="DEBUG">
+        <root level="INFO">
             <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>

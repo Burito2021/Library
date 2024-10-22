@@ -16,7 +16,18 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none  # or 'create', 'create-drop', 'validate'
-      show-sql: true
     properties:
       hibernate:
+        generate_statistics: "true"
+        use_sql_comments: "true"
+        format_sql: "true"
+        show_sql: "true"
+        hbm2ddl.auto: "none"
+        jdbc.batch_size: 100
+        order_inserts: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+#  sql:
+#    init:
+#      mode: always
+#      schema-locations: 'classpath:sql/schema.sql'
+#    #     data-locations: 'classpath:sql/data.sql'

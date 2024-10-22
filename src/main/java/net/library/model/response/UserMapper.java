@@ -3,7 +3,6 @@ package net.library.model.response;
 import net.library.model.dto.UserDto;
 import net.library.model.entity.User;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
