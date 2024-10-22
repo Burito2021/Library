@@ -1,141 +1,72 @@
 package net.library.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import net.library.repository.enums.ModerationState;
+import net.library.repository.enums.RoleType;
+import net.library.repository.enums.UserState;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Data
 @Entity
-@Table(name = "\"USERS\"")
+@Accessors(chain = true)
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID", nullable = false,insertable =false, updatable = false)
+    @Column(name = "id") // Lowercase, unquoted, ensures case insensitivity
     private UUID id;
 
-    @Column(name = "USERNAME", unique = true, nullable = false)
+    @Column(name = "username")
     private String username;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "SURNAME", nullable = false)
+    @Column(name = "surname")
     private String surname;
 
-    @Column(name = "EMAIL", nullable = false)
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "PHONE_NUMBER")
+    @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "ADDRESS")
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "UPDATED_AT",insertable = false)
-    private String updatedAt;
+    @Enumerated
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    @Column(name = "moderation_state", columnDefinition = "moderation_state_type",insertable = false, updatable = true)
+    private ModerationState moderationState ;
 
-    @Column(name = "CREATED_AT",insertable = false,updatable = false)
-    private String createdAt;
+    @Enumerated
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    @Column(name = "user_state", columnDefinition = "user_state_type",insertable = false, updatable = true)
+    private UserState userState;
 
-    @Column(name = "DELETED_AT",insertable = false)
-    private String deletedAt;
+    @Enumerated
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    @Column(name = "role_type", columnDefinition = "role_type_type",insertable = false, updatable = true)
+    private RoleType roleType;
 
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
+    @Column(name = "updated_at", insertable = false, updatable = true)
+    private LocalDateTime updatedAt;
 
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+    @Column(name = "created_at", insertable = false, updatable = false)
+    private LocalDateTime createdAt;
 
-    public String getCreatedAt() {
-        return createdAt;
-    }
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(String deletedAt) {
-        this.deletedAt = deletedAt;
-    }
-
-    public User() {
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", address='" + address + '\'' +
-                ", updatedAt='" + updatedAt + '\'' +
-                ", createdAt='" + createdAt + '\'' +
-                ", deletedAt='" + deletedAt + '\'' +
-                '}';
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 }
