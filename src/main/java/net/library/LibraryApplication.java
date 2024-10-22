@@ -13,16 +13,16 @@ import java.util.Map;
 @SpringBootApplication
 public class LibraryApplication implements EnvironmentPostProcessor {
 
-	public static void main(String[] args) {
-		SpringApplication.run(LibraryApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(LibraryApplication.class, args);
+    }
 
-	@Override
-	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-		var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		var currentTime = LocalDateTime.now().format(formatter);
+    @Override
+    public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
+        var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        var currentTime = LocalDateTime.now().format(formatter);
 
-		Map<String, Object> map = Map.of("banner.current.time", currentTime);
-		environment.getPropertySources().addLast(new MapPropertySource("customBannerProps", map));
-	}
+        Map<String, Object> map = Map.of("banner.current.time", currentTime);
+        environment.getPropertySources().addLast(new MapPropertySource("customBannerProps", map));
+    }
 }

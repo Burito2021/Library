@@ -1,52 +1,55 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.3.3'
-	id 'io.spring.dependency-management' version '1.1.6'
+    id 'java'
+    id 'org.springframework.boot' version '3.3.3'
+    id 'io.spring.dependency-management' version '1.1.6'
 }
 
 group = 'net.library'
 version = '1.0.0'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 sourceSets {
-	test {
-		java {
-			srcDirs = ['src/test/java']
-		}
-	}
+    test {
+        java {
+            srcDirs = ['src/test/java']
+        }
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation "org.springframework.boot:spring-boot-starter-web"
-	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
-	implementation "org.hibernate.validator:hibernate-validator:${hibernate}"
-	implementation "com.fasterxml.jackson.core:jackson-databind:${fasterxml}"
-	implementation "com.fasterxml.jackson.core:jackson-core"
-	implementation "com.fasterxml.jackson.core:jackson-annotations"
-	implementation "org.postgresql:postgresql:${postgresql}"
-	implementation "javax.annotation:jsr250-api:${javax}"
-	implementation "com.google.code.findbugs:jsr305:${findbugs}"
-	implementation "javax.servlet:javax.servlet-api:${servlet}"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-hateoas"
+    implementation "org.hibernate.validator:hibernate-validator:${hibernate}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${fasterxml}"
+    implementation "com.fasterxml.jackson.core:jackson-core"
+    implementation "com.fasterxml.jackson.core:jackson-annotations"
+    implementation "org.postgresql:postgresql:${postgresql}"
+    implementation "javax.annotation:jsr250-api:${javax}"
+    implementation "com.google.code.findbugs:jsr305:${findbugs}"
+    implementation "javax.servlet:javax.servlet-api:${servlet}"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
 
-	testImplementation "org.springframework.boot:spring-boot-starter-test"
-	testImplementation "org.springframework.boot:spring-boot-testcontainers:${springbootcontainer}"
-	testImplementation "org.testcontainers:junit-jupiter:${junittestcontainer}"
-	testImplementation "org.testcontainers:postgresql:${testcontainerspostgresql}"
-	testImplementation "org.hamcrest:hamcrest:${hamcrest}"
-	testImplementation "org.junit.jupiter:junit-jupiter:${junit}"
-	testRuntimeOnly "org.junit.platform:junit-platform-launcher"
-
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.springframework.boot:spring-boot-testcontainers:${springbootcontainer}"
+    testImplementation "org.testcontainers:junit-jupiter:${junittestcontainer}"
+    testImplementation "org.testcontainers:postgresql:${testcontainerspostgresql}"
+    testImplementation "org.hamcrest:hamcrest:${hamcrest}"
+    testImplementation "org.junit.jupiter:junit-jupiter:${junit}"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+    compileOnly "org.projectlombok:lombok:${lombok}"
+    annotationProcessor "org.projectlombok:lombok:${lombok}"
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
