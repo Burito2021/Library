@@ -1,6 +1,9 @@
 package net.library.repository;
 
 import net.library.model.entity.User;
+import net.library.repository.enums.ModerationState;
+import net.library.repository.enums.RoleType;
+import net.library.repository.enums.UserState;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;

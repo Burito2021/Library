@@ -8,7 +8,11 @@ import net.library.model.dto.UserDto;
 import net.library.model.entity.User;
 import net.library.model.request.UserRequest;
 import net.library.model.response.UserMapper;
-import net.library.repository.*;
+import net.library.repository.UserRepository;
+import net.library.repository.UserSpecification;
+import net.library.repository.enums.ModerationState;
+import net.library.repository.enums.RoleType;
+import net.library.repository.enums.UserState;
 import net.library.service.validator.UserValidationService;
 import net.library.util.Utils;
 import org.springframework.data.domain.Page;
@@ -40,9 +44,9 @@ public class UserService {
         var startDateConverted = stringToLocalDateConverter(startDate);
         var endDateConverted = stringToLocalDateConverter(endDate);
 
-        ModerationState moderationStateConverted = Utils.convertToEnum(moderationState, ModerationState.class);
-        UserState userStateConverted = Utils.convertToEnum(userState, UserState.class);
-        RoleType roleTypeConverted = Utils.convertToEnum(roleType, RoleType.class);
+        var moderationStateConverted = Utils.convertToEnum(moderationState, ModerationState.class);
+        var userStateConverted = Utils.convertToEnum(userState, UserState.class);
+        var roleTypeConverted = Utils.convertToEnum(roleType, RoleType.class);
         var specification = UserSpecification.filterByParam(userName, moderationStateConverted, userStateConverted, roleTypeConverted, startDateConverted, endDateConverted);
 
         var userPage = userRepository
@@ -54,9 +58,12 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
-    public void addUser(final UserRequest userRequest) {
+
+    public UserDto addUser(final UserRequest userRequest) {
+
         final var newUser = UserConverter.of(userRequest);
-        userRepository.save(newUser);
+
+        return UserMapper.toDto(userRepository.save(newUser));
     }
 
     public void deleteAll() {

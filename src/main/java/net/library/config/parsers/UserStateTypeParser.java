@@ -1,6 +1,6 @@
 package net.library.config.parsers;
 
-import net.library.repository.UserState;
+import net.library.repository.enums.UserState;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
 

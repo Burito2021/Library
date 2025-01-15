@@ -3,6 +3,9 @@ package net.library.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.library.model.entity.User;
 import net.library.model.request.UserRequest;
+import net.library.repository.enums.ModerationState;
+import net.library.repository.enums.RoleType;
+import net.library.repository.enums.UserState;
 import net.library.repository.ModerationState;
 import net.library.repository.RoleType;
 import net.library.repository.UserState;
@@ -904,6 +907,14 @@ class UserControllerTest {
                         .contentType("application/json")
                         .content(objectToStringConverter(requestBody)))
                 .andExpect(status().isCreated())
+                .andExpect(header().stringValues(CORRELATION_ID_HEADER_NAME, xCorrelationId))
+                .andExpect(jsonPath("$.id", is(notNullValue())))
+                .andExpect(jsonPath("$.id", not(hasLength(0))))
+                .andExpect(jsonPath("$.username", is(username)))
+                .andExpect(jsonPath("$.name", is(name)))
+                .andExpect(jsonPath("$.surname", is(surname)))
+                .andExpect(jsonPath("$.phoneNumber", is(phoneNumber)))
+                .andExpect(jsonPath("$.address", is(address)));
                 .andExpect(header().stringValues(CORRELATION_ID_HEADER_NAME, xCorrelationId));
     }
 

@@ -1,13 +1,14 @@
 package net.library.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import net.library.model.dto.Page;
 import net.library.model.dto.UserDto;
 import net.library.model.request.UserRequest;
 import net.library.model.response.UserMapper;
-import net.library.repository.ModerationState;
-import net.library.repository.RoleType;
-import net.library.repository.UserState;
+import net.library.repository.enums.ModerationState;
+import net.library.repository.enums.RoleType;
+import net.library.repository.enums.UserState;
 import net.library.service.UserService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 
 import static net.library.util.HttpUtil.USERS;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(USERS)
 public class UserController {
@@ -78,9 +80,8 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<Void> addUser(@Valid @RequestBody UserRequest userRequest) {
-        service.addUser(userRequest);
-        return ResponseEntity.status(201).build();
+    public ResponseEntity<UserDto> addUser(@Valid @RequestBody UserRequest userRequest) {
+        return ResponseEntity.status(201).body(service.addUser(userRequest));
     }
 
     @DeleteMapping
