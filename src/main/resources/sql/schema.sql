@@ -22,7 +22,7 @@ ON TYPE BOOK_ACTION_TYPES IS 'CREATE ENUM TO SET THE COLUMN OF ACTION_TYPE IN BO
 
 CREATE TABLE USERS
 (
-    ID               UUID                   DEFAULT UUID_GENERATE_V4() PRIMARY KEY,
+    ID               UUID                  DEFAULT uuid_generate_v4() PRIMARY KEY,
     USERNAME         VARCHAR(200) UNIQUE                       NOT NULL,
     NAME             VARCHAR(200)                              NOT NULL,
     SURNAME          VARCHAR(200)                              NOT NULL,

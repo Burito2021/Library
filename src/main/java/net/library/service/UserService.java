@@ -58,7 +58,9 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
+
     public UserDto addUser(final UserRequest userRequest) {
+
         final var newUser = UserConverter.of(userRequest);
 
         return UserMapper.toDto(userRepository.save(newUser));
