@@ -1,6 +1,10 @@
 server.port: 1280
 server.tomcat.connection-timeout: 20000
 
+springdoc:
+  api-docs:
+    enabled: true
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/library_db
@@ -31,3 +35,4 @@ spring:
 #      mode: always
 #      schema-locations: 'classpath:sql/schema.sql'
 #    #     data-locations: 'classpath:sql/data.sql'
+#http://localhost:1280/swagger-ui/index.html

@@ -9,19 +9,19 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @Builder
-public class UserDto {
+public class BookDto {
 
     private UUID id;
 
-    private String username;
+    private String title;
 
-    private String name;
+    private String author;
 
-    private String surname;
+    private String description;
 
-    private String email;
+    private String publisher;
 
-    private String phoneNumber;
+    private String edition;
 
-    private String address;
+    private Integer publication;
 }

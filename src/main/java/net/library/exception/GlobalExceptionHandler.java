@@ -72,7 +72,6 @@ public class GlobalExceptionHandler {
         return httpErrorResponseBuilder(ex, WRONG_STATE_ID, WRONG_STATE, HttpStatus.BAD_REQUEST);
     }
 
-
     private ResponseEntity<HttpErrorResponse> httpErrorResponseBuilder(Exception ex, int errorCode, String errorMsg, HttpStatus code) {
         var cid = MdcUtils.getCid();
         log.error("Error: {}, cid {}", ex, cid);

@@ -1,16 +1,16 @@
 package net.library.config.parsers;
 
-import net.library.repository.enums.RoleType;
+import net.library.repository.enums.BookItemStatus;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
 
 import java.util.Arrays;
 
-public class RoleTypeTypeParser implements Converter<String, RoleType> {
+public class BookItemStatusTypeParser implements Converter<String, BookItemStatus> {
 
     @Override
-    public RoleType convert(@NonNull final String value) {
-        return Arrays.stream(RoleType.values())
+    public BookItemStatus convert(@NonNull final String value) {
+        return Arrays.stream(BookItemStatus.values())
                 .filter(e -> e.name().equalsIgnoreCase(value.trim()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Invalid value '" + value + "'"));

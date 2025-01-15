@@ -1,6 +1,6 @@
 package net.library.config.parsers;
 
-import net.library.repository.ModerationState;
+import net.library.repository.enums.ModerationState;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
 

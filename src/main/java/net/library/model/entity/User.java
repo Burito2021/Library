@@ -3,9 +3,9 @@ package net.library.model.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import net.library.repository.ModerationState;
-import net.library.repository.RoleType;
-import net.library.repository.UserState;
+import net.library.repository.enums.ModerationState;
+import net.library.repository.enums.RoleType;
+import net.library.repository.enums.UserState;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
