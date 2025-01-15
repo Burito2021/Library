@@ -2,6 +2,9 @@ package net.library.repository;
 
 import jakarta.persistence.criteria.Predicate;
 import net.library.model.entity.User;
+import net.library.repository.enums.ModerationState;
+import net.library.repository.enums.RoleType;
+import net.library.repository.enums.UserState;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;

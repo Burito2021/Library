@@ -1,4 +1,4 @@
-package net.library.repository;
+package net.library.repository.enums;
 
 public enum UserState {
     ACTIVE,

@@ -2,6 +2,8 @@ package net.library.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 public class Utils {
@@ -32,5 +34,9 @@ public class Utils {
         var dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
         return LocalDateTime.parse(value, dateTimeFormatter);
+    }
+
+    public static LocalDateTime currentDate() {
+        return LocalDateTime.now();
     }
 }
