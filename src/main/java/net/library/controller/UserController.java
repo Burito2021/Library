@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import net.library.model.dto.Page;
 import net.library.model.dto.UserDto;
 import net.library.model.request.UserRequest;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 
 import static net.library.util.HttpUtil.USERS;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(USERS)
 public class UserController {
