@@ -12,6 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class BookGenreRequest {
+
     @NotNull
     private UUID bookId;
     @NotNull

@@ -1,5 +1,8 @@
 package net.library.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.library.model.dto.BookItemDto;
@@ -27,12 +30,25 @@ import static net.library.util.HttpUtil.ITEMS;
 public class BookItemController {
     private final BookService service;
 
+    @Operation(summary = "Add  a book item(copy) to database", description = "saves a book item(copy) to database")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully created"),
+            @ApiResponse(responseCode = "400", description = "when mandatory param is missing")
+    }
+    )
     @PostMapping
     public ResponseEntity<BookItemDto> addBookItems(@Valid @RequestBody BookItemRequest bookItemRequest) {
 
         return ResponseEntity.status(201).body(service.addBookItem(bookItemRequest));
     }
 
+    @Operation(summary = "Update book item status to BORROWED, and populating  a borrower", description = "updates status and sets a" +
+            " borrower for the book  and SETTING BORROWED DATE")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Successfully updated"),
+            @ApiResponse(responseCode = "404", description = "not found - when id of book item is not found")
+    }
+    )
     @PatchMapping("/{bookItemId}/borrowing")
     public ResponseEntity<Void> updateBookItemBorrow(@PathVariable(required = false, value = "bookItemId") final UUID bookItemId,
                                                      @RequestParam("userId") UUID userId,
@@ -42,6 +58,12 @@ public class BookItemController {
         return ResponseEntity.status(202).build();
     }
 
+    @Operation(summary = "Update book item status to RETURNED", description = "updates status to RETURNED and SETTING RETURNED DATE")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Successfully updated"),
+            @ApiResponse(responseCode = "404", description = "not found - when id of book item is not found")
+    }
+    )
     @PatchMapping("/{bookItemId}/return")
     public ResponseEntity<Void> updateBookItemReturn(@PathVariable(required = false, value = "bookItemId") final UUID bookItemId,
                                                      @RequestParam("userId") UUID userId
@@ -50,6 +72,12 @@ public class BookItemController {
         return ResponseEntity.status(202).build();
     }
 
+    @Operation(summary = "Get  all available book items(copies), with adjustable sorting( default by createdAt",
+            description = "retrieve  all available book items(copies), with adjustable sorting( default by createdAt")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved")
+    }
+    )
     @GetMapping
     public Page<BookItemDto> getAllAvailableBookItems(
             @RequestParam Map<String, String> params,

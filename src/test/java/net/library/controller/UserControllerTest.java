@@ -6,9 +6,6 @@ import net.library.model.request.UserRequest;
 import net.library.repository.enums.ModerationState;
 import net.library.repository.enums.RoleType;
 import net.library.repository.enums.UserState;
-import net.library.repository.ModerationState;
-import net.library.repository.RoleType;
-import net.library.repository.UserState;
 import net.library.service.UserService;
 import net.library.util.Utils;
 import org.junit.jupiter.api.AfterEach;
@@ -915,7 +912,6 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.surname", is(surname)))
                 .andExpect(jsonPath("$.phoneNumber", is(phoneNumber)))
                 .andExpect(jsonPath("$.address", is(address)));
-                .andExpect(header().stringValues(CORRELATION_ID_HEADER_NAME, xCorrelationId));
     }
 
     @Test

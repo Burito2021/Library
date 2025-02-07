@@ -1,5 +1,8 @@
 package net.library.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.library.model.dto.BookDto;
@@ -25,12 +28,25 @@ import static net.library.util.HttpUtil.BOOKS;
 public class BookController {
     private final BookService service;
 
+    @Operation(summary = "Add  a book entity to database", description = "saves book to database")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully created"),
+            @ApiResponse(responseCode = "400", description = "when mandatory param is missing")
+    }
+    )
     @PostMapping
     public ResponseEntity<BookDto> addBook(@Valid @RequestBody BookRequest bookRequest) {
 
         return ResponseEntity.status(201).body(service.addBook(bookRequest));
     }
 
+    @Operation(summary = "Get  all the books with the possibility  of sorting by any param,  and default " +
+            "sort params are author, and createdAt",
+            description = "saves book to database")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "20200", description = "Successfully retrieved")
+    }
+    )
     @GetMapping
     public Page<BookDto> getAllBooks(
             @RequestParam Map<String, String> params,
