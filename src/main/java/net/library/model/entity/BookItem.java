@@ -7,7 +7,9 @@ import net.library.repository.enums.BookItemStatus;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -46,6 +48,9 @@ public class BookItem {
 
     @Column(name = "deleted_at", insertable = false)
     private LocalDateTime deletedAt;
+
+    @Column(name = "due_date", columnDefinition = "DATE")
+    private LocalDate dueDate;
 
     @PreUpdate
     public void preUpdate() {

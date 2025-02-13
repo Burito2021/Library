@@ -2,10 +2,13 @@ server.port: 1282
 
 spring:
   datasource:
-    url: jdbc:tc:postgresql:11.1:///integration-tests-db
+    url: jdbc:tc:postgresql:15.0:///integration-tests-db
     username: testuser
     password: testpass
-
+  #   driver-class-name: org.postgresql.Driver
+  #specify the version odf driver for db the same as in docker compose
+  # one to many  on hibernate side ( and also learn  joins, transactions, relationship between tables with native sql, different strategies)
+  # spring security (http authentication)
   jpa:
     show-sql: false
     properties:

@@ -7,7 +7,6 @@ import net.library.model.entity.User;
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 public class Tools {
-
     public static String objectToStringConverter(User user) {
         try {
             var objectMapper = new ObjectMapper();

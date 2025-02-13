@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.library.converter.Converter;
 import net.library.exception.UserNotFoundException;
-import net.library.model.dto.BookDto;
-import net.library.model.dto.BookGenreDto;
-import net.library.model.dto.BookItemDto;
-import net.library.model.dto.GenreDto;
+import net.library.model.dto.*;
 import net.library.model.entity.Book;
 import net.library.model.request.BookGenreRequest;
 import net.library.model.request.BookItemRequest;
@@ -18,7 +15,6 @@ import net.library.model.response.BookItemMapper;
 import net.library.model.response.BookMapper;
 import net.library.model.response.GenreMapper;
 import net.library.repository.*;
-import net.library.repository.enums.BookAction;
 import net.library.repository.enums.BookItemStatus;
 import net.library.util.Utils;
 import org.springframework.data.domain.Page;
@@ -39,24 +35,71 @@ public class BookService {
     private final BookGenresRepository bookGenresRepository;
     private final BookItemHistoryRepository bookItemHistoryRepository;
     private final Converter converter;
+    private static final int DUE_DATE = 14;
 
+    /**
+     * This method updates a random book item (in status of 'AVAILABLE') to mark it as borrowed by setting
+     * STATUS to 'IN_PROGRESS'
+     * the 'BORROWED_AT' timestamp and 'USER_ID' for the user borrowing the book.
+     * Additionally, it creates an entry in `BookItemHistory` with details such as
+     * 'userId', 'bookId', 'bookItemId', and the corresponding action status.
+     * The method returns the updated entity from 'BOOK_ITEMS'.
+     * If no available book item is found (i.e., no records match the 'AVAILABLE' status),
+     * a 'NOT FOUND' error is thrown.
+     */
     @Transactional
-    public void updateBookItemBorrow(final UUID bookItemId, final UUID userId, final BookItemStatus bookItemStatus) {
+    public BookItemIdDto borrowActionForAnyBookItem(final UUID bookId, final UUID userId) {
         final var currentTime = Utils.currentDate();
-        final var result = bookItemRepository.updateBookItemBorrow(bookItemId, userId, bookItemStatus, currentTime);
-        final var bookItemHistory = converter.bookItemHistoryConverter(bookItemId, userId, currentTime, BookAction.BORROWED);
-        bookItemHistoryRepository.save(bookItemHistory);
+        final var dueDate = Utils.currentDate().plusWeeks(DUE_DATE).toLocalDate();
+
+        var bookItemIdList = bookItemRepository.selectAvailableBookItemIdAndUpdate(bookId, userId, currentTime, dueDate);
+
+        if (bookItemIdList.isEmpty()) {
+            throw new UserNotFoundException("User" + userId + " not found");
+        }
+        var bookItemId = bookItemIdList.get(0);
+
+        return new BookItemIdDto(bookItemId);
+    }
+
+    /**
+     *
+     * This method updates a specific book item (by specific bookItemId received from incoming param)
+     * to mark it as 'IN_PROGRESS' in STATUS and setting the 'BORROWED_AT' timestamp and 'USER_ID' for the user borrowing the book.
+     * Additionally, it creates an entry in 'BookItemHistory' with details such as
+     * 'userId', 'bookId', 'bookItemId', and the corresponding action status.
+     * The method does not return ana entity.
+     * If no available book item is found
+     * a 'NOT FOUND' error is thrown.
+     */
+    @Transactional
+    public void borrowActionBookItemById(final UUID bookItemId, final UUID userId, final BookItemStatus bookItemStatus) {
+        final var currentTime = Utils.currentDate();
+        final var dueDate = Utils.currentDate().plusDays(DUE_DATE).toLocalDate();
+        final var result = bookItemRepository.borrowAction(bookItemId, userId, bookItemStatus, currentTime, dueDate);
+
         if (result == 0) {
             throw new UserNotFoundException("User" + userId + " not found");
         }
     }
 
+    /**
+     *
+     * This method updates a specific book item (by specific bookItemId received from incoming param)
+     * by a specific user (by specific userId received from incoming param)
+     * to mark it as returned by setting STATUS to 'AVAILABLE'
+     * and 'RETURNED_AT' timestamp and updating  'UPDATED_AT'
+     * and removing 'DUE_DATE' for the user borrowing the book.
+     * Additionally, it creates an entry in `BookItemHistory` with details such as
+     * 'userId', 'bookId', 'bookItemId', and the corresponding action status.
+     * If no available book item or user is found,
+     * a 'NOT FOUND' error is thrown.
+     */
     @Transactional
-    public void updateBookItemReturn(final UUID bookItemId, final UUID userId) {
+    public void returnActionForBookItem(final UUID bookItemId, final UUID userId) {
         final var currentTime = Utils.currentDate();
-        final var result = bookItemRepository.updateBookItemReturn(bookItemId, userId, currentTime);
-        final var bookItemHistory = converter.bookItemHistoryConverter(bookItemId, userId, currentTime, BookAction.RETURNED);
-        bookItemHistoryRepository.save(bookItemHistory);
+        final var result = bookItemRepository.returnAction(bookItemId, userId, currentTime);
+
         if (result == 0) {
             throw new UserNotFoundException("User" + userId + " not found");
         }
@@ -84,13 +127,13 @@ public class BookService {
         return BookGenreMapper.toDto(bookGenresRepository.saveAll(bookGenresList));
     }
 
-    public Page<BookItemDto> getAllAvailableBooks(UUID bookItemId, String bookItemStatus, String startDate, String endDate, Pageable pageable
+    public Page<BookItemDto> getBookItems(UUID bookItemId, UUID bookId, String bookItemStatus, String startDate, String endDate, Pageable pageable
     ) {
         var startDateConverted = Utils.stringToLocalDateConverter(startDate);
         var endDateConverted = Utils.stringToLocalDateConverter(endDate);
         var bookItemStatusEnum = Utils.convertToEnum(bookItemStatus, BookItemStatus.class);
 
-        var specification = BookItemSpecification.filterBookItemByStatus(bookItemId, bookItemStatusEnum, startDateConverted, endDateConverted);
+        var specification = BookItemSpecification.filterBookItem(bookItemId, bookId, bookItemStatusEnum, startDateConverted, endDateConverted);
         var bookPage = bookItemRepository.findAll(specification, pageable);
         return converter.toBookItemDto(bookPage);
     }
@@ -119,35 +162,35 @@ public class BookService {
         return bookRepository.findById(bookId).orElseThrow();
     }
 
-    public void deleteBookById(final UUID bookId) {
+    public void removeBookById(final UUID bookId) {
         bookRepository.deleteById(bookId);
     }
 
-    public void deleteAllBooks() {
+    public void removeAllBooks() {
         bookRepository.deleteAll();
     }
 
-    public void deleteAllBookItems() {
+    public void removeAllBookItems() {
         bookItemRepository.deleteAll();
     }
 
-    public void deleteAllGenres() {
+    public void removeAllGenres() {
         genreRepository.deleteAll();
     }
 
-    public void deleteAllBookGenres() {
+    public void removeAllBookGenres() {
         bookGenresRepository.deleteAll();
     }
 
-    public void deleteAllHistory() {
+    public void removeAllHistory() {
         bookItemHistoryRepository.deleteAll();
     }
 
-    public void deleteAll() {
-        deleteAllHistory();
-        deleteAllGenres();
-        deleteAllBookGenres();
-        deleteAllBookItems();
-        deleteAllBooks();
+    public void removeAll() {
+        removeAllHistory();
+        removeAllGenres();
+        removeAllBookGenres();
+        removeAllBookItems();
+        removeAllBooks();
     }
 }
