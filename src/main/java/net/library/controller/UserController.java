@@ -34,10 +34,6 @@ public class UserController {
 
     private final UserService service;
 
-    public UserController(final UserService service) {
-        this.service = service;
-    }
-
     /**
      * retrieves a list of users on the provided filters with default sorting
      * This controller enables clients to fetch users and data of pageSize, pageNumber, totalPages, totalItems with or without filters

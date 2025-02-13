@@ -42,6 +42,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdoc}")
     implementation("org.mapstruct:mapstruct:${mapstruct}")
+    implementation ("com.github.ulisesbocchio:jasypt-spring-boot-starter:${jasypt}")
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.springframework.boot:spring-boot-testcontainers:${springbootcontainer}"
     testImplementation "org.testcontainers:junit-jupiter:${junittestcontainer}"

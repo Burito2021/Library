@@ -1,9 +1,6 @@
 package net.library.converter;
 
-import net.library.model.dto.BookDto;
-import net.library.model.dto.BookGenreDto;
-import net.library.model.dto.BookItemDto;
-import net.library.model.dto.GenreDto;
+import net.library.model.dto.*;
 import net.library.model.entity.*;
 import net.library.model.request.BookGenreRequest;
 import net.library.model.request.BookItemRequest;
@@ -48,6 +45,9 @@ public interface Converter {
     @Mapping(source = "currentTime", target = "actionAt")
     @Mapping(source = "action", target = "actionType")
     BookItemHistory bookItemHistoryConverter(UUID bookItemId, UUID userId, LocalDateTime currentTime, BookAction action);
+
+    @Mapping(source = "id", target = "bookItemId")
+    BookItemIdDto bookItemIdDtoConverter(BookItem bookItem);
 
     @Mapping(source = "id", target = "bookItemId")
     BookItemDto bookItemDtoConverter(BookItem bookItem);

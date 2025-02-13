@@ -9,7 +9,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/library_db
     username: library_user
-    password: library_password
+    password: ENC(bxkNCJ56snvCD5Q+dH9cmLT+MkZ92mCmcPgiqNuXQqM=)
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
@@ -17,6 +17,7 @@ spring:
       idle-timeout: 30000
       max-lifetime: 1800000
       connection-timeout: 30000
+
   jpa:
     hibernate:
       ddl-auto: none  # or 'create', 'create-drop', 'validate'
@@ -36,3 +37,7 @@ spring:
 #      schema-locations: 'classpath:sql/schema.sql'
 #    #     data-locations: 'classpath:sql/data.sql'
 #http://localhost:1280/swagger-ui/index.html
+
+jasypt:
+  encryptor:
+    bean: stringEncryptor
