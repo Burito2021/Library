@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.library.model.dto.BookItemDto;
+import net.library.model.dto.BookItemIdDto;
 import net.library.model.dto.Page;
 import net.library.model.request.BookItemRequest;
 import net.library.repository.enums.BookItemStatus;
@@ -50,12 +51,19 @@ public class BookItemController {
     }
     )
     @PatchMapping("/{bookItemId}/borrowing")
-    public ResponseEntity<Void> updateBookItemBorrow(@PathVariable(required = false, value = "bookItemId") final UUID bookItemId,
+    public ResponseEntity<Void> borrowBookItem(@PathVariable(required = false, value = "bookItemId") final UUID bookItemId,
                                                      @RequestParam("userId") UUID userId,
                                                      @RequestParam("status") BookItemStatus status
     ) {
-        service.updateBookItemBorrow(bookItemId, userId, status);
+        service.borrowActionBookItemById(bookItemId, userId, status);
         return ResponseEntity.status(202).build();
+    }
+
+    @PatchMapping("/{bookId}/borrowingAny")
+    public ResponseEntity<BookItemIdDto> borrowAnyBookItem(@PathVariable(required = false, value = "bookId") final UUID bookId,
+                                                                  @RequestParam("userId") UUID userId
+    ) {
+        return ResponseEntity.status(202).body(service.borrowActionForAnyBookItem(bookId, userId));
     }
 
     @Operation(summary = "Update book item status to RETURNED", description = "updates status to RETURNED and SETTING RETURNED DATE")
@@ -65,10 +73,10 @@ public class BookItemController {
     }
     )
     @PatchMapping("/{bookItemId}/return")
-    public ResponseEntity<Void> updateBookItemReturn(@PathVariable(required = false, value = "bookItemId") final UUID bookItemId,
+    public ResponseEntity<Void> returnBookItem(@PathVariable(required = false, value = "bookItemId") final UUID bookItemId,
                                                      @RequestParam("userId") UUID userId
     ) {
-        service.updateBookItemReturn(bookItemId, userId);
+        service.returnActionForBookItem(bookItemId, userId);
         return ResponseEntity.status(202).build();
     }
 
@@ -82,6 +90,7 @@ public class BookItemController {
     public Page<BookItemDto> getAllAvailableBookItems(
             @RequestParam Map<String, String> params,
             @RequestParam(required = false, name = "bookItemId") UUID bookItemId,
+            @RequestParam(required = false, name = "bookId") UUID bookId,
             @PageableDefault(size = 10, page = 0) Pageable pageable
     ) {
         var sortBy = params.get("sortBy");
@@ -92,7 +101,7 @@ public class BookItemController {
         var direction = Sort.Direction.fromOptionalString(params.get("order")).orElse(Sort.Direction.DESC);
         var sort = Sort.by(sortFields.stream().map(field -> new Sort.Order(direction, field)).toList());
 
-        var availableBooks = service.getAllAvailableBooks(bookItemId, params.get("status"), params.get("startDate"),
+        var availableBooks = service.getBookItems(bookItemId, bookId, params.get("status"), params.get("startDate"),
                 params.get("endDate"), PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
 
         return new Page<>(availableBooks.getSize(), availableBooks.getNumber(), availableBooks.getTotalElements(),

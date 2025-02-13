@@ -1,6 +1,7 @@
 package net.library.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import net.library.model.entity.Book;
 import net.library.model.entity.BookItem;
 import net.library.model.entity.Genre;
@@ -13,6 +14,7 @@ import net.library.repository.enums.BookAction;
 import net.library.repository.enums.BookItemStatus;
 import net.library.service.BookService;
 import net.library.tools.Tools;
+import net.library.util.Utils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +66,7 @@ class BookControllerTest {
 
     @AfterEach
     void cleanAfter() {
-        bookService.deleteAll();
+        bookService.removeAll();
         userRepository.deleteAll();
     }
 
@@ -1103,7 +1105,7 @@ class BookControllerTest {
         final var requestBody = new BookItem()
                 .setBookId(UUID.randomUUID());
 
-        mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI  + ITEMS)
+        mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + ITEMS)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -1120,7 +1122,7 @@ class BookControllerTest {
         final var requestBody = new BookItem()
                 .setBookId(null);
 
-        mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI  + ITEMS)
+        mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + ITEMS)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -1146,7 +1148,7 @@ class BookControllerTest {
     @Sql("classpath:sql/genre.sql")
     @Test
     void getAllGenres() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI  + GENRES))
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + GENRES))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.pageSize", is(10)))
                 .andExpect(jsonPath("$.pageNumber", is(0)))
@@ -1178,7 +1180,7 @@ class BookControllerTest {
     @Sql("classpath:sql/genre.sql")
     @Test
     void getAllGenresPageNumber() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI  + GENRES + "?page=1&size=2"))
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + GENRES + "?page=1&size=2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.pageSize", is(2)))
                 .andExpect(jsonPath("$.pageNumber", is(1)))
@@ -1225,7 +1227,7 @@ class BookControllerTest {
 
         final var bookItemId = bookItemRepository.findAll().get(0).getId();
 
-        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI  + ITEMS + "/" + bookItemId + "/borrowing?" + "userId=" + userId + "&status=in_progress"))
+        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/borrowing?" + "userId=" + userId + "&status=in_progress"))
                 .andExpect(status().isAccepted());
 
         final var bookItem = bookItemRepository.findAll().get(0);
@@ -1262,7 +1264,7 @@ class BookControllerTest {
 
         final var bookItemId = bookItemRepository.findAll().get(0).getId();
 
-        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI  + ITEMS + "/" + bookItemId  + "/borrowing?" +  "userId=" + userId + "&status=removed"))
+        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/borrowing?" + "userId=" + userId + "&status=removed"))
                 .andExpect(status().isAccepted());
 
         final var bookItem = bookItemRepository.findAll().get(0);
@@ -1294,7 +1296,7 @@ class BookControllerTest {
         final var userId = userRepository.findAll().get(0).getId();
         final var bookItemId = getUUID();
 
-        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI  + ITEMS + "/" + bookItemId  + "/borrowing?" +  "userId=" + userId + "&status=in_progress"))
+        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/borrowing?" + "userId=" + userId + "&status=in_progress"))
                 .andExpect(status().isNotFound());
     }
 
@@ -1319,7 +1321,7 @@ class BookControllerTest {
 
         final var bookItemId = bookItemRepository.findAll().get(0).getId();
 
-        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI  + ITEMS + "/" + bookItemId + "/borrowing?" + "userId=" + userId + "&status=in_progress")
+        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/borrowing?" + "userId=" + userId + "&status=in_progress")
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                 )
                 .andExpect(status().isBadRequest())
@@ -1358,7 +1360,7 @@ class BookControllerTest {
 
         final var bookItemId = bookItemRepository.findAll().get(0).getId();
 
-        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI  + ITEMS + "/" + bookItemId  + "/borrowing?" +  "userId=" + userId + "&status=removal")
+        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/borrowing?" + "userId=" + userId + "&status=removal")
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId))
                 .andExpect(status().isBadRequest())
                 .andExpect(header().string(CORRELATION_ID_HEADER_NAME, xCorrelationId))
@@ -1394,7 +1396,7 @@ class BookControllerTest {
                 .setBookId(bookId)
                 .setStatus(BookItemStatus.AVAILABLE));
 
-        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI  + ITEMS + "/" + null  + "/borrowing?" +  "userId=" + userId + "&status=in_progress")
+        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + null + "/borrowing?" + "userId=" + userId + "&status=in_progress")
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId))
                 .andExpect(status().isBadRequest())
                 .andExpect(header().string(CORRELATION_ID_HEADER_NAME, xCorrelationId))
@@ -1431,7 +1433,7 @@ class BookControllerTest {
 
         final var bookItemId = bookItemRepository.findAll().get(0).getId();
 
-        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId  + "/borrowing?" +  "userId=" + null + "&status=in_progress")
+        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/borrowing?" + "userId=" + null + "&status=in_progress")
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId))
                 .andExpect(status().isBadRequest())
                 .andExpect(header().string(CORRELATION_ID_HEADER_NAME, xCorrelationId))
@@ -1477,8 +1479,59 @@ class BookControllerTest {
         assertEquals(BookItemStatus.AVAILABLE, bookItemAfterUpdate.getStatus());
     }
 
+    //add tests to check history for all the actions returned/ borrowed
     @Test
-    void updateBookItemReturnHiDbHistoryCheck() throws Exception {
+    void updateActionBorrowAnyBookItemDbHistoryCheck() throws Exception {
+
+        userRepository.save(new User()
+                .setUsername("Alelxo")
+                .setName("Alex")
+                .setSurname("Bur")
+                .setEmail("efaf@gmail.com")
+                .setPhoneNumber("380679920267")
+                .setAddress("assfasfd"));
+
+        bookRepository.save(new Book()
+                .setTitle("The Great Gatsby")
+                .setAuthor("F. Scott Fitzgerald")
+                .setDescription("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.")
+                .setPublisher("Scribner")
+                .setEdition("3rd Edition")
+                .setPublicationYear(1925));
+
+        final var userId = userRepository.findAll().get(0).getId();
+        final var bookId = bookRepository.findAll().get(0).getId();
+
+        bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE));
+
+        final var response = mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookId + "/borrowingAny?" + "userId=" + userId))
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.bookItemId", notNullValue()))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        final var bookItemId = JsonPath.read(response, "$.bookItemId");
+
+        final var bookHistory = bookItemHistoryRepository.findAll();
+
+        assertEquals(2, bookHistory.size());
+        assertNotNull(bookHistory.get(0).getId());
+        assertEquals(bookItemId, bookHistory.get(0).getItemId().toString());
+        assertNull(bookHistory.get(0).getUserId());
+        assertNotNull(bookHistory.get(0).getActionAt());
+        assertEquals(BookAction.ADDED, bookHistory.get(0).getActionType());
+        assertNotNull(bookHistory.get(1).getId());
+        assertEquals(bookItemId, bookHistory.get(1).getItemId().toString());
+        assertEquals(userId, bookHistory.get(1).getUserId());
+        assertNotNull(bookHistory.get(0).getActionAt());
+        assertEquals(BookAction.BORROWED, bookHistory.get(1).getActionType());
+    }
+
+    @Test
+    void updateBookItemReturnDbHistoryCheck() throws Exception {
 
         userRepository.save(new User()
                 .setUsername("Alelxo")
@@ -1510,11 +1563,18 @@ class BookControllerTest {
                 .andExpect(status().isAccepted());
 
         final var bookHistory = bookItemHistoryRepository.findAll();
-        assertEquals(1, bookHistory.size());
+        System.out.println("History: " + bookHistory);
+        assertEquals(2, bookHistory.size());
         assertNotNull(bookHistory.get(0).getId());
         assertEquals(bookItemId, bookHistory.get(0).getItemId());
-        assertEquals(userId, bookHistory.get(0).getUserId());
-        assertEquals(BookAction.RETURNED, bookHistory.get(0).getActionType());
+        assertNull(bookHistory.get(0).getUserId());
+        assertNotNull(bookHistory.get(0).getActionAt());
+        assertEquals(BookAction.ADDED, bookHistory.get(0).getActionType());
+        assertNotNull(bookHistory.get(1).getId());
+        assertEquals(bookItemId, bookHistory.get(1).getItemId());
+        assertEquals(userId, bookHistory.get(1).getUserId());
+        assertNotNull(bookHistory.get(0).getActionAt());
+        assertEquals(BookAction.RETURNED, bookHistory.get(1).getActionType());
     }
 
     @Test
@@ -1545,7 +1605,7 @@ class BookControllerTest {
 
         final var bookItemId = bookItemRepository.findAll().get(0).getId();
 
-        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI  + ITEMS + "/" + bookItemId + "/return?" + "userId=" + userId))
+        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/return?" + "userId=" + userId))
                 .andExpect(status().isNotFound());
     }
 
@@ -1578,7 +1638,7 @@ class BookControllerTest {
 
         final var bookItemId = getUUID();
 
-        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI  + ITEMS + "/" + bookItemId + "/return?" + "userId=" + userId))
+        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/return?" + "userId=" + userId))
                 .andExpect(status().isNotFound());
 
     }
@@ -1599,7 +1659,7 @@ class BookControllerTest {
                 .setBookId(book.get(0).getId())
                 .setStatus(BookItemStatus.AVAILABLE));
 
-        bookService.updateBookItemBorrow(bookItemRepository.findAll().get(0).getId(), userId, BookItemStatus.IN_PROGRESS);
+        bookService.borrowActionBookItemById(bookItemRepository.findAll().get(0).getId(), userId, BookItemStatus.IN_PROGRESS);
 
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?status=available"))
                 .andExpect(status().isOk())
@@ -1616,7 +1676,7 @@ class BookControllerTest {
                 .setBookId(book.get(0).getId())
                 .setStatus(BookItemStatus.AVAILABLE));
 
-        bookService.updateBookItemBorrow(bookItemRepository.findAll().get(0).getId(), userId, BookItemStatus.AVAILABLE);
+        bookService.borrowActionBookItemById(bookItemRepository.findAll().get(0).getId(), userId, BookItemStatus.AVAILABLE);
 
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?status=available"))
                 .andExpect(status().isOk())
@@ -1645,9 +1705,9 @@ class BookControllerTest {
                 .setBookId(book.get(0).getId())
                 .setStatus(BookItemStatus.AVAILABLE));
 
-        bookService.updateBookItemBorrow(bookItemRepository.findAll().get(0).getId(), userId, BookItemStatus.IN_PROGRESS);
+        bookService.borrowActionBookItemById(bookItemRepository.findAll().get(0).getId(), userId, BookItemStatus.IN_PROGRESS);
 
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI  + ITEMS + "?status=available"))
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?status=available"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items.length()", is(2)))
                 .andExpect(jsonPath("$.items.length()", is(2)))
@@ -1671,9 +1731,9 @@ class BookControllerTest {
                 .setBookId(book.get(0).getId())
                 .setStatus(BookItemStatus.AVAILABLE));
 
-        bookService.updateBookItemBorrow(bookItemRepository.findAll().get(0).getId(), userId, BookItemStatus.REMOVED);
+        bookService.borrowActionBookItemById(bookItemRepository.findAll().get(0).getId(), userId, BookItemStatus.REMOVED);
 
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI  + ITEMS + "?status=removed"))
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?status=removed"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items.length()", is(1)));
     }
@@ -1694,9 +1754,9 @@ class BookControllerTest {
                 .setBookId(book.get(0).getId())
                 .setStatus(BookItemStatus.AVAILABLE));
 
-        bookService.updateBookItemBorrow(bookItemRepository.findAll().get(0).getId(), userId, BookItemStatus.IN_PROGRESS);
+        bookService.borrowActionBookItemById(bookItemRepository.findAll().get(0).getId(), userId, BookItemStatus.IN_PROGRESS);
 
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI  + ITEMS + "?status=in_progress"))
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?status=in_progress"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items.length()", is(1)));
     }
@@ -1722,9 +1782,9 @@ class BookControllerTest {
 
         final var bookItemId = bookItemRepository.findAll().get(0).getId();
 
-        bookService.updateBookItemBorrow(bookItemRepository.findAll().get(0).getId(), userId, BookItemStatus.IN_PROGRESS);
+        bookService.borrowActionBookItemById(bookItemRepository.findAll().get(0).getId(), userId, BookItemStatus.IN_PROGRESS);
 
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI  + ITEMS + "?bookItemId=" + bookItemId + "&status=in_progress"))
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?bookItemId=" + bookItemId + "&status=in_progress"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items.length()", is(1)))
                 .andExpect(jsonPath("$.items[0].bookItemId", is(bookItemId.toString())));
@@ -1749,7 +1809,7 @@ class BookControllerTest {
                 .setBookId(book.get(0).getId())
                 .setStatus(BookItemStatus.REMOVED));
 
-        bookService.updateBookItemBorrow(bookItemRepository.findAll().get(0).getId(), userId, BookItemStatus.IN_PROGRESS);
+        bookService.borrowActionBookItemById(bookItemRepository.findAll().get(0).getId(), userId, BookItemStatus.IN_PROGRESS);
 
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?sortBy=status"))
                 .andExpect(status().isOk())
@@ -1759,7 +1819,7 @@ class BookControllerTest {
     @Test
     void getAllAvailableNoItemsNoFilters() throws Exception {
 
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI  + ITEMS))
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items.length()", is(0)));
     }
@@ -1879,4 +1939,197 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.items[1].title", is("Pride and Prejudice")))
                 .andExpect(jsonPath("$.items[0].title", is("The Great Gatsby")));
     }
+
+    @Test
+    void borrowAnyBookItemSuccess() throws Exception {
+
+        userRepository.save(new User()
+                .setUsername("Alelxo")
+                .setName("Alex")
+                .setSurname("Bur")
+                .setEmail("efaf@gmail.com")
+                .setPhoneNumber("380679920267")
+                .setAddress("assfasfd"));
+
+        bookRepository.save(new Book()
+                .setTitle("The Great Gatsby")
+                .setAuthor("F. Scott Fitzgerald")
+                .setDescription("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.")
+                .setPublisher("Scribner")
+                .setEdition("3rd Edition")
+                .setPublicationYear(1925));
+
+        final var userId = userRepository.findAll().get(0).getId();
+        final var bookId = bookRepository.findAll().get(0).getId();
+
+        bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE));
+        bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE));
+        bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE));
+
+        final var response = mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookId + "/borrowingAny?" + "userId=" + userId))
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.bookItemId", notNullValue()))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        final var bookItemId = JsonPath.read(response, "$.bookItemId");
+        final var bookItem = bookItemRepository.findById(UUID.fromString(bookItemId.toString())).get();
+
+        assertEquals(bookItem.getStatus(), BookItemStatus.IN_PROGRESS);
+        assertNotNull(bookItem.getBorrowedAt());
+    }
+
+    @Test
+    void borrowAnyBookItemNotAvailable() throws Exception {
+
+        userRepository.save(new User()
+                .setUsername("Alelxo")
+                .setName("Alex")
+                .setSurname("Bur")
+                .setEmail("efaf@gmail.com")
+                .setPhoneNumber("380679920267")
+                .setAddress("assfasfd"));
+
+        bookRepository.save(new Book()
+                .setTitle("The Great Gatsby")
+                .setAuthor("F. Scott Fitzgerald")
+                .setDescription("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.")
+                .setPublisher("Scribner")
+                .setEdition("3rd Edition")
+                .setPublicationYear(1925));
+
+        final var userId = userRepository.findAll().get(0).getId();
+        final var bookId = bookRepository.findAll().get(0).getId();
+
+        bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setUserId(userId)
+                .setStatus(BookItemStatus.AVAILABLE));
+
+        bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setUserId(userId)
+                .setStatus(BookItemStatus.AVAILABLE));
+
+        final var bookItems = bookItemRepository.findAll();
+
+        bookService.borrowActionBookItemById(bookItems.get(0).getId(), userId, BookItemStatus.IN_PROGRESS);
+        bookService.borrowActionBookItemById(bookItems.get(1).getId(), userId, BookItemStatus.IN_PROGRESS);
+
+        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookId + "/borrowingAny?" + "userId=" + userId))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void borrowAnyBookItemInvalidUser() throws Exception {
+
+        bookRepository.save(new Book()
+                .setTitle("The Great Gatsby")
+                .setAuthor("F. Scott Fitzgerald")
+                .setDescription("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.")
+                .setPublisher("Scribner")
+                .setEdition("3rd Edition")
+                .setPublicationYear(1925));
+
+        final var userId = Utils.getUUID();
+        final var bookId = bookRepository.findAll().get(0).getId();
+
+        bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE));
+
+        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookId + "/borrowingAny?" + "userId=" + userId))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void borrowAnyBookItemInvalidBookId() throws Exception {
+
+        userRepository.save(new User()
+                .setUsername("Alelxo")
+                .setName("Alex")
+                .setSurname("Bur")
+                .setEmail("efaf@gmail.com")
+                .setPhoneNumber("380679920267")
+                .setAddress("assfasfd"));
+
+        final var userId = userRepository.findAll().get(0).getId();
+        final var bookId = Utils.getUUID();
+
+        mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookId + "/borrowingAny?" + "userId=" + userId))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void getCountOfAvailableBookItems() throws Exception {
+
+        bookRepository.save(new Book()
+                .setTitle("The Great Gatsby")
+                .setAuthor("F. Scott Fitzgerald")
+                .setDescription("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.")
+                .setPublisher("Scribner")
+                .setEdition("3rd Edition")
+                .setPublicationYear(1925));
+
+        final var bookId = bookRepository.findAll().get(0).getId();
+
+        bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE));
+        bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE));
+        bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE));
+
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?bookId=" + bookId + "&status=available"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.total", is(3)));
+    }
+
+
+    @Test
+    void getCountOfAvailableBookItemsNoAvailableItems() throws Exception {
+
+        bookRepository.save(new Book()
+                .setTitle("The Great Gatsby")
+                .setAuthor("F. Scott Fitzgerald")
+                .setDescription("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.")
+                .setPublisher("Scribner")
+                .setEdition("3rd Edition")
+                .setPublicationYear(1925));
+
+        final var bookId = bookRepository.findAll().get(0).getId();
+
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?bookId=" + bookId + "&status=available"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.total", is(0)));
+    }
+
+    @Test
+    void getCountOfAvailableBookItemsInvalidBookId() throws Exception {
+
+        bookRepository.save(new Book()
+                .setTitle("The Great Gatsby")
+                .setAuthor("F. Scott Fitzgerald")
+                .setDescription("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.")
+                .setPublisher("Scribner")
+                .setEdition("3rd Edition")
+                .setPublicationYear(1925));
+
+        final var bookId = Utils.getUUID();
+
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?bookId=" + bookId + "&status=available"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.total", is(0)));
+    }
+
 }

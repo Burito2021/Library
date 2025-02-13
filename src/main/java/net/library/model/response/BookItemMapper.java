@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class BookItemMapper {
 
     public static BookItemDto toDto(BookItem bookItem) {
-        return new BookItemDto(bookItem.getId(), bookItem.getBookId(), bookItem.getUserId(), bookItem.getBorrowedAt(), bookItem.getReturnedAt());
+        return new BookItemDto(bookItem.getId(), bookItem.getBookId(), bookItem.getUserId(), bookItem.getStatus(), bookItem.getBorrowedAt(), bookItem.getReturnedAt());
     }
 
     public static List<BookItemDto> toDto(List<BookItem> bookItems) {
