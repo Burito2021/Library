@@ -1,4 +1,4 @@
-package net.library.model.dto;
+package net.library.model.response;
 
 import lombok.Data;
 

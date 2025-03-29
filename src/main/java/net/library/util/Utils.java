@@ -2,8 +2,6 @@ package net.library.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 public class Utils {
@@ -28,7 +26,7 @@ public class Utils {
     }
 
     public static LocalDateTime stringToLocalDateConverter(String value) {
-        if (value == null || value.isEmpty() || value.isBlank()) {
+        if (value == null || value.isBlank()) {
             return null;
         }
         var dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");

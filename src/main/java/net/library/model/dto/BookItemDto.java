@@ -15,9 +15,7 @@ public class BookItemDto {
 
     private UUID bookItemId;
 
-    private UUID bookId;
-
-    private UUID userId;
+    private UserDto user;
 
     private BookItemStatus status;
 

@@ -24,6 +24,8 @@ public interface Converter {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "deletedAt", ignore = true)
     @Mapping(source = "publication", target = "publicationYear")
+    @Mapping(target = "bookItemList", ignore = true)
+    @Mapping(target = "bookGenres", ignore = true)
     Book bookConverter(BookRequest bookRequest);
 
     @Mapping(target = "id", ignore = true)
@@ -34,6 +36,8 @@ public interface Converter {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "deletedAt", ignore = true)
+    @Mapping(target = "version", ignore = true)
+    @Mapping(target = "dueDate", ignore = true)
     BookItem bookItemConverter(BookItemRequest bookItemRequest);
 
     @Mapping(target = "id", ignore = true)
@@ -49,28 +53,6 @@ public interface Converter {
     @Mapping(source = "id", target = "bookItemId")
     BookItemIdDto bookItemIdDtoConverter(BookItem bookItem);
 
-    @Mapping(source = "id", target = "bookItemId")
-    BookItemDto bookItemDtoConverter(BookItem bookItem);
-
-    default Page<BookItemDto> toBookItemDto(Page<BookItem> bookItem) {
-        return bookItem.map(this::bookItemDtoConverter);
-    }
-
-    @Mapping(source = "publicationYear", target = "publication")
-    BookDto bookDtoConverter(Book book);
-
-    default Page<BookDto> toBookDtoPage(Page<Book> bookPage) {
-        return bookPage.map(this::bookDtoConverter);
-    }
-
-    @Mapping(source = "book_id", target = "bookId")
-    @Mapping(source = "genre_id", target = "genreId")
-    BookGenreDto bookGenreDtoConverter(BookGenre bookGenre);
-
-    default Page<BookGenreDto> toBookGenreDtoPage(Page<BookGenre> bookGenrePage) {
-        return bookGenrePage.map(this::bookGenreDtoConverter);
-    }
-
     @Mapping(source = "id", target = "genreId")
     @Mapping(source = "name", target = "genreName")
     GenreDto genreDtoConverter(Genre genre);
@@ -79,14 +61,11 @@ public interface Converter {
         return genres.map(this::genreDtoConverter);
     }
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(source = "bookId", target = "book_id")
-    @Mapping(source = "genreId", target = "genre_id")
-    BookGenre bookGenreConverter(UUID bookId, UUID genreId);
+    @Mapping(source = "id", target = "bookItemId")
+    @Mapping(target = "user", ignore = true)
+    BookItemDto bookItemDtoConverter(BookItem bookItem);
 
-    default List<BookGenre> toBookGenre(BookGenreRequest bookGenreRequest) {
-        return bookGenreRequest.getGenreId().stream()
-                .map(genreId -> bookGenreConverter(bookGenreRequest.getBookId(), genreId))
-                .collect(Collectors.toList());
+    default Page<BookItemDto> toBookItemDto(Page<BookItem> bookItem) {
+        return bookItem.map(this::bookItemDtoConverter);
     }
 }

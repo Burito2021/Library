@@ -1,7 +1,7 @@
 package net.library.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import net.library.model.response.HttpErrorResponse;
+import net.library.model.mapper.HttpErrorResponse;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -62,8 +62,8 @@ public class GlobalExceptionHandler {
         return httpErrorResponseBuilder(ex, WRONG_STATE_ID, WRONG_STATE, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<HttpErrorResponse> userNotFound() {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<HttpErrorResponse> notFound() {
         return ResponseEntity.notFound().build();
     }
 

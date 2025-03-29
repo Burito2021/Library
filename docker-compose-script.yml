@@ -1,0 +1,62 @@
+services:
+  postgres-script:
+    image: postgres:16
+    container_name: postgres-script
+    environment:
+      POSTGRES_DB: library_db
+      POSTGRES_USER: library_user
+      POSTGRES_PASSWORD: library_password
+      TZ: UTC
+    ports:
+      - "5432:5432"
+    profiles: [ "postgres" ]
+
+    volumes:
+      - ${CI_PROJECT_DIR}/src/main/resources/sql/schema.sql:/docker-entrypoint-initdb.d/02-schema.sql
+
+  library-script:
+    container_name: library-script
+    image: library-custom
+    environment:
+      - JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF8 -Dspring.profiles.active=script
+      - WAIT_HOSTS=postgres-script:5432
+      - WAIT_TIMEOUT=240
+      - SPRING_CONFIG_LOCATION=/config/
+      - LOGGING_CONFIG=file:///config/logback-spring.xml
+    ports:
+      - "1280:1280"
+    profiles: [ "library" ]
+    volumes:
+      - shared-data:/shared
+      - ${CI_PROJECT_DIR}/project/config:/config
+
+    depends_on: [ "postgres-script"]
+
+  prometheus-script:
+    image: prom/prometheus:latest
+    container_name: prometheus-script
+    ports:
+      - "9090:9090"
+    profiles: [ "prometheus" ]
+    volumes:
+      - ${CI_PROJECT_DIR}/project/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on: [ "library-script"]
+
+  grafana-script:
+    image: grafana/grafana:latest
+    container_name: grafana-script
+    ports:
+      - "3000:3000"
+    profiles: [ "grafana" ]
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ${CI_PROJECT_DIR}/project/grafana/provisioning:/etc/grafana/provisioning
+      - ${CI_PROJECT_DIR}/project/grafana/dashboards:/var/lib/grafana/dashboards
+    depends_on: [ "prometheus-script","library-script"]
+
+volumes:
+  shared-data:
+  postgres_data:
+  grafana-data:

@@ -1,7 +1,6 @@
 package net.library.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.library.config.JasyptEncryptorConfig;
 import net.library.model.entity.User;
 import net.library.model.request.UserRequest;
 import net.library.repository.enums.ModerationState;
@@ -28,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ActiveProfiles("test")
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 class UserControllerTest {
 
@@ -931,7 +930,7 @@ class UserControllerTest {
         assertFalse(userId.isEmpty());
 
         mvc.perform(MockMvcRequestBuilders.delete(GLOBAL_BASE_URI + USERS))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         final var user = service.getAllUsers();
 
@@ -941,7 +940,7 @@ class UserControllerTest {
     @Test
     void deleteAllUsersIfNoUsersExist() throws Exception {
         mvc.perform(MockMvcRequestBuilders.delete(GLOBAL_BASE_URI + USERS))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         final var user = service.getAllUsers();
 
@@ -1007,7 +1006,7 @@ class UserControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.delete(GLOBAL_BASE_URI + USERS + "/" + userId)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId))
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(header().stringValues(CORRELATION_ID_HEADER_NAME, xCorrelationId));
 
         final var user = service.getAllUsers();
@@ -1024,7 +1023,6 @@ class UserControllerTest {
 
         assertTrue(user.isEmpty());
     }
-
 
     @Test
     void deleteByIdIfNoUserD() throws Exception {
@@ -1073,7 +1071,7 @@ class UserControllerTest {
                         .queryParam("state", "approved")
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json"))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(header().stringValues(CORRELATION_ID_HEADER_NAME, xCorrelationId));
 
         final var userModStateAfterUpdate = service.getAllUsers()
@@ -1104,7 +1102,7 @@ class UserControllerTest {
                         .queryParam("state", "declined")
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json"))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(header().stringValues(CORRELATION_ID_HEADER_NAME, xCorrelationId));
 
         final var userModStateAfterUpdate = service.getAllUsers()
@@ -1188,7 +1186,7 @@ class UserControllerTest {
                         .queryParam("state", "BANNED")
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json"))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(header().stringValues(CORRELATION_ID_HEADER_NAME, xCorrelationId));
 
         final var userModStateAfterUpdate = service.getAllUsers()
@@ -1218,7 +1216,7 @@ class UserControllerTest {
                         .queryParam("state", "SUSPENDED")
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json"))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(header().stringValues(CORRELATION_ID_HEADER_NAME, xCorrelationId));
 
         final var userModStateAfterUpdate = service.getAllUsers()
@@ -1251,7 +1249,7 @@ class UserControllerTest {
                         .queryParam("state", "ACTIVE")
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json"))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(header().stringValues(CORRELATION_ID_HEADER_NAME, xCorrelationId));
 
         final var userModStateAfterUpdate = service.getAllUsers()
@@ -1311,7 +1309,7 @@ class UserControllerTest {
                         .queryParam("type", "ADMIN")
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json"))
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(header().stringValues(CORRELATION_ID_HEADER_NAME, xCorrelationId));
 
         final var userRoleTypeAfterUpdate = service.getAllUsers()

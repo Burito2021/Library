@@ -3,11 +3,11 @@ package net.library.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.library.converter.UserConverter;
-import net.library.exception.UserNotFoundException;
+import net.library.exception.NotFoundException;
 import net.library.model.dto.UserDto;
 import net.library.model.entity.User;
+import net.library.model.mapper.UserMapper;
 import net.library.model.request.UserRequest;
-import net.library.model.response.UserMapper;
 import net.library.repository.UserRepository;
 import net.library.repository.UserSpecification;
 import net.library.repository.enums.ModerationState;
@@ -77,7 +77,7 @@ public class UserService {
     public void deleteById(UUID id) {
         int result = userRepository.deleteByUserId(id);
         if (result == 0) {
-            throw new UserNotFoundException("User with ID by role type update" + id + " not found");
+            throw new NotFoundException("User with ID by role type update" + id + " not found");
         }
     }
 
@@ -89,7 +89,7 @@ public class UserService {
     public void updateModerationState(UUID userId, ModerationState moderationState) {
         int result = userRepository.updateModerationState(userId, moderationState);
         if (result == 0) {
-            throw new UserNotFoundException("User with ID by role type update" + userId + " not found");
+            throw new NotFoundException("User with ID by role type update" + userId + " not found");
         }
     }
 
@@ -97,7 +97,7 @@ public class UserService {
     public void updateUserState(UUID userId, UserState userState) {
         int result = userRepository.updateUserState(userId, userState);
         if (result == 0) {
-            throw new UserNotFoundException("User with ID by role type update" + userId + " not found");
+            throw new NotFoundException("User with ID by role type update" + userId + " not found");
         }
     }
 
@@ -105,7 +105,7 @@ public class UserService {
     public void updateRoleType(UUID userId, RoleType roleType) {
         final int result = userRepository.updateRoleType(userId, roleType);
         if (result == 0) {
-            throw new UserNotFoundException("User with ID by role type update" + userId + " not found");
+            throw new NotFoundException("User with ID by role type update" + userId + " not found");
         }
     }
 }

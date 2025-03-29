@@ -40,6 +40,7 @@
     <logger name="net.library" level="DEBUG"/>
     <logger name="org.apache.catalina.core.AprLifecycleListener" level="ERROR"/>
     <logger name="org.apache" level="WARN"/>
+    <logger name="org.hibernate" level="DEBUG"/>
     <logger name="org.hibernate.SQL" level="WARN"/>
     <logger name="org.hibernate.type" level="WARN"/>
     <logger name="org.hibernate.resource.jdbc.internal.ResourceRegistryStandardImpl" level="WARN"/>
@@ -50,7 +51,7 @@
         <resetJUL>true</resetJUL>
     </contextListener>
 
-    <springProfile name="local,test">
+    <springProfile name="local,test,script">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
         </root>

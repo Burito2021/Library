@@ -9,9 +9,13 @@ version = '1.0.0'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
+
+//bootJar {
+//    mainClass = 'net.library.LibraryApplication'
+//}
 
 sourceSets {
     test {
@@ -36,13 +40,15 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-core"
     implementation "com.fasterxml.jackson.core:jackson-annotations"
     implementation "org.postgresql:postgresql:${postgresql}"
-    implementation "javax.annotation:jsr250-api:${javax}"
+    implementation "jakarta.annotation:jakarta.annotation-api:${javax}"
     implementation "com.google.code.findbugs:jsr305:${findbugs}"
-    implementation "javax.servlet:javax.servlet-api:${servlet}"
+    implementation "jakarta.servlet:jakarta.servlet-api:${servlet}"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdoc}")
     implementation("org.mapstruct:mapstruct:${mapstruct}")
     implementation ("com.github.ulisesbocchio:jasypt-spring-boot-starter:${jasypt}")
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.springframework.boot:spring-boot-testcontainers:${springbootcontainer}"
     testImplementation "org.testcontainers:junit-jupiter:${junittestcontainer}"

@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    active: script
+  application:
+    name: library
+
+info:
+  app:
+    version: 1.0.0
+
+jasypt:
+  encryptor:
+    password: mySecretKey
+#second way of implementation
+#server:
+#  servlet:
+#    context-path: /api/v1/
+
+banner:
+  time-format: yyyy-MM-dd HH:mm:ss
+  current-time: ${current.time}

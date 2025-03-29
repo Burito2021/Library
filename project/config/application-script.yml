@@ -7,7 +7,7 @@ springdoc:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/library_db
+    url: jdbc:postgresql://postgres-script:5432/library_db
     username: library_user
     password: ENC(bxkNCJ56snvCD5Q+dH9cmLT+MkZ92mCmcPgiqNuXQqM=)
     driver-class-name: org.postgresql.Driver
