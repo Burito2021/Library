@@ -2,20 +2,21 @@ package net.library.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import net.library.model.entity.Book;
-import net.library.model.entity.BookItem;
-import net.library.model.entity.Genre;
-import net.library.model.entity.User;
+import jakarta.persistence.EntityNotFoundException;
+import net.library.model.entity.*;
 import net.library.model.request.BookGenreRequest;
 import net.library.model.request.BookRequest;
 import net.library.model.request.GenreRequest;
+
 import net.library.repository.*;
 import net.library.repository.enums.BookAction;
 import net.library.repository.enums.BookItemStatus;
 import net.library.service.BookService;
 import net.library.tools.Tools;
 import net.library.util.Utils;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,13 +27,22 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import static net.library.tools.Tools.*;
 import static net.library.util.HttpUtil.*;
 import static net.library.util.Utils.getUUID;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ActiveProfiles("test")
@@ -69,6 +79,7 @@ class BookControllerTest {
         bookService.removeAll();
         userRepository.deleteAll();
     }
+
 
     @Test
     void addBookSuccess() throws Exception {
@@ -407,7 +418,7 @@ class BookControllerTest {
     void addBookDescriptionWithinMaxLength() throws Exception {
         final var title = "1";
         final var author = "Thisisastringthatcontainsexactlyonehundredcharacte";
-        final var description = Tools.randomString(500);
+        final var description = randomString(500);
         final var publisher = "Scribner";
         final var edition = "3rd Edition";
         final var publication = 1925;
@@ -434,7 +445,7 @@ class BookControllerTest {
     void addBookDescriptionExceedsMaxLengthError() throws Exception {
         final var title = "1";
         final var author = "Thisisastringthatcontainsexactlyonehundredcharacte";
-        final var description = Tools.randomString(501);
+        final var description = randomString(501);
         final var publisher = "Scribner";
         final var edition = "3rd Edition";
         final var publication = 1925;
@@ -525,7 +536,7 @@ class BookControllerTest {
         final var title = "1";
         final var author = "Thisisastringthatcontainsexactlyonehundredcharacte";
         final var description = "A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.";
-        final var publisher = Tools.randomString(1);
+        final var publisher = randomString(1);
         final var edition = "3rd Edition";
         final var publication = 1925;
         final var xCorrelationId = getUUID();
@@ -551,8 +562,8 @@ class BookControllerTest {
     void addBookPublisherWithinMaxLength() throws Exception {
         final var title = "1";
         final var author = "Thisisastringthatcontainsexactlyonehundredcharacte";
-        final var description = Tools.randomString(45);
-        final var publisher = Tools.randomString(100);
+        final var description = randomString(45);
+        final var publisher = randomString(100);
         final var edition = "3rd Edition";
         final var publication = 1925;
         final var xCorrelationId = getUUID();
@@ -578,8 +589,8 @@ class BookControllerTest {
     void addBookPublisherExceedsMaxLengthError() throws Exception {
         final var title = "1";
         final var author = "Thisisastringthatcontainsexactlyonehundredcharacte";
-        final var description = Tools.randomString(23);
-        final var publisher = Tools.randomString(101);
+        final var description = randomString(23);
+        final var publisher = randomString(101);
         final var edition = "3rd Edition";
         final var publication = 1925;
         final var xCorrelationId = getUUID();
@@ -638,9 +649,9 @@ class BookControllerTest {
     void addBookEditionWithinMaxLength() throws Exception {
         final var title = "1";
         final var author = "Thisisastringthatcontainsexactlyonehundredcharacte";
-        final var description = Tools.randomString(45);
-        final var publisher = Tools.randomString(12);
-        final var edition = Tools.randomString(30);
+        final var description = randomString(45);
+        final var publisher = randomString(12);
+        final var edition = randomString(30);
         final var publication = 1925;
         final var xCorrelationId = getUUID();
 
@@ -665,9 +676,9 @@ class BookControllerTest {
     void addBookEditionExceedsMaxLengthError() throws Exception {
         final var title = "1";
         final var author = "Thisisastringthatcontainsexactlyonehundredcharacte";
-        final var description = Tools.randomString(23);
-        final var publisher = Tools.randomString(33);
-        final var edition = Tools.randomString(31);
+        final var description = randomString(23);
+        final var publisher = randomString(33);
+        final var edition = randomString(31);
         final var publication = 1925;
         final var xCorrelationId = getUUID();
 
@@ -712,163 +723,6 @@ class BookControllerTest {
     }
 
     @Test
-    void addGenreSuccess() throws Exception {
-        final var genreName = "The Great Gatsby";
-        final var xCorrelationId = getUUID();
-
-        final var requestBody = GenreRequest
-                .builder()
-                .name(genreName)
-                .build();
-
-        mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + GENRES)
-                        .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", notNullValue()))
-                .andExpect(jsonPath("$.id", not(hasLength(0))))
-                .andExpect(jsonPath("$.genreName", is(genreName)));
-    }
-
-    @Test
-    void addGenreDbCheck() throws Exception {
-        final var genreName = "The Great Gatsby";
-        final var xCorrelationId = getUUID();
-
-        final var requestBody = GenreRequest
-                .builder()
-                .name(genreName)
-                .build();
-
-        mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + GENRES)
-                        .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", notNullValue()))
-                .andExpect(jsonPath("$.id", not(hasLength(0))))
-                .andExpect(jsonPath("$.genreName", is(genreName)));
-
-        final var genre = genreRepository.findAll().get(0);
-
-        assertEquals(genreName, genre.getName());
-    }
-
-    @Test
-    void addGenreNameAlreadyExists() throws Exception {
-        final var genreName = "Fiction";
-        final var xCorrelationId = getUUID();
-        final var requestBody = new Genre()
-                .setName(genreName);
-
-        genreRepository.save(requestBody);
-
-        mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + GENRES)
-                        .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isBadRequest())
-                .andExpect(header().string(CORRELATION_ID_HEADER_NAME, xCorrelationId))
-                .andExpect(jsonPath(CID, is(xCorrelationId)))
-                .andExpect(jsonPath(ERROR_ID, is(104)))
-                .andExpect(jsonPath(ERROR_MSG, is("Username already exists in Db")));
-    }
-
-    @Test
-    void addGenreNameNull() throws Exception {
-        final var xCorrelationId = getUUID();
-
-        final var requestBody = GenreRequest
-                .builder()
-                .name(null)
-                .build();
-
-        mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + GENRES)
-                        .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isBadRequest())
-                .andExpect(header().string(CORRELATION_ID_HEADER_NAME, xCorrelationId))
-                .andExpect(jsonPath(CID, is(xCorrelationId)))
-                .andExpect(jsonPath(ERROR_ID, is(102)))
-                .andExpect(jsonPath(ERROR_MSG, is("mandatory param error")));
-    }
-
-    @Test
-    void addGenreEmptyString() throws Exception {
-        final var genreName = "";
-        final var xCorrelationId = getUUID();
-        final var requestBody = GenreRequest
-                .builder()
-                .name(genreName)
-                .build();
-
-        mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + GENRES)
-                        .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isBadRequest())
-                .andExpect(header().string(CORRELATION_ID_HEADER_NAME, xCorrelationId))
-                .andExpect(jsonPath(CID, is(xCorrelationId)))
-                .andExpect(jsonPath(ERROR_ID, is(102)))
-                .andExpect(jsonPath(ERROR_MSG, is("mandatory param error")));
-    }
-
-    @Test
-    void addGenreWithinMinLength() throws Exception {
-        final var genreName = Tools.randomString(1);
-        final var xCorrelationId = getUUID();
-        final var requestBody = GenreRequest
-                .builder()
-                .name(genreName)
-                .build();
-
-        mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + GENRES)
-                        .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isCreated())
-                .andExpect(header().string(CORRELATION_ID_HEADER_NAME, xCorrelationId));
-    }
-
-    @Test
-    void addGenreWithinMaxLength() throws Exception {
-        final var genreName = Tools.randomString(50);
-        final var xCorrelationId = getUUID();
-        final var requestBody = GenreRequest
-                .builder()
-                .name(genreName)
-                .build();
-
-        mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + GENRES)
-                        .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isCreated());
-    }
-
-    @Test
-    void addGenreExceedMaxLengthError() throws Exception {
-        final var genreName = Tools.randomString(51);
-        final var xCorrelationId = getUUID();
-        final var requestBody = GenreRequest
-                .builder()
-                .name(genreName)
-                .build();
-
-        mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + GENRES)
-                        .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isBadRequest())
-                .andExpect(header().string(CORRELATION_ID_HEADER_NAME, xCorrelationId))
-                .andExpect(jsonPath(CID, is(xCorrelationId)))
-                .andExpect(jsonPath(ERROR_ID, is(102)))
-                .andExpect(jsonPath(ERROR_MSG, is("mandatory param error")));
-    }
-
-    @Test
     void addBookItemsSuccess() throws Exception {
         final var title = "The Great Gatsby";
         final var author = "F. Scott Fitzgerald";
@@ -900,8 +754,7 @@ class BookControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().string(CORRELATION_ID_HEADER_NAME, xCorrelationId))
                 .andExpect(jsonPath("$.bookItemId", not(hasLength(0))))
-                .andExpect(jsonPath("$.bookId", is(bookId.toString())))
-                .andExpect(jsonPath("$.userId", is(nullValue())))
+                .andExpect(jsonPath("$.user", is(nullValue())))
                 .andExpect(jsonPath("$.borrowedAt", is(nullValue())))
                 .andExpect(jsonPath("$.returnedAt", is(nullValue())));
 
@@ -934,169 +787,6 @@ class BookControllerTest {
                 .andExpect(jsonPath(CID, is(xCorrelationId)))
                 .andExpect(jsonPath(ERROR_ID, is(102)))
                 .andExpect(jsonPath(ERROR_MSG, is("mandatory param error")));
-    }
-
-    @Test
-    void addBookGenre() throws Exception {
-        final var title = "The Great Gatsby";
-        final var author = "F. Scott Fitzgerald";
-        final var description = "A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.";
-        final var edition = "3rd Edition";
-        final var publisher = "Scribner";
-        final var publication = 1925;
-        final var xCorrelationId = getUUID();
-
-        final var book = new Book()
-                .setTitle(title)
-                .setAuthor(author)
-                .setDescription(description)
-                .setPublisher(publisher)
-                .setEdition(edition)
-                .setPublicationYear(publication);
-
-        bookRepository.save(book);
-        genreRepository.save(new Genre(UUID.randomUUID(), "Test"));
-
-        final var bookId = bookRepository.findAll().get(0).getId();
-        final var genreId = genreRepository.findAll().get(0).getId();
-
-        bookService.addBookGenres(new BookGenreRequest(bookId, List.of(genreId)));
-
-        final var requestBody = BookGenreRequest.builder()
-                .bookId(bookId)
-                .genreId(List.of(genreId))
-                .build();
-
-        mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + GENRES + "/book")
-                        .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$[0].bookId", is(bookId.toString())))
-                .andExpect(jsonPath("$[0].genreId", is(genreId.toString())));
-
-        final var bookGenre = bookGenresRepository.findAll().get(0);
-        assertNotNull(bookGenre.getId());
-        assertEquals(genreId, bookGenre.getGenre_id());
-        assertEquals(bookId, bookGenre.getBook_id());
-    }
-
-    @Test
-    void addBookGenreBookIdNullError() throws Exception {
-        final var title = "The Great Gatsby";
-        final var author = "F. Scott Fitzgerald";
-        final var description = "A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.";
-        final var edition = "3rd Edition";
-        final var publisher = "Scribner";
-        final var publication = 1925;
-        final var xCorrelationId = getUUID();
-
-        final var book = new Book()
-                .setTitle(title)
-                .setAuthor(author)
-                .setDescription(description)
-                .setPublisher(publisher)
-                .setEdition(edition)
-                .setPublicationYear(publication);
-
-        bookRepository.save(book);
-        genreRepository.save(new Genre(UUID.randomUUID(), "Test"));
-
-        final var bookId = bookRepository.findAll().get(0).getId();
-        final var genreId = genreRepository.findAll().get(0).getId();
-
-        bookService.addBookGenres(new BookGenreRequest(bookId, List.of(genreId)));
-
-        final var requestBody = BookGenreRequest.builder()
-                .bookId(null)
-                .genreId(List.of(genreId))
-                .build();
-
-        mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + GENRES + "/book")
-                        .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isBadRequest())
-                .andExpect(header().string(CORRELATION_ID_HEADER_NAME, xCorrelationId))
-                .andExpect(jsonPath(CID, is(xCorrelationId)))
-                .andExpect(jsonPath(ERROR_ID, is(102)))
-                .andExpect(jsonPath(ERROR_MSG, is("mandatory param error")));
-    }
-
-    @Test
-    void addBookGenreGenreIdIdNullError() throws Exception {
-        final var title = "The Great Gatsby";
-        final var author = "F. Scott Fitzgerald";
-        final var description = "A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.";
-        final var edition = "3rd Edition";
-        final var publisher = "Scribner";
-        final var publication = 1925;
-        final var xCorrelationId = getUUID();
-
-        final var book = new Book()
-                .setTitle(title)
-                .setAuthor(author)
-                .setDescription(description)
-                .setPublisher(publisher)
-                .setEdition(edition)
-                .setPublicationYear(publication);
-
-        bookRepository.save(book);
-        genreRepository.save(new Genre(UUID.randomUUID(), "Test"));
-
-        final var bookId = bookRepository.findAll().get(0).getId();
-        final var genreId = genreRepository.findAll().get(0).getId();
-
-        bookService.addBookGenres(new BookGenreRequest(bookId, List.of(genreId)));
-
-        final var requestBody = BookGenreRequest.builder()
-                .bookId(bookId)
-                .genreId(null)
-                .build();
-
-        mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + GENRES + "/book")
-                        .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isBadRequest())
-                .andExpect(header().string(CORRELATION_ID_HEADER_NAME, xCorrelationId))
-                .andExpect(jsonPath(CID, is(xCorrelationId)))
-                .andExpect(jsonPath(ERROR_ID, is(102)))
-                .andExpect(jsonPath(ERROR_MSG, is("mandatory param error")));
-    }
-
-    @Test
-    void getBookGenreParamCheck() throws Exception {
-        final var title = "The Great Gatsby";
-        final var author = "F. Scott Fitzgerald";
-        final var description = "A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.";
-        final var edition = "3rd Edition";
-        final var publisher = "Scribner";
-        final var publication = 1925;
-        final var xCorrelationId = getUUID();
-
-        final var book = new Book()
-                .setTitle(title)
-                .setAuthor(author)
-                .setDescription(description)
-                .setPublisher(publisher)
-                .setEdition(edition)
-                .setPublicationYear(publication);
-
-        bookRepository.save(book);
-        genreRepository.save(new Genre(UUID.randomUUID(), "Test"));
-
-        final var bookId = bookRepository.findAll().get(0).getId();
-        final var genreId = genreRepository.findAll().get(0).getId();
-
-        bookService.addBookGenres(new BookGenreRequest(bookId, List.of(genreId)));
-
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + GENRES + "/book")
-                        .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
-                        .contentType("application/json"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.items[0].bookId", is(bookId.toString())))
-                .andExpect(jsonPath("$.items[0].genreId", is(genreId.toString())));
     }
 
     @Test
@@ -1133,71 +823,6 @@ class BookControllerTest {
                 .andExpect(jsonPath(ERROR_MSG, is("mandatory param error")));
     }
 
-    //
-    @Sql("classpath:sql/genre.sql")
-    @Test
-    void getGenreParamCheck() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + GENRES))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.items[0].id", not(hasLength(0))))
-                .andExpect(jsonPath("$.items[0].id", is(notNullValue())))
-                .andExpect(jsonPath("$.items[0].genreName", is("Action")));
-    }
-
-
-    @Sql("classpath:sql/genre.sql")
-    @Test
-    void getAllGenres() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + GENRES))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.pageSize", is(10)))
-                .andExpect(jsonPath("$.pageNumber", is(0)))
-                .andExpect(jsonPath("$.total", is(10)))
-                .andExpect(jsonPath("$.items[0].genreName", is("Action")))
-                .andExpect(jsonPath("$.items[1].genreName", is("Adventure")))
-                .andExpect(jsonPath("$.items[2].genreName", is("Comedy")))
-                .andExpect(jsonPath("$.items[3].genreName", is("Drama")))
-                .andExpect(jsonPath("$.items[4].genreName", is("Fantasy")))
-                .andExpect(jsonPath("$.items[5].genreName", is("Horror")))
-                .andExpect(jsonPath("$.items[6].genreName", is("Mystery")))
-                .andExpect(jsonPath("$.items[7].genreName", is("Romance")))
-                .andExpect(jsonPath("$.items[8].genreName", is("Sci-Fi")))
-                .andExpect(jsonPath("$.items[9].genreName", is("Thriller")));
-    }
-
-    @Sql("classpath:sql/genre.sql")
-    @Test
-    void getAllGenresPageSize() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + GENRES + "?size=2"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.pageSize", is(2)))
-                .andExpect(jsonPath("$.pageNumber", is(0)))
-                .andExpect(jsonPath("$.total", is(10)))
-                .andExpect(jsonPath("$.items[0].genreName", is("Action")))
-                .andExpect(jsonPath("$.items[1].genreName", is("Adventure")));
-    }
-
-    @Sql("classpath:sql/genre.sql")
-    @Test
-    void getAllGenresPageNumber() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + GENRES + "?page=1&size=2"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.pageSize", is(2)))
-                .andExpect(jsonPath("$.pageNumber", is(1)))
-                .andExpect(jsonPath("$.total", is(10)))
-                .andExpect(jsonPath("$.items[0].genreName", is("Comedy")))
-                .andExpect(jsonPath("$.items[1].genreName", is("Drama")));
-    }
-
-    @Test
-    void getAllGenresEmpty() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + GENRES))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.pageSize", is(10)))
-                .andExpect(jsonPath("$.pageNumber", is(0)))
-                .andExpect(jsonPath("$.total", is(0)))
-                .andExpect(jsonPath("$.items.length()", is(0)));
-    }
 
     @Test
     void updateBookItemBorrowInProgressSuccessfulUpdate() throws Exception {
@@ -1445,7 +1070,7 @@ class BookControllerTest {
     @Test
     void updateBookItemReturn() throws Exception {
 
-        userRepository.save(new User()
+        final var user = userRepository.save(new User()
                 .setUsername("Alelxo")
                 .setName("Alex")
                 .setSurname("Bur")
@@ -1466,7 +1091,7 @@ class BookControllerTest {
 
         bookItemRepository.save(new BookItem()
                 .setBookId(bookId)
-                .setUserId(userId)
+                .setUserId(user)
                 .setStatus(BookItemStatus.IN_PROGRESS));
 
         final var bookItemId = bookItemRepository.findAll().get(0).getId();
@@ -1533,7 +1158,7 @@ class BookControllerTest {
     @Test
     void updateBookItemReturnDbHistoryCheck() throws Exception {
 
-        userRepository.save(new User()
+        final var user = userRepository.save(new User()
                 .setUsername("Alelxo")
                 .setName("Alex")
                 .setSurname("Bur")
@@ -1554,7 +1179,7 @@ class BookControllerTest {
 
         bookItemRepository.save(new BookItem()
                 .setBookId(bookId)
-                .setUserId(userId)
+                .setUserId(user)
                 .setStatus(BookItemStatus.IN_PROGRESS));
 
         final var bookItemId = bookItemRepository.findAll().get(0).getId();
@@ -1576,6 +1201,7 @@ class BookControllerTest {
         assertNotNull(bookHistory.get(0).getActionAt());
         assertEquals(BookAction.RETURNED, bookHistory.get(1).getActionType());
     }
+
 
     @Test
     void updateBookItemReturnWrongUserId() throws Exception {
@@ -1612,7 +1238,7 @@ class BookControllerTest {
     @Test
     void updateBookItemReturnWrongBookId() throws Exception {
 
-        userRepository.save(new User()
+        final var user = userRepository.save(new User()
                 .setUsername("Alelxo")
                 .setName("Alex")
                 .setSurname("Bur")
@@ -1633,7 +1259,7 @@ class BookControllerTest {
 
         bookItemRepository.save(new BookItem()
                 .setBookId(bookId)
-                .setUserId(userId)
+                .setUserId(user)
                 .setStatus(BookItemStatus.AVAILABLE));
 
         final var bookItemId = getUUID();
@@ -1682,9 +1308,7 @@ class BookControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items[0].bookItemId", notNullValue()))
                 .andExpect(jsonPath("$.items[0].bookItemId", not(hasLength(0))))
-                .andExpect(jsonPath("$.items[0].bookId", notNullValue()))
-                .andExpect(jsonPath("$.items[0].bookId", not(hasLength(0))))
-                .andExpect(jsonPath("$.items[0].userId", is(userId.toString())))
+                .andExpect(jsonPath("$.items[0].user", is(nullValue())))
                 .andExpect(jsonPath("$.items[0].borrowedAt", notNullValue()))
                 .andExpect(jsonPath("$.items[0].returnedAt", is(nullValue())));
     }
@@ -1824,17 +1448,6 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.items.length()", is(0)));
     }
 
-    @Sql("classpath:sql/data.sql")
-    @Test
-    void getAllBooks() throws Exception {
-
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.pageSize", is(10)))
-                .andExpect(jsonPath("$.pageNumber", is(0)))
-                .andExpect(jsonPath("$.total", is(10)))
-                .andExpect(jsonPath("$.items.length()", is(10)));
-    }
 
     @Test
     void getAllBooksReturnedItems() throws Exception {
@@ -1853,16 +1466,14 @@ class BookControllerTest {
                 .setEdition(edition)
                 .setPublicationYear(publicationYear));
 
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS))
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/all"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.items[0].id", notNullValue()))
-                .andExpect(jsonPath("$.items[0].id", not(hasLength(0))))
+                .andExpect(jsonPath("$.items[0].bookId", not(hasLength(0))))
                 .andExpect(jsonPath("$.items[0].title", is(title)))
                 .andExpect(jsonPath("$.items[0].author", is(author)))
                 .andExpect(jsonPath("$.items[0].description", is(description)))
-                .andExpect(jsonPath("$.items[0].publisher", is(publisher)))
                 .andExpect(jsonPath("$.items[0].edition", is(edition)))
-                .andExpect(jsonPath("$.items[0].publication", is(publicationYear)));
+                .andExpect(jsonPath("$.items[0].publicationyYear", is(publicationYear)));
     }
 
     @Test
@@ -1884,7 +1495,7 @@ class BookControllerTest {
                 .setEdition("1st")
                 .setPublicationYear(1813));
 
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "?sortBy=title"))
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/all" + "?sortBy=title"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items[1].title", is("Pride and Prejudice")))
                 .andExpect(jsonPath("$.items[0].title", is("The Great Gatsby")));
@@ -1909,7 +1520,7 @@ class BookControllerTest {
                 .setEdition("1st")
                 .setPublicationYear(1813));
 
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "?sortBy=title&order=asc"))
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/all" + "?sortBy=title&order=asc"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items[0].title", is("Pride and Prejudice")))
                 .andExpect(jsonPath("$.items[1].title", is("The Great Gatsby")));
@@ -1934,7 +1545,7 @@ class BookControllerTest {
                 .setEdition("1st")
                 .setPublicationYear(1813));
 
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "?order=asc"))
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/all" + "?order=asc"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items[1].title", is("Pride and Prejudice")))
                 .andExpect(jsonPath("$.items[0].title", is("The Great Gatsby")));
@@ -1985,9 +1596,9 @@ class BookControllerTest {
         assertEquals(bookItem.getStatus(), BookItemStatus.IN_PROGRESS);
         assertNotNull(bookItem.getBorrowedAt());
     }
-
+     //two
     @Test
-    void borrowAnyBookItemNotAvailable() throws Exception {
+    void borrowAnyBookItem2ThreadsSuccess() throws Exception {
 
         userRepository.save(new User()
                 .setUsername("Alelxo")
@@ -2010,12 +1621,78 @@ class BookControllerTest {
 
         bookItemRepository.save(new BookItem()
                 .setBookId(bookId)
-                .setUserId(userId)
+                .setStatus(BookItemStatus.AVAILABLE));
+        bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE));
+        bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE));
+
+        var listOfTreads = getCallables(bookId, userId);
+
+        var statusCodes = threadRunner(2, listOfTreads);
+
+        Collections.sort(statusCodes);
+        assertEquals(2,statusCodes.size());
+        assertEquals(202,statusCodes.get(0));
+        assertEquals(500,statusCodes.get(1));
+    }
+
+    private  List<Callable<Integer>> getCallables(UUID bookId, UUID userId) {
+        List<Callable<Integer>> listOfThreads = new ArrayList<>();
+
+        listOfThreads.add(() -> {
+            var response = mvc.perform(MockMvcRequestBuilders
+                            .patch(GLOBAL_BASE_URI + ITEMS + "/" + bookId + "/borrowingAny?userId=" + userId))
+                    .andReturn()
+                    .getResponse();
+
+            return response.getStatus();
+        });
+
+        listOfThreads.add(() -> {
+            var response = mvc.perform(MockMvcRequestBuilders
+                            .patch(GLOBAL_BASE_URI + ITEMS + "/" + bookId + "/borrowingAny?userId=" + userId))
+                    .andReturn()
+                    .getResponse();
+
+            return response.getStatus();
+        });
+
+        return listOfThreads;
+    }
+
+    @Test
+    void borrowAnyBookItemNotAvailable() throws Exception {
+
+        final var user = userRepository.save(new User()
+                .setUsername("Alelxo")
+                .setName("Alex")
+                .setSurname("Bur")
+                .setEmail("efaf@gmail.com")
+                .setPhoneNumber("380679920267")
+                .setAddress("assfasfd"));
+
+        bookRepository.save(new Book()
+                .setTitle("The Great Gatsby")
+                .setAuthor("F. Scott Fitzgerald")
+                .setDescription("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.")
+                .setPublisher("Scribner")
+                .setEdition("3rd Edition")
+                .setPublicationYear(1925));
+
+        final var userId = userRepository.findAll().get(0).getId();
+        final var bookId = bookRepository.findAll().get(0).getId();
+
+        bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setUserId(user)
                 .setStatus(BookItemStatus.AVAILABLE));
 
         bookItemRepository.save(new BookItem()
                 .setBookId(bookId)
-                .setUserId(userId)
+                .setUserId(user)
                 .setStatus(BookItemStatus.AVAILABLE));
 
         final var bookItems = bookItemRepository.findAll();
@@ -2024,6 +1701,7 @@ class BookControllerTest {
         bookService.borrowActionBookItemById(bookItems.get(1).getId(), userId, BookItemStatus.IN_PROGRESS);
 
         mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookId + "/borrowingAny?" + "userId=" + userId))
+                .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
@@ -2132,4 +1810,222 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.total", is(0)));
     }
 
+    @Test
+    void getAllBooksAndBookItems() throws Exception {
+        final var user = userRepository.save(new User()
+                .setUsername("Alelxo")
+                .setName("Alex")
+                .setSurname("Bur")
+                .setEmail("efaf@gmail.com")
+                .setPhoneNumber("380679920267")
+                .setAddress("assfasfd"));
+
+        bookRepository.save(new Book()
+                .setTitle("The Great Gatsby")
+                .setAuthor("F. Scott Fitzgerald")
+                .setDescription("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.")
+                .setPublisher("Scribner")
+                .setEdition("3rd Edition")
+                .setPublicationYear(1925));
+
+        bookRepository.save(new Book()
+                .setTitle("The Great Gatsby2")
+                .setAuthor("F. Scott Fitzgerald2")
+                .setDescription("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.2")
+                .setPublisher("Scribner2")
+                .setEdition("3rd Edition2")
+                .setPublicationYear(1930));
+
+        final var bookId = bookRepository.findAll().get(0).getId();
+
+        final var genre = genreRepository.save(new Genre().setName("Action"));
+
+        bookGenresRepository.save(
+                new BookGenre()
+                        .setBook_id(bookId)
+                        .setGenre(genre));
+
+        final var bookItem = bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setUserId(user)
+                .setStatus(BookItemStatus.AVAILABLE));
+        bookItem.setStatus(BookItemStatus.IN_PROGRESS);
+        bookItem.setBorrowedAt(LocalDateTime.now());
+        bookItemRepository.save(bookItem);
+
+        bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE));
+
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/all?order=asc"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.pageSize", is(10)))
+                .andExpect(jsonPath("$.total", is(2)))
+                .andExpect(jsonPath("$.items[0].bookId", notNullValue()))
+                .andExpect(jsonPath("$.items[0].title", is("The Great Gatsby")))
+                .andExpect(jsonPath("$.items[0].author", is("F. Scott Fitzgerald")))
+                .andExpect(jsonPath("$.items[0].description", is("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.")))
+                .andExpect(jsonPath("$.items[0].edition", is("3rd Edition")))
+                .andExpect(jsonPath("$.items[0].publicationyYear", is(1925)))
+                .andExpect(jsonPath("$.items[0].createdAt", notNullValue()))
+                .andExpect(jsonPath("$.items[0].deletedAt", nullValue()))
+                .andExpect(jsonPath("$.items[0].bookItems[0].bookItemId", notNullValue()))
+                .andExpect(jsonPath("$.items[0].bookItems[0].user.id", notNullValue()))
+                .andExpect(jsonPath("$.items[0].bookItems[0].user.username", is("Alelxo")))
+                .andExpect(jsonPath("$.items[0].bookItems[0].user.name", is("Alex")))
+                .andExpect(jsonPath("$.items[0].bookItems[0].user.surname", is("Bur")))
+                .andExpect(jsonPath("$.items[0].bookItems[0].user.email", is("efaf@gmail.com")))
+                .andExpect(jsonPath("$.items[0].bookItems[0].user.phoneNumber", is("380679920267")))
+                .andExpect(jsonPath("$.items[0].bookItems[0].user.address", is("assfasfd")))
+                .andExpect(jsonPath("$.items[0].bookItems[0].status", is("IN_PROGRESS")))
+                .andExpect(jsonPath("$.items[0].bookItems[0].borrowedAt", notNullValue()))
+                .andExpect(jsonPath("$.items[0].bookItems[0].returnedAt", nullValue()))
+                .andExpect(jsonPath("$.items[0].bookItems[1].user", nullValue()))
+                .andExpect(jsonPath("$.items[0].bookItems[1].status", is("AVAILABLE")))
+                .andExpect(jsonPath("$.items[0].bookItems[1].borrowedAt", nullValue()))
+                .andExpect(jsonPath("$.items[0].bookItems[1].returnedAt", nullValue()))
+                .andExpect(jsonPath("$.items[0].bookGenres[0].genreName", is("Action")))
+                .andExpect(jsonPath("$.items[1].bookId", notNullValue()))
+                .andExpect(jsonPath("$.items[1].title", is("The Great Gatsby2")))
+                .andExpect(jsonPath("$.items[1].author", is("F. Scott Fitzgerald2")))
+                .andExpect(jsonPath("$.items[1].description", is("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.2")))
+                .andExpect(jsonPath("$.items[1].edition", is("3rd Edition2")))
+                .andExpect(jsonPath("$.items[1].publicationyYear", is(1930)))
+                .andExpect(jsonPath("$.items[1].createdAt", notNullValue()))
+                .andExpect(jsonPath("$.items[1].deletedAt", nullValue()))
+                .andExpect(jsonPath("$.items[1].bookItems", is(hasSize(0))))
+                .andExpect(jsonPath("$.items[1].bookGenres", is(hasSize(0))));
+    }
+
+    @Test
+    void getAllBooksAnd100BookItems() throws Exception {
+        final var user = userRepository.save(new User()
+                .setUsername("Alelxo")
+                .setName("Alex")
+                .setSurname("Bur")
+                .setEmail("efaf@gmail.com")
+                .setPhoneNumber("380679920267")
+                .setAddress("assfasfd"));
+
+        bookRepository.save(new Book()
+                .setTitle("The Great Gatsby")
+                .setAuthor("F. Scott Fitzgerald")
+                .setDescription("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.")
+                .setPublisher("Scribner")
+                .setEdition("3rd Edition")
+                .setPublicationYear(1925));
+
+        final var bookId = bookRepository.findAll().get(0).getId();
+
+        final var genre = genreRepository.save(new Genre().setName("Action"));
+
+        bookGenresRepository.save(
+                new BookGenre()
+                        .setBook_id(bookId)
+                        .setGenre(genre));
+
+        populateWithBookItems(
+                bookItemRepository,
+                bookId,
+                user,
+                BookItemStatus.IN_PROGRESS,
+                LocalDateTime.now(),
+                100);
+
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/all?order=asc"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.pageSize", is(10)))
+                .andExpect(jsonPath("$.total", is(1)))
+                .andExpect(jsonPath("$.items[0].bookItems", hasSize(100)));
+    }
+
+    @Test
+    void getAllBooksAndBookItemsEmptyResponse() throws Exception {
+
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/all"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.pageSize", is(10)))
+                .andExpect(jsonPath("$.total", is(0)))
+                .andExpect(jsonPath("$.items", hasSize(0)));
+    }
+
+    @Test
+    void getBookById() throws Exception {
+        final var user = userRepository.save(new User()
+                .setUsername("Alelxo")
+                .setName("Alex")
+                .setSurname("Bur")
+                .setEmail("efaf@gmail.com")
+                .setPhoneNumber("380679920267")
+                .setAddress("assfasfd"));
+
+        bookRepository.save(new Book()
+                .setTitle("The Great Gatsby")
+                .setAuthor("F. Scott Fitzgerald")
+                .setDescription("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.")
+                .setPublisher("Scribner")
+                .setEdition("3rd Edition")
+                .setPublicationYear(1925));
+
+        final var bookId = bookRepository.findAll().get(0).getId();
+
+        final var genre = genreRepository.save(new Genre().setName("Action"));
+
+        bookGenresRepository.save(
+                new BookGenre()
+                        .setBook_id(bookId)
+                        .setGenre(genre));
+
+        final var bookItem = bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setUserId(user)
+                .setStatus(BookItemStatus.AVAILABLE));
+        bookItem.setStatus(BookItemStatus.IN_PROGRESS);
+        bookItem.setBorrowedAt(LocalDateTime.now());
+        bookItemRepository.save(bookItem);
+
+        bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE));
+
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/" + bookId))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.bookId", notNullValue()))
+                .andExpect(jsonPath("$.title", is("The Great Gatsby")))
+                .andExpect(jsonPath("$.author", is("F. Scott Fitzgerald")))
+                .andExpect(jsonPath("$.description", is("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.")))
+                .andExpect(jsonPath("$.edition", is("3rd Edition")))
+                .andExpect(jsonPath("$.publicationyYear", is(1925)))
+                .andExpect(jsonPath("$.publicationyYear", notNullValue()))
+                .andExpect(jsonPath("$.createdAt", notNullValue()))
+                .andExpect(jsonPath("$.deletedAt", nullValue()))
+                .andExpect(jsonPath("$.bookItems[0].bookItemId", notNullValue()))
+                .andExpect(jsonPath("$.bookItems[0].user.id", notNullValue()))
+                .andExpect(jsonPath("$.bookItems[0].user.username", is("Alelxo")))
+                .andExpect(jsonPath("$.bookItems[0].user.name", is("Alex")))
+                .andExpect(jsonPath("$.bookItems[0].user.surname", is("Bur")))
+                .andExpect(jsonPath("$.bookItems[0].user.email", is("efaf@gmail.com")))
+                .andExpect(jsonPath("$.bookItems[0].user.phoneNumber", is("380679920267")))
+                .andExpect(jsonPath("$.bookItems[0].user.address", is("assfasfd")))
+                .andExpect(jsonPath("$.bookItems[0].status", is("IN_PROGRESS")))
+                .andExpect(jsonPath("$.bookItems[0].borrowedAt", notNullValue()))
+                .andExpect(jsonPath("$.bookItems[0].returnedAt", nullValue()))
+                .andExpect(jsonPath("$.bookItems[1].user", nullValue()))
+                .andExpect(jsonPath("$.bookItems[1].status", is("AVAILABLE")))
+                .andExpect(jsonPath("$.bookItems[1].borrowedAt", nullValue()))
+                .andExpect(jsonPath("$.bookItems[1].returnedAt", nullValue()))
+                .andExpect(jsonPath("$.bookGenres[0].genreName", is("Action")));
+    }
+
+    @Test
+    void getBookByIdNotFound() throws Exception {
+
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/" + UUID.randomUUID()))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
 }

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class JasyptEncryptorConfig {
     private static final String SECRET_KEY = "secret";
 
-    @Bean(name = "encryptorBean")
+    @Bean
     public StringEncryptor stringEncryptor() {
         final var encryptor = new StandardPBEStringEncryptor();
         final var config = new SimpleStringPBEConfig();
