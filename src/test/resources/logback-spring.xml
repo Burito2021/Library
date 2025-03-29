@@ -27,6 +27,7 @@
     </appender>
 
     <!--***************************************************************************************************************-->
+    <logger name="org.springframework.test.web.servlet" level="DEBUG"/>
 
     <logger name="org.springframework" level="WARN"/>
     <logger name="org.springframework.web" level="WARN"/>
@@ -34,7 +35,7 @@
     <logger name="net.library" level="DEBUG"/>
     <logger name="org.apache.catalina.core.AprLifecycleListener" level="ERROR"/>
     <logger name="org.apache" level="WARN"/>
-    <logger name="org.hibernate.SQL" level="WARN"/>
+    <logger name="org.hibernate.SQL" level="DEBUG"/>
     <logger name="org.hibernate.type" level="WARN"/>
     <logger name="org.hibernate.resource.jdbc.internal.ResourceRegistryStandardImpl" level="WARN"/>
     <!--       <logger name="org.apache.tomcat.util.compat" level="INFO"/>

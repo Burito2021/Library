@@ -11,6 +11,7 @@ spring:
   # one to many  on hibernate side ( and also learn  joins, transactions, relationship between tables with native sql, different strategies)
   # spring security (http authentication)
   jpa:
+    open-in-view: false
     show-sql: false
     properties:
       hibernate:

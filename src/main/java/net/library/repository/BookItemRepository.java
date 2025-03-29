@@ -17,11 +17,11 @@ public interface BookItemRepository extends JpaRepository<BookItem, UUID>, JpaSp
 
     //add description or change names think action
     @Modifying
-    @Query("UPDATE BookItem u SET u.userId=:userId,u.status=:status, u.borrowedAt=:currentTime,u.returnedAt=NULL,u.updatedAt=CURRENT_TIMESTAMP, u.dueDate=:dueDate WHERE u.id = :bookItemId")
+    @Query("UPDATE BookItem u SET u.userId.id=:userId,u.status=:status, u.borrowedAt=:currentTime,u.returnedAt=NULL,u.updatedAt=CURRENT_TIMESTAMP, u.dueDate=:dueDate WHERE u.id = :bookItemId")
     int borrowAction(@Param("bookItemId") UUID bookItemId, @Param("userId") UUID userId, @Param("status") BookItemStatus status, LocalDateTime currentTime, LocalDate dueDate);
 
     @Modifying
-    @Query("UPDATE BookItem u SET u.status='AVAILABLE', u.returnedAt=:currentTime,u.updatedAt=CURRENT_TIMESTAMP, u.dueDate=NULL WHERE u.userId=:userId AND u.id=:bookItemId")
+    @Query("UPDATE BookItem u SET u.status='AVAILABLE', u.returnedAt=:currentTime,u.updatedAt=CURRENT_TIMESTAMP, u.dueDate=NULL WHERE u.userId.id=:userId AND u.id=:bookItemId")
     int returnAction(@Param("bookItemId") UUID bookItemId, @Param("userId") UUID userId, LocalDateTime currentTime);
 
     @Query("SELECT u FROM BookItem u WHERE u.status = 'AVAILABLE' AND u.bookId = :bookId")

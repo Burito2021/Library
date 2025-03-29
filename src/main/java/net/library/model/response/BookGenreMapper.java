@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 
 public class BookGenreMapper {
 
-    public static BookGenreDto toDto(BookGenre bookGenre) {
-
-        return new BookGenreDto(bookGenre.getBook_id(), bookGenre.getGenre_id());
-    }
-
-    public static List<BookGenreDto> toDto(List<BookGenre> bookGenres) {
-        return bookGenres.stream().map(BookGenreMapper::toDto).collect(Collectors.toList());
-    }
+//    public static BookGenreDto toDto(BookGenre bookGenre) {
+//
+//        return new BookGenreDto(bookGenre.getBook_id(), bookGenre.getGenre_id());
+//    }
+//
+//    public static List<BookGenreDto> toDto(List<BookGenre> bookGenres) {
+//        return bookGenres.stream().map(BookGenreMapper::toDto).collect(Collectors.toList());
+//    }
 }
