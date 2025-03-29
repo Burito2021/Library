@@ -11,7 +11,5 @@ import java.util.UUID;
 @Builder
 public class BookGenreDto {
 
-    private UUID bookId;
-
-    private UUID genreId;
+    private String genreName;
 }

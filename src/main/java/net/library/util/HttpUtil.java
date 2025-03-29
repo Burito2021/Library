@@ -7,14 +7,14 @@ public class HttpUtil {
     public static final String ITEMS = "items";
     public static final String USERS = "users";
     public static final String URL_ALL = "/**";
-    public final static String CORRELATION_ID_HEADER_NAME = "X-Correlation-Id";
-    public final static String ERROR_ID = "errorId";
-    public final static String ERROR_MSG = "errorMsg";
-    public final static String CID = "cid";
-    public final static String MODERATION_STATE = "moderation_state";
-    public final static String USER_STATE = "user_state";
-    public final static String ROLE = "role";
-    public final static String BOOK_GENRE = "/book_genre";
-    public final static String BOOK_ITEM = "/book_item";
-    public final static String GENRE_NAME = "genreName";
+    public static final String CORRELATION_ID_HEADER_NAME = "X-Correlation-Id";
+    public static final String ERROR_ID = "errorId";
+    public static final String ERROR_MSG = "errorMsg";
+    public static final String CID = "cid";
+    public static final String MODERATION_STATE = "moderation_state";
+    public static final String USER_STATE = "user_state";
+    public static final String ROLE = "role";
+    public static final String BOOK_GENRE = "/book_genre";
+    public static final String BOOK_ITEM = "/book_item";
+    public static final String GENRE_NAME = "genreName";
 }

@@ -1,29 +1,34 @@
 package net.library.service;
 
+import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.library.converter.Converter;
-import net.library.exception.UserNotFoundException;
+import net.library.exception.NotFoundException;
 import net.library.model.dto.*;
 import net.library.model.entity.Book;
-import net.library.model.request.BookGenreRequest;
 import net.library.model.request.BookItemRequest;
 import net.library.model.request.BookRequest;
 import net.library.model.request.GenreRequest;
-import net.library.model.response.BookGenreMapper;
 import net.library.model.response.BookItemMapper;
 import net.library.model.response.BookMapper;
 import net.library.model.response.GenreMapper;
 import net.library.repository.*;
 import net.library.repository.enums.BookItemStatus;
 import net.library.util.Utils;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +52,16 @@ public class BookService {
      * If no available book item is found (i.e., no records match the 'AVAILABLE' status),
      * a 'NOT FOUND' error is thrown.
      */
-    @Transactional
+
+    public BookItemDto addBookItem(final BookItemRequest bookItem) {
+        final var bookItemConverted = converter.bookItemConverter(bookItem);
+        final var savedBookItem = bookItemRepository.save(bookItemConverted);
+
+        return BookItemMapper.toDto(savedBookItem);
+    }
+
+    @Lock(LockModeType.OPTIMISTIC)
+    @Transactional(isolation = Isolation.SERIALIZABLE,propagation = Propagation.REQUIRED)
     public BookItemIdDto borrowActionForAnyBookItem(final UUID bookId, final UUID userId) {
         final var currentTime = Utils.currentDate();
         final var dueDate = Utils.currentDate().plusWeeks(DUE_DATE).toLocalDate();
@@ -55,7 +69,7 @@ public class BookService {
         var bookItemIdList = bookItemRepository.selectAvailableBookItemIdAndUpdate(bookId, userId, currentTime, dueDate);
 
         if (bookItemIdList.isEmpty()) {
-            throw new UserNotFoundException("User" + userId + " not found");
+            throw new NotFoundException("User" + userId + " not found");
         }
         var bookItemId = bookItemIdList.get(0);
 
@@ -72,14 +86,16 @@ public class BookService {
      * If no available book item is found
      * a 'NOT FOUND' error is thrown.
      */
-    @Transactional
+//    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Lock(LockModeType.OPTIMISTIC)
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public void borrowActionBookItemById(final UUID bookItemId, final UUID userId, final BookItemStatus bookItemStatus) {
         final var currentTime = Utils.currentDate();
         final var dueDate = Utils.currentDate().plusDays(DUE_DATE).toLocalDate();
         final var result = bookItemRepository.borrowAction(bookItemId, userId, bookItemStatus, currentTime, dueDate);
 
         if (result == 0) {
-            throw new UserNotFoundException("User" + userId + " not found");
+            throw new NotFoundException("User" + userId + " not found");
         }
     }
 
@@ -95,21 +111,15 @@ public class BookService {
      * If no available book item or user is found,
      * a 'NOT FOUND' error is thrown.
      */
-    @Transactional
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void returnActionForBookItem(final UUID bookItemId, final UUID userId) {
         final var currentTime = Utils.currentDate();
         final var result = bookItemRepository.returnAction(bookItemId, userId, currentTime);
 
         if (result == 0) {
-            throw new UserNotFoundException("User" + userId + " not found");
+            throw new NotFoundException("User" + userId + " not found");
         }
-    }
-
-    public BookItemDto addBookItem(final BookItemRequest bookItem) {
-        final var bookItemConverted = converter.bookItemConverter(bookItem);
-        final var savedBookItem = bookItemRepository.save(bookItemConverted);
-
-        return BookItemMapper.toDto(savedBookItem);
     }
 
     public GenreDto addGenre(final GenreRequest genreRequest) {
@@ -122,40 +132,86 @@ public class BookService {
         return BookMapper.toDto(bookRepository.save(newBook));
     }
 
-    public List<BookGenreDto> addBookGenres(final BookGenreRequest bookGenreRequest) {
-        final var bookGenresList = converter.toBookGenre(bookGenreRequest);
-        return BookGenreMapper.toDto(bookGenresRepository.saveAll(bookGenresList));
+    public AllBookDto getById(UUID bookId){
+      final var book =bookRepository.findById(bookId)
+              .orElseThrow(() -> new NotFoundException("Book not found with id: " + bookId));
+
+      return new AllBookDto(
+              book.getId(),
+              book.getTitle(),
+              book.getAuthor(),
+              book.getDescription(),
+              book.getEdition(),
+              book.getPublicationYear(),
+              book.getUpdatedAt(),
+              book.getCreatedAt(),
+              book.getDeletedAt(),
+              Optional.ofNullable(book.getBookItemList()).orElse(Collections.emptyList()).stream().map(
+                      bookItem -> new BookItemDto(
+                              bookItem.getId(),
+                              Optional.ofNullable(bookItem.getUserId()).map(user -> new UserDto(
+                                      bookItem.getUserId().getId(),
+                                      bookItem.getUserId().getUsername(),
+                                      bookItem.getUserId().getName(),
+                                      bookItem.getUserId().getSurname(),
+                                      bookItem.getUserId().getEmail(),
+                                      bookItem.getUserId().getPhoneNumber(),
+                                      bookItem.getUserId().getAddress()
+                              )).orElse(null),
+                              bookItem.getStatus(),
+                              bookItem.getBorrowedAt(),
+                              bookItem.getReturnedAt()
+                      )).collect(Collectors.toList()),
+              Optional.ofNullable(book.getBookGenres()).orElse(Collections.emptyList()).stream().map(
+                      genre -> new BookGenreDto(
+                              genre.getGenre().getName()
+                      )).collect(Collectors.toList())
+      );
     }
 
-    public Page<BookItemDto> getBookItems(UUID bookItemId, UUID bookId, String bookItemStatus, String startDate, String endDate, Pageable pageable
-    ) {
-        var startDateConverted = Utils.stringToLocalDateConverter(startDate);
-        var endDateConverted = Utils.stringToLocalDateConverter(endDate);
-        var bookItemStatusEnum = Utils.convertToEnum(bookItemStatus, BookItemStatus.class);
+    public Page<AllBookDto> getAllEntities(Pageable pageable) {
 
-        var specification = BookItemSpecification.filterBookItem(bookItemId, bookId, bookItemStatusEnum, startDateConverted, endDateConverted);
-        var bookPage = bookItemRepository.findAll(specification, pageable);
-        return converter.toBookItemDto(bookPage);
+        final var bookPage = bookRepository.findAll(pageable);
+        final var page = bookPage.map(item ->
+                new AllBookDto(item.getId(),
+                        item.getTitle(),
+                        item.getAuthor(),
+                        item.getDescription(),
+                        item.getEdition(),
+                        item.getPublicationYear(),
+                        item.getUpdatedAt(),
+                        item.getCreatedAt(),
+                        item.getDeletedAt(),
+                        Optional.ofNullable(item.getBookItemList()).orElse(Collections.emptyList()).stream().map(
+                                bookItem -> new BookItemDto(
+                                        bookItem.getId(),
+                                        Optional.ofNullable(bookItem.getUserId()).map(user -> new UserDto(
+                                                bookItem.getUserId().getId(),
+                                                bookItem.getUserId().getUsername(),
+                                                bookItem.getUserId().getName(),
+                                                bookItem.getUserId().getSurname(),
+                                                bookItem.getUserId().getEmail(),
+                                                bookItem.getUserId().getPhoneNumber(),
+                                                bookItem.getUserId().getAddress()
+                                        )).orElse(null),
+                                        bookItem.getStatus(),
+                                        bookItem.getBorrowedAt(),
+                                        bookItem.getReturnedAt()
+                                )).collect(Collectors.toList()),
+                        Optional.ofNullable(item.getBookGenres()).orElse(Collections.emptyList()).stream().map(
+                                genre -> new BookGenreDto(
+                                        genre.getGenre().getName()
+                                )).collect(Collectors.toList())
+                )
+        );
+
+        return page;
     }
 
     public Page<GenreDto> getGenres(Pageable pageable) {
 
         var genre = genreRepository.findAll(pageable);
         return converter.toGenreDtoPage(genre);
-    }
-
-    public Page<BookDto> getAllBooks(
-            Pageable pageable
-    ) {
-        var bookPage = bookRepository.findAll(pageable);
-        return converter.toBookDtoPage(bookPage);
-    }
-
-    public Page<BookGenreDto> getBookGenre(
-            Pageable pageable
-    ) {
-        var bookGenres = bookGenresRepository.findAll(pageable);
-        return converter.toBookGenreDtoPage(bookGenres);
     }
 
     public Book getBookById(final UUID bookId) {
@@ -192,5 +248,17 @@ public class BookService {
         removeAllBookGenres();
         removeAllBookItems();
         removeAllBooks();
+    }
+
+
+    public Page<BookItemDto> getBookItems(UUID bookItemId, UUID bookId, String bookItemStatus, String startDate, String endDate, Pageable pageable
+    ) {
+        var startDateConverted = Utils.stringToLocalDateConverter(startDate);
+        var endDateConverted = Utils.stringToLocalDateConverter(endDate);
+        var bookItemStatusEnum = Utils.convertToEnum(bookItemStatus, BookItemStatus.class);
+
+        var specification = BookItemSpecification.filterBookItem(bookItemId, bookId, bookItemStatusEnum, startDateConverted, endDateConverted);
+        var bookPage = bookItemRepository.findAll(specification, pageable);
+        return converter.toBookItemDto(bookPage);
     }
 }

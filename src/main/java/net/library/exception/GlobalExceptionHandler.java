@@ -62,8 +62,8 @@ public class GlobalExceptionHandler {
         return httpErrorResponseBuilder(ex, WRONG_STATE_ID, WRONG_STATE, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<HttpErrorResponse> userNotFound() {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<HttpErrorResponse> notFound() {
         return ResponseEntity.notFound().build();
     }
 

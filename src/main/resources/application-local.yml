@@ -19,6 +19,7 @@ spring:
       connection-timeout: 30000
 
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: none  # or 'create', 'create-drop', 'validate'
     properties:
