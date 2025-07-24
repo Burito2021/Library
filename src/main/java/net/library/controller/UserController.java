@@ -5,10 +5,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import net.library.model.dto.Page;
 import net.library.model.dto.UserDto;
+import net.library.model.mapper.UserMapper;
 import net.library.model.request.UserRequest;
-import net.library.model.response.UserMapper;
+import net.library.model.response.Page;
 import net.library.repository.enums.ModerationState;
 import net.library.repository.enums.RoleType;
 import net.library.repository.enums.UserState;
@@ -33,7 +33,6 @@ import static net.library.util.HttpUtil.USERS;
 public class UserController {
 
     private final UserService service;
-
     /**
      * retrieves a list of users on the provided filters with default sorting
      * This controller enables clients to fetch users and data of pageSize, pageNumber, totalPages, totalItems with or without filters

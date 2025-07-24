@@ -54,6 +54,9 @@ public class BookItem {
     @Column(name = "due_date", columnDefinition = "DATE")
     private LocalDate dueDate;
 
+    @Version
+    private Long version;
+
     @PreUpdate
     public void preUpdate() {
         updatedAt = LocalDateTime.now();

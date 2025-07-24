@@ -7,8 +7,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.library.model.dto.BookItemDto;
 import net.library.model.dto.BookItemIdDto;
-import net.library.model.dto.Page;
 import net.library.model.request.BookItemRequest;
+import net.library.model.response.Page;
 import net.library.repository.enums.BookItemStatus;
 import net.library.service.BookService;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +31,7 @@ import static net.library.util.HttpUtil.ITEMS;
 public class BookItemController {
     private final BookService service;
 
-    @Operation(summary = "Add  a book item(copy) to database", description = "saves a book item(copy) to database")
+    @Operation(summary = "Add a book item(copy) to database", description = "saves a book item(copy) to database")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully created"),
             @ApiResponse(responseCode = "400", description = "when mandatory param is missing")
@@ -77,6 +77,14 @@ public class BookItemController {
                                                      @RequestParam("userId") UUID userId
     ) {
         service.returnActionForBookItem(bookItemId, userId);
+        return ResponseEntity.status(202).build();
+    }
+
+    @PatchMapping("/{bookItemId}/returnTest")
+    public ResponseEntity<Void> returnBookItemTest(@PathVariable(required = false, value = "bookItemId") final UUID bookItemId,
+                                                   @RequestParam("userId") UUID userId
+    ) {
+        service.returnActionForBookItemHibernateImpl(bookItemId, userId);
         return ResponseEntity.status(202).build();
     }
 

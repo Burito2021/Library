@@ -1,7 +1,6 @@
 package net.library.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.library.config.JasyptEncryptorConfig;
 import net.library.model.entity.User;
 import net.library.model.request.UserRequest;
 import net.library.repository.enums.ModerationState;
@@ -28,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ActiveProfiles("test")
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 class UserControllerTest {
 
@@ -1024,7 +1023,6 @@ class UserControllerTest {
 
         assertTrue(user.isEmpty());
     }
-
 
     @Test
     void deleteByIdIfNoUserD() throws Exception {

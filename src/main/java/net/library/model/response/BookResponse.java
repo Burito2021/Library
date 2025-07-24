@@ -1,18 +1,18 @@
-package net.library.model.dto;
+package net.library.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import net.library.model.dto.BookGenreDto;
+import net.library.model.dto.BookItemDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
 @Builder
-public class AllBookDto {
+public class BookResponse {
 
     @JsonProperty("bookId")
     private UUID id;

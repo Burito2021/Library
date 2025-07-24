@@ -36,7 +36,6 @@ public final class MdcUtils {
         return id;
     }
 
-
     public static void initMdcCid(final String cidRaw) {
         final var cid = getOrMakeCid(() -> cidRaw);
         MDC.put(MDC_REQUEST_ID, cid);

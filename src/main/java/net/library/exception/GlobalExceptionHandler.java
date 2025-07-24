@@ -1,7 +1,7 @@
 package net.library.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import net.library.model.response.HttpErrorResponse;
+import net.library.model.mapper.HttpErrorResponse;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

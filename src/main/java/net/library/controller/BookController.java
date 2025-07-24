@@ -5,10 +5,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import net.library.model.dto.AllBookDto;
-import net.library.model.dto.BookDto;
-import net.library.model.dto.Page;
 import net.library.model.request.BookRequest;
+import net.library.model.response.AddBookResponse;
+import net.library.model.response.BookResponse;
+import net.library.model.response.Page;
 import net.library.service.BookService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,16 +37,14 @@ public class BookController {
     }
     )
     @PostMapping
-    public ResponseEntity<BookDto> addBook(@Valid @RequestBody BookRequest bookRequest) {
-
+    public ResponseEntity<AddBookResponse> addBook(@Valid @RequestBody BookRequest bookRequest) {
         return ResponseEntity.status(201).body(service.addBook(bookRequest));
     }
 
     @GetMapping("/all")
-    public Page<AllBookDto> getAllEntities(
+    public Page<BookResponse> getAll(
             @RequestParam Map<String, String> params,
-            @PageableDefault(size = 10, page = 0) Pageable pageable
-    ){
+            @PageableDefault(size = 10, page = 0) Pageable pageable) {
         var sortBy = params.get("sortBy");
         var sortFields = sortBy != null && !sortBy.isEmpty()
                 ? List.of(sortBy.split(","))
@@ -55,13 +53,13 @@ public class BookController {
         var direction = Sort.Direction.fromOptionalString(params.get("order")).orElse(Sort.Direction.DESC);
         var sort = Sort.by(sortFields.stream().map(field -> new Sort.Order(direction, field)).toList());
 
-        final var pages =service.getAllEntities(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
+        final var pages = service.getAllEntities(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
         return new Page<>(pages.getSize(),pages.getNumber(),pages.getTotalElements(),
                 pages.get().collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AllBookDto> getAllBooks(
+    public ResponseEntity<BookResponse> getBookById(
             @PathVariable("id") UUID id
     ) {
         return ResponseEntity.ok(service.getById(id));

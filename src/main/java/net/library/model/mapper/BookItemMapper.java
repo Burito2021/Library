@@ -1,7 +1,6 @@
-package net.library.model.response;
+package net.library.model.mapper;
 
 import net.library.model.dto.BookItemDto;
-import net.library.model.dto.UserDto;
 import net.library.model.entity.BookItem;
 
 import java.util.List;

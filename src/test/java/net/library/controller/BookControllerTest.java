@@ -2,21 +2,14 @@ package net.library.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import jakarta.persistence.EntityNotFoundException;
 import net.library.model.entity.*;
-import net.library.model.request.BookGenreRequest;
 import net.library.model.request.BookRequest;
-import net.library.model.request.GenreRequest;
-
 import net.library.repository.*;
 import net.library.repository.enums.BookAction;
 import net.library.repository.enums.BookItemStatus;
 import net.library.service.BookService;
-import net.library.tools.Tools;
 import net.library.util.Utils;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,15 +20,12 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static net.library.tools.Tools.*;
 import static net.library.util.HttpUtil.*;
@@ -46,19 +36,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ActiveProfiles("test")
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+
 @AutoConfigureMockMvc
 class BookControllerTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
     @Autowired
     private ObjectMapper objectMapper;
-
     @Autowired
     private MockMvc mvc;
-
     @Autowired
     private BookService bookService;
     @Autowired
@@ -79,7 +67,6 @@ class BookControllerTest {
         bookService.removeAll();
         userRepository.deleteAll();
     }
-
 
     @Test
     void addBookSuccess() throws Exception {
@@ -823,7 +810,7 @@ class BookControllerTest {
                 .andExpect(jsonPath(ERROR_MSG, is("mandatory param error")));
     }
 
-
+    //this
     @Test
     void updateBookItemBorrowInProgressSuccessfulUpdate() throws Exception {
 
@@ -1188,7 +1175,7 @@ class BookControllerTest {
                 .andExpect(status().isAccepted());
 
         final var bookHistory = bookItemHistoryRepository.findAll();
-        System.out.println("History: " + bookHistory);
+
         assertEquals(2, bookHistory.size());
         assertNotNull(bookHistory.get(0).getId());
         assertEquals(bookItemId, bookHistory.get(0).getItemId());
@@ -1593,74 +1580,8 @@ class BookControllerTest {
         final var bookItemId = JsonPath.read(response, "$.bookItemId");
         final var bookItem = bookItemRepository.findById(UUID.fromString(bookItemId.toString())).get();
 
-        assertEquals(bookItem.getStatus(), BookItemStatus.IN_PROGRESS);
+        assertEquals(BookItemStatus.IN_PROGRESS, bookItem.getStatus());
         assertNotNull(bookItem.getBorrowedAt());
-    }
-     //two
-    @Test
-    void borrowAnyBookItem2ThreadsSuccess() throws Exception {
-
-        userRepository.save(new User()
-                .setUsername("Alelxo")
-                .setName("Alex")
-                .setSurname("Bur")
-                .setEmail("efaf@gmail.com")
-                .setPhoneNumber("380679920267")
-                .setAddress("assfasfd"));
-
-        bookRepository.save(new Book()
-                .setTitle("The Great Gatsby")
-                .setAuthor("F. Scott Fitzgerald")
-                .setDescription("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.")
-                .setPublisher("Scribner")
-                .setEdition("3rd Edition")
-                .setPublicationYear(1925));
-
-        final var userId = userRepository.findAll().get(0).getId();
-        final var bookId = bookRepository.findAll().get(0).getId();
-
-        bookItemRepository.save(new BookItem()
-                .setBookId(bookId)
-                .setStatus(BookItemStatus.AVAILABLE));
-        bookItemRepository.save(new BookItem()
-                .setBookId(bookId)
-                .setStatus(BookItemStatus.AVAILABLE));
-        bookItemRepository.save(new BookItem()
-                .setBookId(bookId)
-                .setStatus(BookItemStatus.AVAILABLE));
-
-        var listOfTreads = getCallables(bookId, userId);
-
-        var statusCodes = threadRunner(2, listOfTreads);
-
-        Collections.sort(statusCodes);
-        assertEquals(2,statusCodes.size());
-        assertEquals(202,statusCodes.get(0));
-        assertEquals(500,statusCodes.get(1));
-    }
-
-    private  List<Callable<Integer>> getCallables(UUID bookId, UUID userId) {
-        List<Callable<Integer>> listOfThreads = new ArrayList<>();
-
-        listOfThreads.add(() -> {
-            var response = mvc.perform(MockMvcRequestBuilders
-                            .patch(GLOBAL_BASE_URI + ITEMS + "/" + bookId + "/borrowingAny?userId=" + userId))
-                    .andReturn()
-                    .getResponse();
-
-            return response.getStatus();
-        });
-
-        listOfThreads.add(() -> {
-            var response = mvc.perform(MockMvcRequestBuilders
-                            .patch(GLOBAL_BASE_URI + ITEMS + "/" + bookId + "/borrowingAny?userId=" + userId))
-                    .andReturn()
-                    .getResponse();
-
-            return response.getStatus();
-        });
-
-        return listOfThreads;
     }
 
     @Test
@@ -2027,5 +1948,96 @@ class BookControllerTest {
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/" + UUID.randomUUID()))
                 .andDo(print())
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void borrowAnyBookItem2ThreadsSuccess() {
+
+        userRepository.save(new User()
+                .setUsername("Alelxo")
+                .setName("Alex")
+                .setSurname("Bur")
+                .setEmail("efaf@gmail.com")
+                .setPhoneNumber("380679920267")
+                .setAddress("assfasfd"));
+
+        bookRepository.save(new Book()
+                .setTitle("The Great Gatsby")
+                .setAuthor("F. Scott Fitzgerald")
+                .setDescription("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.")
+                .setPublisher("Scribner")
+                .setEdition("3rd Edition")
+                .setPublicationYear(1925));
+
+        final var userId = userRepository.findAll().get(0).getId();
+        final var bookId = bookRepository.findAll().get(0).getId();
+
+        final var bookItemIdOne = bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE)).getId();
+        bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE)).getId();
+        bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE)).getId();
+
+        bookItemRepository.findAll().forEach(bookItem -> {
+            bookItem.setStatus(BookItemStatus.IN_PROGRESS);
+            bookItem.setBorrowedAt(Utils.currentDate());
+            bookItem.setUserId(new User().setId(userId));
+            bookItemRepository.save(bookItem);
+        });
+
+        var listOfTreads = getCallables(GLOBAL_BASE_URI + ITEMS + "/" + bookItemIdOne + "/returnTest?userId=" + userId, 2);
+
+        var statusCodes = threadRunner(2, listOfTreads);
+
+        Collections.sort(statusCodes);
+
+        assertEquals(2,statusCodes.size());
+        assertEquals(202,statusCodes.get(0));
+        assertEquals(500,statusCodes.get(1));
+    }
+
+    @Test
+    void updateBookItemBorrow2ThreadsSuccess() throws Exception {
+
+        userRepository.save(new User().setUsername("Alelxo").setName("Alex").setSurname("Bur").setEmail("efaf@gmail.com").setPhoneNumber("380679920267").setAddress("assfasfd"));
+
+        userRepository.save(new User().setUsername("Buton").setName("Maron").setSurname("Bur").setEmail("efaf@gmail.com").setPhoneNumber("380679920267").setAddress("assfasfd"));
+
+        bookRepository.save(new Book().setTitle("The Great Gatsby").setAuthor("F. Scott Fitzgerald").setDescription("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.").setPublisher("Scribner").setEdition("3rd Edition").setPublicationYear(1925));
+
+        final var userIdOne = userRepository.findAll().get(0).getId();
+        final var bookId = bookRepository.findAll().get(0).getId();
+
+        bookItemRepository.save(new BookItem().setBookId(bookId).setStatus(BookItemStatus.AVAILABLE));
+
+        final var bookItemId = bookItemRepository.findAll().get(0).getId();
+
+        var listOfTreads = getCallables(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/borrowing?" + "userId=" + userIdOne + "&status=in_progress", 3);
+
+        var statusCodes = threadRunner(2, listOfTreads);
+
+        Collections.sort(statusCodes);
+
+        assertEquals(3, statusCodes.size());
+        assertEquals(202, statusCodes.get(0));
+        assertEquals(404, statusCodes.get(1));
+
+    }
+
+    private List<Callable<Integer>> getCallables(String url, int count) {
+        List<Callable<Integer>> listOfThreads = new ArrayList<>();
+        for (int x = 0; x < count; x++) {
+            listOfThreads.add(() -> {
+                var response = mvc.perform(MockMvcRequestBuilders.patch(url)).andReturn().getResponse();
+
+                return response.getStatus();
+            });
+        }
+
+        return listOfThreads;
     }
 }
