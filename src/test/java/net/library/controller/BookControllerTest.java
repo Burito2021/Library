@@ -1593,74 +1593,8 @@ class BookControllerTest {
         final var bookItemId = JsonPath.read(response, "$.bookItemId");
         final var bookItem = bookItemRepository.findById(UUID.fromString(bookItemId.toString())).get();
 
-        assertEquals(bookItem.getStatus(), BookItemStatus.IN_PROGRESS);
+        assertEquals(BookItemStatus.IN_PROGRESS, bookItem.getStatus());
         assertNotNull(bookItem.getBorrowedAt());
-    }
-     //two
-    @Test
-    void borrowAnyBookItem2ThreadsSuccess() throws Exception {
-
-        userRepository.save(new User()
-                .setUsername("Alelxo")
-                .setName("Alex")
-                .setSurname("Bur")
-                .setEmail("efaf@gmail.com")
-                .setPhoneNumber("380679920267")
-                .setAddress("assfasfd"));
-
-        bookRepository.save(new Book()
-                .setTitle("The Great Gatsby")
-                .setAuthor("F. Scott Fitzgerald")
-                .setDescription("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.")
-                .setPublisher("Scribner")
-                .setEdition("3rd Edition")
-                .setPublicationYear(1925));
-
-        final var userId = userRepository.findAll().get(0).getId();
-        final var bookId = bookRepository.findAll().get(0).getId();
-
-        bookItemRepository.save(new BookItem()
-                .setBookId(bookId)
-                .setStatus(BookItemStatus.AVAILABLE));
-        bookItemRepository.save(new BookItem()
-                .setBookId(bookId)
-                .setStatus(BookItemStatus.AVAILABLE));
-        bookItemRepository.save(new BookItem()
-                .setBookId(bookId)
-                .setStatus(BookItemStatus.AVAILABLE));
-
-        var listOfTreads = getCallables(bookId, userId);
-
-        var statusCodes = threadRunner(2, listOfTreads);
-
-        Collections.sort(statusCodes);
-        assertEquals(2,statusCodes.size());
-        assertEquals(202,statusCodes.get(0));
-        assertEquals(500,statusCodes.get(1));
-    }
-
-    private  List<Callable<Integer>> getCallables(UUID bookId, UUID userId) {
-        List<Callable<Integer>> listOfThreads = new ArrayList<>();
-
-        listOfThreads.add(() -> {
-            var response = mvc.perform(MockMvcRequestBuilders
-                            .patch(GLOBAL_BASE_URI + ITEMS + "/" + bookId + "/borrowingAny?userId=" + userId))
-                    .andReturn()
-                    .getResponse();
-
-            return response.getStatus();
-        });
-
-        listOfThreads.add(() -> {
-            var response = mvc.perform(MockMvcRequestBuilders
-                            .patch(GLOBAL_BASE_URI + ITEMS + "/" + bookId + "/borrowingAny?userId=" + userId))
-                    .andReturn()
-                    .getResponse();
-
-            return response.getStatus();
-        });
-
-        return listOfThreads;
     }
 
     @Test
@@ -2027,5 +1961,80 @@ class BookControllerTest {
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/" + UUID.randomUUID()))
                 .andDo(print())
                 .andExpect(status().isNotFound());
+    }
+
+    //two   //test
+    @Test
+    void borrowAnyBookItem2ThreadsSuccess() {
+
+        userRepository.save(new User()
+                .setUsername("Alelxo")
+                .setName("Alex")
+                .setSurname("Bur")
+                .setEmail("efaf@gmail.com")
+                .setPhoneNumber("380679920267")
+                .setAddress("assfasfd"));
+
+        bookRepository.save(new Book()
+                .setTitle("The Great Gatsby")
+                .setAuthor("F. Scott Fitzgerald")
+                .setDescription("A classic novel set in the Roaring Twenties that explores themes of wealth, love, and the American Dream.")
+                .setPublisher("Scribner")
+                .setEdition("3rd Edition")
+                .setPublicationYear(1925));
+
+        final var userId = userRepository.findAll().get(0).getId();
+        final var bookId = bookRepository.findAll().get(0).getId();
+
+        final var bookItemIdOne = bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE)).getId();
+        final var bookItemIdTwo =  bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE)).getId();
+        final var bookItemIdThree =   bookItemRepository.save(new BookItem()
+                .setBookId(bookId)
+                .setStatus(BookItemStatus.AVAILABLE)).getId();
+
+        bookItemRepository.findAll().forEach(bookItem -> {
+            bookItem.setStatus(BookItemStatus.IN_PROGRESS);
+            bookItem.setBorrowedAt(Utils.currentDate());
+            bookItem.setUserId(new User().setId(userId));
+            bookItemRepository.save(bookItem);
+        });
+
+        System.out.println("!!!!@ "+bookItemRepository.findAll());
+        var listOfTreads = getCallables(bookItemIdOne, userId);
+
+        var statusCodes = threadRunner(2, listOfTreads);
+        System.out.println("_____________________end_____________________________________");
+        Collections.sort(statusCodes);
+        assertEquals(2,statusCodes.size());
+        assertEquals(202,statusCodes.get(0));
+        assertEquals(500,statusCodes.get(1));
+    }
+
+    private  List<Callable<Integer>> getCallables(UUID bookItemId, UUID userId) {
+        List<Callable<Integer>> listOfThreads = new ArrayList<>();
+
+        listOfThreads.add(() -> {
+            var response = mvc.perform(MockMvcRequestBuilders
+                            .patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/returnTest?userId=" + userId))
+                    .andReturn()
+                    .getResponse();
+
+            return response.getStatus();
+        });
+
+        listOfThreads.add(() -> {
+            var response = mvc.perform(MockMvcRequestBuilders
+                            .patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/returnTest?userId=" + userId))
+                    .andReturn()
+                    .getResponse();
+
+            return response.getStatus();
+        });
+
+        return listOfThreads;
     }
 }

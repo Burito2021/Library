@@ -80,6 +80,15 @@ public class BookItemController {
         return ResponseEntity.status(202).build();
     }
 
+    @PatchMapping("/{bookItemId}/returnTest")
+    public ResponseEntity<Void> returnBookItemTest(@PathVariable(required = false, value = "bookItemId") final UUID bookItemId,
+                                                   @RequestParam("userId") UUID userId
+    ) {
+        service.returnActionForBookItemHibernateImpl(bookItemId, userId);
+        return ResponseEntity.status(202).build();
+    }
+
+
     @Operation(summary = "Get  all available book items(copies), with adjustable sorting( default by createdAt",
             description = "retrieve  all available book items(copies), with adjustable sorting( default by createdAt")
     @ApiResponses(value = {

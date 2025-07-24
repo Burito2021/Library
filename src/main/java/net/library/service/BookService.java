@@ -16,7 +16,7 @@ import net.library.model.response.GenreMapper;
 import net.library.repository.*;
 import net.library.repository.enums.BookItemStatus;
 import net.library.util.Utils;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Lock;
@@ -24,6 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -60,8 +62,10 @@ public class BookService {
         return BookItemMapper.toDto(savedBookItem);
     }
 
-    @Lock(LockModeType.OPTIMISTIC)
-    @Transactional(isolation = Isolation.SERIALIZABLE,propagation = Propagation.REQUIRED)
+    //should not use serializable isolation level - serializable is highest level
+    //for Locks we need to use hibernate
+    //add logs for transaction
+    @Transactional
     public BookItemIdDto borrowActionForAnyBookItem(final UUID bookId, final UUID userId) {
         final var currentTime = Utils.currentDate();
         final var dueDate = Utils.currentDate().plusWeeks(DUE_DATE).toLocalDate();
@@ -86,9 +90,8 @@ public class BookService {
      * If no available book item is found
      * a 'NOT FOUND' error is thrown.
      */
-//    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Lock(LockModeType.OPTIMISTIC)
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+
+    @Transactional
     public void borrowActionBookItemById(final UUID bookItemId, final UUID userId, final BookItemStatus bookItemStatus) {
         final var currentTime = Utils.currentDate();
         final var dueDate = Utils.currentDate().plusDays(DUE_DATE).toLocalDate();
@@ -99,8 +102,38 @@ public class BookService {
         }
     }
 
+
+//    @Lock(LockModeType.OPTIMISTIC)
+//    @Transactional(isolation = Isolation.READ_UNCOMMITTED,propagation = Propagation.REQUIRED)
+    public void returnActionForBookItemHibernateImpl(final UUID bookItemId, final UUID userId) {
+        log.info("************start*************");
+        // Extract transaction information
+        var status = TransactionAspectSupport.currentTransactionStatus();
+        String transactionId = String.valueOf(System.identityHashCode(status));
+        boolean newTransaction = status.isNewTransaction();
+
+        log.info("Transaction info [id={}, isNew={}, bookItemId={}]",
+                transactionId, newTransaction, bookItemId);
+
+        final var currentTime = Utils.currentDate();
+        var bookItem = bookItemRepository.findByIdAndUserId_Id(bookItemId, userId).orElseThrow(
+                () -> new NotFoundException("Book item not found with id: " + bookItemId));
+
+        bookItem.setStatus(BookItemStatus.AVAILABLE);
+        bookItem.setReturnedAt(currentTime);
+        bookItem.setBorrowedAt(null);
+        bookItem.setDueDate(null);
+
+        log.info("Saving book item in transaction [id={}, isNew={}]", transactionId, newTransaction);
+        bookItemRepository.save(bookItem);
+
+        log.info("Transaction completed [id={}]", transactionId);
+
+
+        log.info("****end*******");
+    }
+
     /**
-     *
      * This method updates a specific book item (by specific bookItemId received from incoming param)
      * by a specific user (by specific userId received from incoming param)
      * to mark it as returned by setting STATUS to 'AVAILABLE'
@@ -112,7 +145,7 @@ public class BookService {
      * a 'NOT FOUND' error is thrown.
      */
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional
     public void returnActionForBookItem(final UUID bookItemId, final UUID userId) {
         final var currentTime = Utils.currentDate();
         final var result = bookItemRepository.returnAction(bookItemId, userId, currentTime);

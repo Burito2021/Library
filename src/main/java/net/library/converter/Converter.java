@@ -24,6 +24,8 @@ public interface Converter {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "deletedAt", ignore = true)
     @Mapping(source = "publication", target = "publicationYear")
+    @Mapping(target = "bookItemList", ignore = true)
+    @Mapping(target = "bookGenres", ignore = true)
     Book bookConverter(BookRequest bookRequest);
 
     @Mapping(target = "id", ignore = true)
@@ -34,6 +36,8 @@ public interface Converter {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "deletedAt", ignore = true)
+    @Mapping(target = "version", ignore = true)
+    @Mapping(target = "dueDate", ignore = true)
     BookItem bookItemConverter(BookItemRequest bookItemRequest);
 
     @Mapping(target = "id", ignore = true)
@@ -58,6 +62,7 @@ public interface Converter {
     }
 
     @Mapping(source = "id", target = "bookItemId")
+    @Mapping(target = "user", ignore = true)
     BookItemDto bookItemDtoConverter(BookItem bookItem);
 
     default Page<BookItemDto> toBookItemDto(Page<BookItem> bookItem) {

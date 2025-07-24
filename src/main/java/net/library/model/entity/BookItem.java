@@ -19,6 +19,9 @@ import java.util.UUID;
 @Table(name = "book_items")
 public class BookItem {
 
+//    @Version
+//    private Long version;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -53,6 +56,9 @@ public class BookItem {
 
     @Column(name = "due_date", columnDefinition = "DATE")
     private LocalDate dueDate;
+
+    @Version
+    private Long version;
 
     @PreUpdate
     public void preUpdate() {
