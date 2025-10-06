@@ -1,6 +1,7 @@
 package net.library.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.library.config.JasyptEncryptorConfig;
 import net.library.model.entity.User;
 import net.library.model.request.UserRequest;
 import net.library.repository.enums.ModerationState;
