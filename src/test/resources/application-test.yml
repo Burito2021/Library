@@ -2,14 +2,25 @@ server.port: 1282
 
 spring:
   datasource:
-    url: jdbc:tc:postgresql:11.1:///integration-tests-db
+    url: jdbc:tc:postgresql:15.0:///integration-tests-db
     username: testuser
     password: testpass
 
+  #   driver-class-name: org.postgresql.Driver
+  #specify the version odf driver for db the same as in docker compose
+  # one to many  on hibernate side ( and also learn  joins, transactions, relationship between tables with native sql, different strategies)
+  # spring security (http authentication)
   jpa:
+    open-in-view: false
     show-sql: false
     properties:
       hibernate:
+        transaction:
+          default_isolation_level: read_uncommitted
+        #- If you need strong consistency but can tolerate some performance impact, (your current setting) is a good choice. `REPEATABLE_READ`
+        #- If you need better performance and can tolerate some inconsistency, consider `READ_COMMITTED`.
+        #- If you need the strongest consistency and can accept performance impacts, use `SERIALIZABLE`.
+        #- If performance is critical and data consistency is less important, `READ_UNCOMMITTED` could work.
         format_sql: true
         use_sql_comments: true
     hibernate:
@@ -17,9 +28,11 @@ spring:
       show-sql: true
   sql:
     init:
+      init:
       mode: always
       schema-locations: 'classpath:sql/schema.sql'
   #     data-locations: 'classpath:sql/data.sql'
+      continue-on-error: true
 
   test:
     database:

@@ -7,7 +7,7 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <charset>utf-8</charset>
-            <Pattern>[%d][%-5level][%-10logger{0}][%X{cid}]:%msg%n</Pattern>
+            <Pattern>[%d][%thread][%-5level][%-10logger{0}][%X{cid}]:%msg%n</Pattern>
         </encoder>
     </appender>
 
@@ -27,13 +27,23 @@
     </appender>
 
     <!--***************************************************************************************************************-->
+    <logger name="org.springframework.test.web.servlet" level="DEBUG"/>
 
     <logger name="org.springframework" level="WARN"/>
     <logger name="org.springframework.web" level="WARN"/>
+    <logger name="org.springframework.transaction" level="TRACE"/>
+    <logger name="org.springframework.orm.jpa" level="TRACE"/>
+    <logger name="org.springframework.web.filter.OpenEntityManagerInViewFilter" level="DEBUG"/>
+    <logger name="org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter" level="DEBUG"/>
+
     <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
     <logger name="net.library" level="DEBUG"/>
     <logger name="org.apache.catalina.core.AprLifecycleListener" level="ERROR"/>
     <logger name="org.apache" level="WARN"/>
+    <logger name="org.hibernate.SQL" level="DEBUG"/>
+    <logger name="org.hibernate.type" level="WARN"/>
+    <logger name="org.hibernate.resource.jdbc.internal.ResourceRegistryStandardImpl" level="WARN"/>
+
     <!--       <logger name="org.apache.tomcat.util.compat" level="INFO"/>
          <logger name="org.apache.coyote.http11.Http11Processor" level="INFO"/>-->
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">

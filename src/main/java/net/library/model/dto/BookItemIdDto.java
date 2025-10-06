@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @Builder
-public class BookGenreDto {
+public class BookItemIdDto {
 
-    private String genreName;
+    private UUID bookItemId;
 }

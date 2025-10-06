@@ -10,8 +10,8 @@ import java.util.UUID;
 
 public class BookItemSpecification {
 
-    public static Specification<BookItem> filterBookItemByStatus(UUID bookItemId, BookItemStatus bookItemStatus, LocalDateTime startDate,
-                                                                 LocalDateTime endDate) {
+    public static Specification<BookItem> filterBookItem(UUID bookItemId, UUID bookId, BookItemStatus bookItemStatus, LocalDateTime startDate,
+                                                         LocalDateTime endDate) {
         return (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
 
@@ -21,6 +21,11 @@ public class BookItemSpecification {
                                 criteriaBuilder.function("text", String.class, root.get("status")),
                                 bookItemStatus.name()
                         ));
+            }
+
+            if (bookId != null) {
+                predicate = criteriaBuilder.and(predicate,
+                        criteriaBuilder.equal(root.get("bookId"), bookId));
             }
 
             if (bookItemId != null) {

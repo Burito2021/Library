@@ -1,4 +1,4 @@
-package net.library.model.response;
+package net.library.model.mapper;
 
 import net.library.model.dto.GenreDto;
 import net.library.model.entity.Genre;

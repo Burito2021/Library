@@ -3,6 +3,7 @@ package net.library.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import net.library.repository.enums.BookItemStatus;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -14,9 +15,9 @@ public class BookItemDto {
 
     private UUID bookItemId;
 
-    private UUID bookId;
+    private UserDto user;
 
-    private UUID userId;
+    private BookItemStatus status;
 
     private LocalDateTime borrowedAt;
 

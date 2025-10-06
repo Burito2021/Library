@@ -5,10 +5,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import net.library.model.dto.Page;
 import net.library.model.dto.UserDto;
+import net.library.model.mapper.UserMapper;
 import net.library.model.request.UserRequest;
-import net.library.model.response.UserMapper;
+import net.library.model.response.Page;
 import net.library.repository.enums.ModerationState;
 import net.library.repository.enums.RoleType;
 import net.library.repository.enums.UserState;
@@ -33,9 +33,18 @@ import static net.library.util.HttpUtil.USERS;
 public class UserController {
 
     private final UserService service;
-
-    public UserController(final UserService service) {
-        this.service = service;
+    //group  contollers by get, post, put,patch, delete
+    // change user current user(update) put
+    @Operation(summary = "Add a new user",
+            description = "Saved a new user successfully")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "saved a ne user successfully"),
+            @ApiResponse(responseCode = "400", description = "mandatory param is missing"),
+    }
+    )
+    @PostMapping
+    public ResponseEntity<UserDto> addUser(@Valid @RequestBody UserRequest userRequest) {
+        return ResponseEntity.status(201).body(service.addUser(userRequest));
     }
 
     /**
@@ -67,7 +76,7 @@ public class UserController {
     }
     )
     @GetMapping
-    public Page<UserDto> getAllUsersByFilter(
+    public Page<UserDto> getUsers(
             @RequestParam Map<String, String> params,
             @PageableDefault(page = 0, size = 10) Pageable pageable
     ) {
@@ -87,29 +96,6 @@ public class UserController {
                 users.get().collect(Collectors.toList()));
     }
 
-    @Operation(summary = "Add a new user",
-            description = "Saved a new user successfully")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "saved a ne user successfully"),
-            @ApiResponse(responseCode = "400", description = "mandatory param is missing"),
-    }
-    )
-    @PostMapping
-    public ResponseEntity<UserDto> addUser(@Valid @RequestBody UserRequest userRequest) {
-        return ResponseEntity.status(201).body(service.addUser(userRequest));
-    }
-
-    @Operation(summary = "Delete all the users available in the db",
-            description = "remove al the users")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "removed successfully")
-    }
-    )
-    @DeleteMapping
-    public void deleteAllUsers() {
-        service.deleteAll();
-    }
-
     @Operation(summary = "Get a user by a user id",
             description = "retrieve a user by user id")
     @ApiResponses(value = {
@@ -125,53 +111,69 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Delete a specific user",
-            description = "Remove a specific user by the user id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "a specific user removed successfully")
-    }
-    )
-    @DeleteMapping("/{user_id}")
-    public void deleteById(@PathVariable(required = false, value = "user_id") final UUID userId) {
-        service.deleteById(userId);
-    }
-
     @Operation(summary = "Change user's moderation status",
             description = "Change user's moderation status to  ON_REVIEW, APPROVED, DECLINED")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "user's moderation status is changed successfully"),
+            @ApiResponse(responseCode = "202", description = "user's moderation status is changed successfully"),
             @ApiResponse(responseCode = "404", description = "user is not found")
     }
     )
     @PatchMapping("/{user_id}/moderation")
-    public void updateModerationState(@PathVariable(required = false, value = "user_id") final UUID userId,
-                                      @RequestParam(value = "state") ModerationState moderationState) {
+    public ResponseEntity<Void> updateModerationState(@PathVariable(required = false, value = "user_id") final UUID userId,
+                                                      @RequestParam(value = "state") ModerationState moderationState) {
         service.updateModerationState(userId, moderationState);
+        return ResponseEntity.status(202).build();
     }
 
     @Operation(summary = "Change user's state status",
             description = "Change user's state status to ACTIVE, BANNED, SUSPENDED")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "user's state status is changed successfully"),
+            @ApiResponse(responseCode = "202", description = "user's state status is changed successfully"),
             @ApiResponse(responseCode = "404", description = "user is not found")
     }
     )
     @PatchMapping("/{user_id}/state")
-    public void updateUserState(@PathVariable(required = false, value = "user_id") final UUID userId,
-                                @RequestParam("state") UserState userState) {
+    public ResponseEntity<Void> updateUserState(@PathVariable(required = false, value = "user_id") final UUID userId,
+                                                @RequestParam("state") UserState userState) {
         service.updateUserState(userId, userState);
+        return ResponseEntity.status(202).build();
     }
 
     @Operation(summary = "Set user's role type",
             description = "Set user's role type to  USER or ADMIN")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "user's role type is set successfully"),
+            @ApiResponse(responseCode = "202", description = "user's role type is set successfully"),
             @ApiResponse(responseCode = "404", description = "user is not found")
     }
     )
     @PatchMapping("/{user_id}/role")
-    public void updateRoleType(@PathVariable(required = false, value = "user_id") final UUID userId,
-                               @RequestParam("type") RoleType roleType) {
+    public ResponseEntity<Void> updateRoleType(@PathVariable(required = false, value = "user_id") final UUID userId,
+                                               @RequestParam("type") RoleType roleType) {
         service.updateRoleType(userId, roleType);
+        return ResponseEntity.status(202).build();
+    }
+
+    @Operation(summary = "Delete a specific user",
+            description = "Remove a specific user by the user id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "a specific user removed successfully")
+    }
+    )
+    @DeleteMapping("/{user_id}")
+    public ResponseEntity<Void> deleteUserById(@PathVariable(required = false, value = "user_id") final UUID userId) {
+        service.deleteById(userId);
+        return ResponseEntity.status(204).build();
+    }
+
+    @Operation(summary = "Delete all the users available in the db",
+            description = "remove al the users")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "removed successfully")
+    }
+    )
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllUsers() {
+        service.deleteAll();
+        return ResponseEntity.status(204).build();
     }
 }

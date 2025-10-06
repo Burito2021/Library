@@ -1,0 +1,11 @@
+
+,--.   ,--.,--.
+|  |   `--'|  |-. ,--.--.,--,--.,--.--.,--. ,--.
+|  |   ,--.| .-. '|  .--' ,-.  ||  .--' \  '  /
+|  '--.|  || `-' ||  |  \ '-'  ||  |     \   '
+`-----'`--' `---' `--'   `--`--'`--'   .-'  /
+                                       `---'
+Application: ${spring.application.name}
+Version: ${info.app.version}
+Profile: ${spring.profiles.active}
+Time: ${banner.current.time}

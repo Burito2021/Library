@@ -1,4 +1,4 @@
-package net.library.model.dto;
+package net.library.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @Builder
-public class BookDto {
+public class AddBookResponse {
 
     private UUID id;
 

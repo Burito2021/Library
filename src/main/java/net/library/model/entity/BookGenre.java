@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -19,6 +20,8 @@ public class BookGenre {
     @Column(name = "book_id")
     private UUID book_id;
 
-    @Column(name = "genre_id")
-    private UUID genre_id;
+    @OneToOne
+    @JoinColumn(name = "genre_id",referencedColumnName = "id")
+    private Genre genre;
+
 }
