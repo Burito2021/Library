@@ -1,6 +1,6 @@
 services:
   postgres-script:
-    image: postgres:16
+    image: ghcr.io/burito2021/library_db-postgres:15
     container_name: postgres-script
     environment:
       POSTGRES_DB: library_db
@@ -10,9 +10,31 @@ services:
     ports:
       - "5432:5432"
     profiles: [ "postgres" ]
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U library_user -d library_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+#
+#    volumes:
+#      - ${CI_PROJECT_DIR}/src/main/resources/sql/schema.sql:/docker-entrypoint-initdb.d/02-schema.sql
 
-    volumes:
-      - ${CI_PROJECT_DIR}/src/main/resources/sql/schema.sql:/docker-entrypoint-initdb.d/02-schema.sql
+#  flyway-script:
+#    image: ghcr.io/burito2021/library_db:latest
+#    container_name: flyway-script
+#    command: [ "migrate" ]
+#    environment:
+#      - FLYWAY_URL=jdbc:postgresql://postgres-script:5432/library_db
+#      - FLYWAY_USER=library_user
+#      - FLYWAY_PASSWORD=library_password
+#      - FLYWAY_SCHEMAS=public
+#      - FLYWAY_LOCATIONS=filesystem:/flyway/sql
+#      - FLYWAY_BASELINE_ON_MIGRATE=true
+#      - FLYWAY_BASELINE_VERSION=101420251200
+#      - FLYWAY_BASELINE_DESCRIPTION=Initial Schema
+#    depends_on:
+#      postgres-script:
+#        condition: service_healthy
 
   library-script:
     container_name: library-script
