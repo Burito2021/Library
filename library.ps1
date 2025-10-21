@@ -1,4 +1,42 @@
 #Function sections ----------START--------------
+function Remove-DockerImages {
+    param (
+        [string[]]$ImageNames,
+        [switch]$Force,
+        [switch]$Quiet
+    )
+
+    if (-not $ImageNames -or $ImageNames.Count -eq 0) {
+        Write-Host "No image names provided" -ForegroundColor Red
+        return
+    }
+
+    foreach ($imageName in $ImageNames) {
+        try {
+            Write-Host "Removing image: $imageName" -ForegroundColor Yellow
+
+            if ($Force -and $Quiet) {
+                docker rmi -f -q $imageName 2>$null
+            } elseif ($Force) {
+                docker rmi -f $imageName
+            } elseif ($Quiet) {
+                docker rmi -q $imageName 2>$null
+            } else {
+                docker rmi $imageName
+            }
+
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "Successfully removed: $imageName" -ForegroundColor Green
+            } else {
+                Write-Host "Failed to remove: $imageName" -ForegroundColor Gray
+            }
+        }
+        catch {
+            Write-Host "Error removing $imageName`: $_" -ForegroundColor Gray
+        }
+    }
+}
+
 function Find-Content
 {
     param(
@@ -180,7 +218,6 @@ function Test-OracleDbHealth {
                 return $true
             } else {
                 Write-Host "Oracle DB is not ready yet (status: $healthStatus). Retry $i/$maxRetries" -ForegroundColor Yellow
-                # Show the last health check log for more details
                 if ($i % 5 -eq 0) {  # Only show logs every 5 retries to avoid flooding the console
                     $healthLog = docker inspect --format='{{json .State.Health.Log}}' $containerName | ConvertFrom-Json
                     if ($healthLog.Length -gt 0) {
@@ -291,7 +328,6 @@ function Stop-Containers
         Write-Host "Stopping $service..." -ForegroundColor Yellow
         #        Write-Host "docker-compose -f `"$composeFile`" $profileArg stop $service" -ForegroundColor Yellow
 
-        # Stop the service
         Invoke-Expression "docker-compose -f `"$composeFile`" $profileArg stop $service"
 
         if ($LASTEXITCODE -ne 0)
@@ -324,15 +360,14 @@ function Get-FileContent {
     }
     return $null
 }
-#------------------------------------------------------------
 #Get the name of git branch function
 function Get-GitBranch {
-    param([string]$Path = ".")
+    param([string]$path = ".")
 
     try {
         #        Write-Host "Getting git branch for path: $Path" -ForegroundColor Yellow
-        $resolvedPath = if (Test-Path $Path) {
-            (Get-Item $Path).FullName
+        $resolvedPath = if (Test-Path $path) {
+            (Get-Item $path).FullName
         } else {
             return $null
         }
@@ -372,8 +407,8 @@ function Get-GitBranch {
 }
 # Function to get project path
 function Get-ProjectPath {
-    param([string]$PathFileName = "last_nodered_path.txt")
-    $pathFile = Join-Path -Path $PSScriptRoot -ChildPath $PathFileName
+    param([string]$pathFileName = "last_nodered_path.txt")
+    $pathFile = Join-Path -Path $PSScriptRoot -ChildPath $pathFileName
     $savedPath = $null
 
     if (Test-Path $pathFile) {
@@ -833,7 +868,6 @@ function Get-Containers
             @{ Name = "library"; Profile = "library"; Service = "library-script" },
             @{ Name = "prometheus"; Profile = "prometheus"; Service = "prometheus-script" },
             @{ Name = "grafana"; Profile = "grafana"; Service = "grafana-script" }
-
         )
     }
 
@@ -853,6 +887,8 @@ function Get-Containers
     {
         $profilesToAdd += "postgres"
         $servicesToAdd += "postgres-script"
+#        $profilesToAdd += "flyway"
+#        $servicesToAdd += "flyway-script"
     }
 
     if ($selectedProfiles -contains "library" -and $selectedProfiles -notcontains "prometheus")
@@ -873,6 +909,8 @@ function Get-Containers
         $servicesToAdd += "prometheus-script"
         $profilesToAdd += "postgres"
         $servicesToAdd += "postgres-script"
+#        $profilesToAdd += "flyway"
+#        $servicesToAdd += "flyway-script"
         $profilesToAdd += "library"
         $servicesToAdd += "library-script"
     }
@@ -883,15 +921,28 @@ function Get-Containers
         $servicesToAdd += "grafana-script"
         $profilesToAdd += "postgres"
         $servicesToAdd += "postgres-script"
+#        $profilesToAdd += "flyway"
+#        $servicesToAdd += "flyway-script"
         $profilesToAdd += "library"
         $servicesToAdd += "library-script"
     }
+
+#    if ($selectedProfiles -contains "postgres" -and $selectedProfiles -notcontains "flyway")
+#    {
+#        $profilesToAdd += "flyway"
+#        $servicesToAdd += "flyway-script"
+#    }
 
     if ($profilesToAdd.Count -gt 0)
     {
         $selectedContainers.RequiredProfiles = $profilesToAdd + $selectedContainers.RequiredProfiles
         $selectedContainers.ServiceOrder = $servicesToAdd + $selectedContainers.ServiceOrder
     }
+
+#    if ($selectedProfiles -contains "postgres" -and $selectedProfiles -notcontains "flyway")
+#    {
+#        Remove-DockerImages -ImageNames @("ghcr.io/burito2021/library_db:latest", "ghcr.io/burito2021/library_db-postgres:15")
+#    }
 
     $requiredProfiles = $selectedContainers.RequiredProfiles
     $profilesArg = ($requiredProfiles | ForEach-Object { "--profile $_" }) -join " "
@@ -1082,6 +1133,12 @@ while ($runAgain)
                 $skipMenus = $true
                 continue
             }
+
+            if ($SELECTED_CONTAINERS.SelectedProfiles -contains "postgres" -and $selectedProfiles -notcontains "flyway")
+            {
+                Remove-DockerImages -ImageNames @("ghcr.io/burito2021/library_db-postgres:15")
+            }
+
             $PROFILES = $SELECTED_CONTAINERS.ProfilesArg
             $REQUIRED_PROFILES = $SELECTED_CONTAINERS.RequiredProfiles
             $SERVICE_ORDER = $SELECTED_CONTAINERS.ServiceOrder
