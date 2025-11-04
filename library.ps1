@@ -784,26 +784,6 @@ function New-DockerImage
     try
     {
         Set-Location $projectPath
-        $gradlewPath = Join-Path $projectPath "gradlew.bat"
-
-        if (-not (Test-Path $gradlewPath))
-        {
-            try
-            {
-                Write-Host "Gradle wrapper not found. Generating wrapper..." -ForegroundColor Yellow
-
-                docker run --rm -v "${PWD}:/workspace" -w /workspace gradle:8.14.3 gradle wrapper --gradle-version=8.14.3
-                if ($LASTEXITCODE -ne 0)
-                {
-                    throw "Failed to generate Gradle wrapper"
-                }
-                Write-Host "Gradle wrapper generated successfully" -ForegroundColor Green
-            }
-            catch
-            {
-                Write-Host "Error generating Gradle wrapper: $_" -ForegroundColor Red
-            }
-        }
 
         if ($imageName -eq "library-custom" )
         {
@@ -812,7 +792,8 @@ function New-DockerImage
             docker rmi library-custom:latest 2> $null
         }
 
-        .\gradlew clean bootJar
+        docker run --rm -v "${PWD}:/workspace" -w /workspace gradle:9.0.0-jdk24 gradle clean bootJar --no-daemon
+
 
         if ($LASTEXITCODE -ne 0)
         {
@@ -828,7 +809,7 @@ function New-DockerImage
         Write-Host "Creating Dockerfile..." -ForegroundColor Gray
         Write-Host ""
         @"
-            FROM openjdk:21-jdk-slim
+            FROM openjdk:24-jdk-slim
             WORKDIR /app
             COPY $jarPath/*.jar app.jar
 
