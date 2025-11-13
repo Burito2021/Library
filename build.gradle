@@ -13,10 +13,6 @@ java {
     }
 }
 
-//bootJar {
-//    mainClass = 'net.library.LibraryApplication'
-//}
-
 sourceSets {
     test {
         java {

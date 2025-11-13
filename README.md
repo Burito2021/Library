@@ -15,20 +15,6 @@ This is a RESTful API application built to manage user registration, book catalo
 - **Profile Viewing**: Retrieve user profile data.
 - **Profile Updates**: Update non-sensitive information (e.g., address, phone).
 
----
-## 🧰 Requirements
-
-This project requires the following software:
-
-| Tool              | Version |
-|-------------------|---------|
-| Java              | 21      |
-| Gradle            | 8.8     |
-| PostgreSQL        | Latest  |
-| Docker            | 27.2.0+ |
-
----
-
 ## ⚙️ Installation & Running
 
 1. **Start PostgreSQL**:
@@ -68,4 +54,4 @@ The key additions include:
 git submodule add https://github.com/yourusername/library_db.git db-migrations
 git submodule add https://github.com/Burito2021/library_db.git db-migrations
 
-#How to reach swagger 
+# 1.Add description of features by items in general
