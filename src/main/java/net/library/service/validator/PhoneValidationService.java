@@ -11,7 +11,8 @@ import java.util.regex.Pattern;
 import static java.lang.String.format;
 import static net.library.util.Utils.deleteSpacesHyphens;
 
-public class UserValidationService implements ConstraintValidator<PhoneNumberValidator, String> {
+public class PhoneValidationService implements ConstraintValidator<PhoneNumberValidator, String>
+{
     protected static final Pattern PATTERN1 = Pattern.compile("380\\d{9}");
     protected static final Pattern PATTERN2 = Pattern.compile("380\\d{8}");
     protected static final Pattern PATTERN3 = Pattern.compile("380\\d{7}");

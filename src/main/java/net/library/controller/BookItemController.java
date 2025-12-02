@@ -30,7 +30,7 @@ import static net.library.util.HttpUtil.ITEMS;
 @RequestMapping(ITEMS)
 public class BookItemController {
     private final BookService service;
-    // tidy the names  and order methods
+
     @Operation(summary = "Add a book item(copy) to database", description = "saves a book item(copy) to database")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully created"),

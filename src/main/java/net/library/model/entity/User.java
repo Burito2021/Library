@@ -20,7 +20,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id") // Lowercase, unquoted, ensures case insensitivity
+    @Column(name = "id")
     private UUID id;
 
     @Column(name = "username")
@@ -31,6 +31,9 @@ public class User {
 
     @Column(name = "surname")
     private String surname;
+
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "email")
     private String email;

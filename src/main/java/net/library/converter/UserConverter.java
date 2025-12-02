@@ -1,5 +1,6 @@
 package net.library.converter;
 
+import net.library.config.security.SecurityConfig;
 import net.library.model.entity.User;
 import net.library.model.request.UserRequest;
 import net.library.util.Utils;
@@ -15,6 +16,7 @@ public class UserConverter {
         var refinedMsisdn = Utils.deleteSpacesHyphens(userRequest.getPhoneNumber());
         user.setPhoneNumber(refinedMsisdn);
         user.setAddress(userRequest.getAddress());
+        user.setPassword(new SecurityConfig().passwordEncoder().encode(userRequest.getPassword()));
 
         return user;
     }

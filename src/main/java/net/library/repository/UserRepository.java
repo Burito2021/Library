@@ -10,9 +10,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificationExecutor<User> {
+
+    Optional<User> findByUsername(String username);
 
     @Modifying
     @Query("DELETE FROM User u WHERE u.id = :userId")

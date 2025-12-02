@@ -6,11 +6,11 @@ import jakarta.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = PhoneValidationService.class)
+@Constraint(validatedBy = PasswordValidationService.class)
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PhoneNumberValidator {
-    String message() default "WRONG MSISDN LENGTH OR FORMAT";
+public @interface PasswordValidator {
+    String message() default "INVALID PASSWORD FORMAT";
 
     Class<?>[] groups() default {};
 

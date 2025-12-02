@@ -5,43 +5,21 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import net.library.service.validator.PasswordValidator;
 import net.library.service.validator.PhoneNumberValidator;
 
 @Data
 @AllArgsConstructor
-public class UserRequest {
-
-    @NotNull
-    @NotEmpty
-    @NotBlank
+@Builder
+public class UpdateUserRequest {
     private String username;
-
-    @NotNull
-    @NotEmpty
-    @NotBlank
     private String name;
-
-    @NotNull
-    @NotEmpty
-    @NotBlank
     private String surname;
-
-    @NotNull
-    @NotEmpty
-    @NotBlank
-    @Email
     private String email;
-
-    @PhoneNumberValidator
     private String phoneNumber;
-
     private String address;
-
-//    @NotNull
-//    @NotEmpty
-//    @NotBlank
     @PasswordValidator
     private String password;
 }
