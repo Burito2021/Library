@@ -1,5 +1,7 @@
 package net.library.util;
 
+import net.library.exception.FilterLengthException;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -34,6 +36,20 @@ public class Utils {
         return LocalDateTime.parse(value, dateTimeFormatter);
     }
 
+    public static boolean isLengthValid(String value, int min, int max) {
+        var length = value.length();
+        return length >= min && length <= max;
+    }
+
+    public static void isLength(String value, int min) {
+        if (value == null || value.isEmpty() || value.isBlank()) {
+            return;
+        }
+        var length = value.length();
+        if (length < min) {
+            throw new FilterLengthException("filer length is less than 3 letters");
+        }
+    }
     public static LocalDateTime currentDate() {
         return LocalDateTime.now();
     }

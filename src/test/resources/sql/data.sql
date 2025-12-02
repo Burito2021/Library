@@ -1,9 +1,15 @@
-INSERT INTO USERS (USERNAME, NAME, SURNAME, EMAIL, PHONE_NUMBER, ADDRESS)
-VALUES ('user1', 'John', 'Doe', 'john.doe1@example.com', '1234567890', '123 Main St, City, Country'),
-       ('user2', 'Jane', 'Smith', 'jane.smith2@example.com', '0987654321', '456 Oak St, City, Country'),
-       ('user3', 'Robert', 'Brown', 'robert.brown3@example.com', '5432167890', '789 Pine St, City, Country'),
-       ('user4', 'Emily', 'Davis', 'emily.davis4@example.com', '6789054321', '321 Maple St, City, Country'),
-       ('user5', 'Michael', 'Johnson', 'michael.johnson5@example.com', '5678901234', '654 Birch St, City, Country');
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user_3', 'Name_227', 'Surname_285', 'user_3@example.com', '555151342', 'Street 151, City 31, State 39',
+        'APPROVED', 'ACTIVE', 'USER', '$2a$10$c8tdyhhRHDCf71vVARQZ3eMu2Pw0b46T.i3MJIwelOduaDXZmlXgi');
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user_1', 'Name_940', 'Surname_934', 'user_1@example.com', '555946646', 'Street 688, City 90, State 49',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user_2', 'Name_103', 'Surname_376', 'user_2@example.com', '555493175', 'Street 561, City 82, State 27',
+        'APPROVED', 'ACTIVE', 'USER', '$2a$10$c8tdyhhRHDCf71vVARQZ3eMu2Pw0b46T.i3MJIwelOduaDXZmlXgi');
 
 INSERT INTO BOOKS (TITLE, AUTHOR, DESCRIPTION, PUBLISHER, EDITION, PUBLICATION_YEAR)
 VALUES ('The Great Gatsby', 'F. Scott Fitzgerald', 'A classic novel set in the Jazz Age', 'Scribner', '1st', 1925),

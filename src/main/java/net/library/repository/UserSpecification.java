@@ -1,6 +1,8 @@
 package net.library.repository;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import net.library.model.entity.User;
 import net.library.repository.enums.ModerationState;
 import net.library.repository.enums.RoleType;
@@ -22,27 +24,15 @@ public class UserSpecification {
             }
 
             if (moderationState != null) {
-                predicate = criteriaBuilder.and(predicate,
-                        criteriaBuilder.equal(
-                                criteriaBuilder.function("text", String.class, root.get("moderationState")),
-                                moderationState.name()
-                        ));
+                predicate = filterByState(criteriaBuilder, predicate, root, roleType, "moderationState");
             }
 
             if (userState != null) {
-                predicate = criteriaBuilder.and(predicate,
-                        criteriaBuilder.equal(
-                                criteriaBuilder.function("text", String.class, root.get("userState")),
-                                userState.name()
-                        ));
+                predicate = filterByState(criteriaBuilder, predicate, root, roleType, "userState");
             }
 
             if (roleType != null) {
-                predicate = criteriaBuilder.and(predicate,
-                        criteriaBuilder.equal(
-                                criteriaBuilder.function("text", String.class, root.get("roleType")),
-                                roleType.name()
-                        ));
+                predicate = filterByState(criteriaBuilder, predicate, root, roleType, "roleType");
             }
 
             if (startDate != null) {
@@ -54,5 +44,13 @@ public class UserSpecification {
 
             return predicate;
         };
+    }
+
+    private static Predicate filterByState(CriteriaBuilder criteriaBuilder, Predicate predicate, Root<User> root, RoleType roleType, String state) {
+        return criteriaBuilder.and(predicate,
+                criteriaBuilder.equal(
+                        criteriaBuilder.function("text", String.class, root.get(state)),
+                        roleType.name()
+                ));
     }
 }

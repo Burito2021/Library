@@ -29,7 +29,7 @@ public class BookResponse {
     @JsonProperty("edition")
     private String edition;
 
-    @JsonProperty("publicationyYear")
+    @JsonProperty("publicationYear")
     private Integer publicationYear;
 
     @JsonProperty("updatedAt")

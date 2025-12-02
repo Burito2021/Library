@@ -1,404 +1,504 @@
 INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_1', 'Name_940', 'Surname_934', 'user_1@example.com', '555946646', 'Street 688, City 90, State 49',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_2', 'Name_103', 'Surname_376', 'user_2@example.com', '555493175', 'Street 561, City 82, State 27',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_3', 'Name_227', 'Surname_285', 'user_3@example.com', '555151342', 'Street 151, City 31, State 39',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_4', 'Name_295', 'Surname_564', 'user_4@example.com', '555680903', 'Street 107, City 16, State 28',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_5', 'Name_585', 'Surname_417', 'user_5@example.com', '555892335', 'Street 783, City 12, State 25',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_6', 'Name_718', 'Surname_469', 'user_6@example.com', '555618783', 'Street 337, City 6, State 6',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_7', 'Name_290', 'Surname_562', 'user_7@example.com', '555040381', 'Street 230, City 13, State 14',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_8', 'Name_947', 'Surname_428', 'user_8@example.com', '555929456', 'Street 879, City 27, State 11',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_9', 'Name_504', 'Surname_511', 'user_9@example.com', '555508029', 'Street 507, City 88, State 5',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_10', 'Name_149', 'Surname_35', 'user_10@example.com', '555801480', 'Street 887, City 93, State 27',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_11', 'Name_109', 'Surname_639', 'user_11@example.com', '555992205', 'Street 165, City 64, State 21',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_12', 'Name_58', 'Surname_752', 'user_12@example.com', '555145696', 'Street 712, City 44, State 6',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_13', 'Name_727', 'Surname_15', 'user_13@example.com', '555976989', 'Street 70, City 53, State 12',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_14', 'Name_334', 'Surname_352', 'user_14@example.com', '555183391', 'Street 917, City 42, State 12',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_15', 'Name_650', 'Surname_465', 'user_15@example.com', '555182154', 'Street 966, City 23, State 43',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_16', 'Name_260', 'Surname_726', 'user_16@example.com', '555291009', 'Street 687, City 19, State 11',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_17', 'Name_762', 'Surname_218', 'user_17@example.com', '555765887', 'Street 173, City 38, State 16',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_18', 'Name_26', 'Surname_868', 'user_18@example.com', '555438028', 'Street 258, City 11, State 22',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_19', 'Name_518', 'Surname_545', 'user_19@example.com', '555661792', 'Street 216, City 85, State 39',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_20', 'Name_50', 'Surname_65', 'user_20@example.com', '555973941', 'Street 733, City 7, State 45',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_21', 'Name_826', 'Surname_539', 'user_21@example.com', '555060446', 'Street 801, City 63, State 13',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_22', 'Name_832', 'Surname_418', 'user_22@example.com', '555371397', 'Street 106, City 88, State 33',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_23', 'Name_6', 'Surname_990', 'user_23@example.com', '555595982', 'Street 566, City 51, State 8',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_24', 'Name_508', 'Surname_577', 'user_24@example.com', '555826969', 'Street 466, City 84, State 7',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_25', 'Name_495', 'Surname_31', 'user_25@example.com', '555851249', 'Street 259, City 62, State 17',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_26', 'Name_466', 'Surname_13', 'user_26@example.com', '555382568', 'Street 903, City 36, State 24',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_27', 'Name_429', 'Surname_240', 'user_27@example.com', '555529007', 'Street 928, City 36, State 7',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_28', 'Name_537', 'Surname_987', 'user_28@example.com', '555652910', 'Street 284, City 44, State 49',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_29', 'Name_664', 'Surname_351', 'user_29@example.com', '555749567', 'Street 477, City 81, State 26',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_30', 'Name_320', 'Surname_903', 'user_30@example.com', '555906633', 'Street 126, City 24, State 48',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_31', 'Name_780', 'Surname_681', 'user_31@example.com', '555267686', 'Street 222, City 50, State 15',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_32', 'Name_105', 'Surname_997', 'user_32@example.com', '555976970', 'Street 961, City 36, State 17',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_33', 'Name_338', 'Surname_158', 'user_33@example.com', '555638415', 'Street 401, City 20, State 20',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_34', 'Name_998', 'Surname_520', 'user_34@example.com', '555086951', 'Street 719, City 67, State 22',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_35', 'Name_635', 'Surname_576', 'user_35@example.com', '555182377', 'Street 193, City 56, State 8',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_36', 'Name_2', 'Surname_622', 'user_36@example.com', '555686256', 'Street 565, City 32, State 34',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_37', 'Name_946', 'Surname_875', 'user_37@example.com', '555697953', 'Street 866, City 99, State 31',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_38', 'Name_852', 'Surname_539', 'user_38@example.com', '555423283', 'Street 88, City 35, State 8',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_39', 'Name_343', 'Surname_849', 'user_39@example.com', '555324116', 'Street 240, City 85, State 21',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_40', 'Name_384', 'Surname_854', 'user_40@example.com', '555758561', 'Street 528, City 83, State 42',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_41', 'Name_810', 'Surname_698', 'user_41@example.com', '555174392', 'Street 927, City 94, State 31',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_42', 'Name_804', 'Surname_251', 'user_42@example.com', '555620066', 'Street 608, City 20, State 11',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_43', 'Name_648', 'Surname_664', 'user_43@example.com', '555083776', 'Street 761, City 21, State 9',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_44', 'Name_74', 'Surname_229', 'user_44@example.com', '555141862', 'Street 72, City 89, State 22',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_45', 'Name_194', 'Surname_66', 'user_45@example.com', '555835972', 'Street 157, City 6, State 10',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_46', 'Name_88', 'Surname_729', 'user_46@example.com', '555660760', 'Street 459, City 54, State 2',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_47', 'Name_271', 'Surname_478', 'user_47@example.com', '555141440', 'Street 308, City 61, State 3',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_48', 'Name_389', 'Surname_662', 'user_48@example.com', '555385823', 'Street 368, City 43, State 22',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_49', 'Name_413', 'Surname_970', 'user_49@example.com', '555252087', 'Street 147, City 47, State 36',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_50', 'Name_47', 'Surname_821', 'user_50@example.com', '555038321', 'Street 412, City 44, State 26',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_51', 'Name_184', 'Surname_180', 'user_51@example.com', '555394234', 'Street 736, City 33, State 26',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_52', 'Name_85', 'Surname_45', 'user_52@example.com', '555585119', 'Street 671, City 76, State 27',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_53', 'Name_947', 'Surname_644', 'user_53@example.com', '555488553', 'Street 294, City 45, State 38',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_54', 'Name_728', 'Surname_707', 'user_54@example.com', '555372564', 'Street 84, City 90, State 23',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_55', 'Name_450', 'Surname_941', 'user_55@example.com', '555593935', 'Street 143, City 2, State 22',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_56', 'Name_883', 'Surname_284', 'user_56@example.com', '555852647', 'Street 452, City 61, State 28',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_57', 'Name_571', 'Surname_796', 'user_57@example.com', '555958782', 'Street 533, City 6, State 40',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_58', 'Name_829', 'Surname_641', 'user_58@example.com', '555395922', 'Street 383, City 7, State 31',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_59', 'Name_874', 'Surname_283', 'user_59@example.com', '555650902', 'Street 473, City 74, State 31',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_60', 'Name_3', 'Surname_60', 'user_60@example.com', '555638528', 'Street 855, City 28, State 49',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_61', 'Name_807', 'Surname_982', 'user_61@example.com', '555236590', 'Street 832, City 44, State 48',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_62', 'Name_73', 'Surname_94', 'user_62@example.com', '555057333', 'Street 159, City 26, State 32',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_63', 'Name_577', 'Surname_290', 'user_63@example.com', '555675286', 'Street 97, City 99, State 19',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_64', 'Name_799', 'Surname_743', 'user_64@example.com', '555414076', 'Street 370, City 45, State 28',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_65', 'Name_630', 'Surname_228', 'user_65@example.com', '555534792', 'Street 141, City 58, State 19',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_66', 'Name_252', 'Surname_612', 'user_66@example.com', '555269110', 'Street 221, City 87, State 20',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_67', 'Name_516', 'Surname_430', 'user_67@example.com', '555965722', 'Street 197, City 98, State 2',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_68', 'Name_240', 'Surname_239', 'user_68@example.com', '555654248', 'Street 178, City 22, State 48',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_69', 'Name_505', 'Surname_324', 'user_69@example.com', '555584219', 'Street 65, City 22, State 27',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_70', 'Name_745', 'Surname_59', 'user_70@example.com', '555387064', 'Street 910, City 13, State 5',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_71', 'Name_634', 'Surname_389', 'user_71@example.com', '555408506', 'Street 860, City 64, State 30',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_72', 'Name_755', 'Surname_707', 'user_72@example.com', '555963192', 'Street 173, City 17, State 47',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_73', 'Name_838', 'Surname_372', 'user_73@example.com', '555287759', 'Street 68, City 74, State 17',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_74', 'Name_625', 'Surname_77', 'user_74@example.com', '555887586', 'Street 957, City 28, State 2',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_75', 'Name_279', 'Surname_949', 'user_75@example.com', '555217154', 'Street 386, City 18, State 16',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_76', 'Name_304', 'Surname_320', 'user_76@example.com', '555380584', 'Street 940, City 96, State 46',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_77', 'Name_170', 'Surname_720', 'user_77@example.com', '555913208', 'Street 211, City 52, State 42',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_78', 'Name_391', 'Surname_698', 'user_78@example.com', '555465247', 'Street 853, City 98, State 39',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_79', 'Name_179', 'Surname_669', 'user_79@example.com', '555770429', 'Street 150, City 25, State 14',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_80', 'Name_764', 'Surname_975', 'user_80@example.com', '555125425', 'Street 984, City 27, State 49',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_81', 'Name_173', 'Surname_683', 'user_81@example.com', '555463797', 'Street 350, City 56, State 10',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_82', 'Name_973', 'Surname_113', 'user_82@example.com', '555765857', 'Street 339, City 52, State 38',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_83', 'Name_780', 'Surname_366', 'user_83@example.com', '555780338', 'Street 692, City 60, State 39',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_84', 'Name_290', 'Surname_762', 'user_84@example.com', '555942430', 'Street 658, City 16, State 23',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_85', 'Name_756', 'Surname_222', 'user_85@example.com', '555874338', 'Street 376, City 94, State 28',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_86', 'Name_477', 'Surname_468', 'user_86@example.com', '555415642', 'Street 192, City 38, State 12',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_87', 'Name_588', 'Surname_881', 'user_87@example.com', '555337014', 'Street 549, City 0, State 34',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_88', 'Name_533', 'Surname_599', 'user_88@example.com', '555107700', 'Street 714, City 95, State 1',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_89', 'Name_108', 'Surname_650', 'user_89@example.com', '555595148', 'Street 806, City 31, State 2',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_90', 'Name_373', 'Surname_162', 'user_90@example.com', '555279350', 'Street 89, City 81, State 17',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_91', 'Name_239', 'Surname_280', 'user_91@example.com', '555141024', 'Street 989, City 4, State 34',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_92', 'Name_500', 'Surname_395', 'user_92@example.com', '555260425', 'Street 248, City 90, State 2',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_93', 'Name_352', 'Surname_975', 'user_93@example.com', '555333838', 'Street 516, City 17, State 24',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_94', 'Name_453', 'Surname_307', 'user_94@example.com', '555228018', 'Street 650, City 21, State 17',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_95', 'Name_191', 'Surname_682', 'user_95@example.com', '555959067', 'Street 701, City 49, State 25',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_96', 'Name_292', 'Surname_74', 'user_96@example.com', '555079986', 'Street 423, City 0, State 15',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_97', 'Name_74', 'Surname_298', 'user_97@example.com', '555678763', 'Street 981, City 95, State 23',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_98', 'Name_21', 'Surname_747', 'user_98@example.com', '555005348', 'Street 331, City 37, State 12',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_99', 'Name_870', 'Surname_644', 'user_99@example.com', '555400681', 'Street 636, City 84, State 13',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_100', 'Name_832', 'Surname_362', 'user_100@example.com', '555399617', 'Street 401, City 18, State 13',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
-INSERT INTO users
-(username, "name", surname, email, phone_number, address, updated_at, created_at, deleted_at)
-VALUES ('user_101', 'Name_185', 'Surname_736', 'user_101@example.com', '555002109', 'Street 795, City 7, State 37',
-        '2024-10-20 21:07:54.428307+03', '2024-10-20 21:07:54.428307+03', NULL);
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user1', 'Name_1', 'Surname_1', 'user1@example.com', '555002000', 'Street 688, City 90, State 49',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user2', 'Name_2', 'Surname_2', 'user2@example.com', '555002001', 'Street 689, City 91, State 50',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user3', 'Name_3', 'Surname_3', 'user3@example.com', '555002002', 'Street 690, City 92, State 51',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user4', 'Name_4', 'Surname_4', 'user4@example.com', '555002003', 'Street 691, City 93, State 52',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user5', 'Name_5', 'Surname_5', 'user5@example.com', '555002004', 'Street 692, City 94, State 53',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user6', 'Name_6', 'Surname_6', 'user6@example.com', '555002005', 'Street 693, City 95, State 54',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user7', 'Name_7', 'Surname_7', 'user7@example.com', '555002006', 'Street 694, City 96, State 55',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user8', 'Name_8', 'Surname_8', 'user8@example.com', '555002007', 'Street 695, City 97, State 56',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user9', 'Name_9', 'Surname_9', 'user9@example.com', '555002008', 'Street 696, City 98, State 57',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user10', 'Name_10', 'Surname_10', 'user10@example.com', '555002009', 'Street 697, City 99, State 58',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user11', 'Name_11', 'Surname_11', 'user11@example.com', '555002010', 'Street 698, City 100, State 59',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user12', 'Name_12', 'Surname_12', 'user12@example.com', '555002011', 'Street 699, City 101, State 60',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user13', 'Name_13', 'Surname_13', 'user13@example.com', '555002012', 'Street 700, City 102, State 61',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user14', 'Name_14', 'Surname_14', 'user14@example.com', '555002013', 'Street 701, City 103, State 62',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user15', 'Name_15', 'Surname_15', 'user15@example.com', '555002014', 'Street 702, City 104, State 63',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user16', 'Name_16', 'Surname_16', 'user16@example.com', '555002015', 'Street 703, City 105, State 64',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user17', 'Name_17', 'Surname_17', 'user17@example.com', '555002016', 'Street 704, City 106, State 65',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user18', 'Name_18', 'Surname_18', 'user18@example.com', '555002017', 'Street 705, City 107, State 66',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user19', 'Name_19', 'Surname_19', 'user19@example.com', '555002018', 'Street 706, City 108, State 67',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user20', 'Name_20', 'Surname_20', 'user20@example.com', '555002019', 'Street 707, City 109, State 68',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user21', 'Name_21', 'Surname_21', 'user21@example.com', '555002020', 'Street 708, City 110, State 69',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user22', 'Name_22', 'Surname_22', 'user22@example.com', '555002021', 'Street 709, City 111, State 70',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user23', 'Name_23', 'Surname_23', 'user23@example.com', '555002022', 'Street 710, City 112, State 71',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user24', 'Name_24', 'Surname_24', 'user24@example.com', '555002023', 'Street 711, City 113, State 72',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user25', 'Name_25', 'Surname_25', 'user25@example.com', '555002024', 'Street 712, City 114, State 73',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user26', 'Name_26', 'Surname_26', 'user26@example.com', '555002025', 'Street 713, City 115, State 74',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user27', 'Name_27', 'Surname_27', 'user27@example.com', '555002026', 'Street 714, City 116, State 75',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user28', 'Name_28', 'Surname_28', 'user28@example.com', '555002027', 'Street 715, City 117, State 76',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user29', 'Name_29', 'Surname_29', 'user29@example.com', '555002028', 'Street 716, City 118, State 77',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user30', 'Name_30', 'Surname_30', 'user30@example.com', '555002029', 'Street 717, City 119, State 78',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user31', 'Name_31', 'Surname_31', 'user31@example.com', '555002030', 'Street 718, City 120, State 79',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user32', 'Name_32', 'Surname_32', 'user32@example.com', '555002031', 'Street 719, City 121, State 80',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user33', 'Name_33', 'Surname_33', 'user33@example.com', '555002032', 'Street 720, City 122, State 81',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user34', 'Name_34', 'Surname_34', 'user34@example.com', '555002033', 'Street 721, City 123, State 82',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user35', 'Name_35', 'Surname_35', 'user35@example.com', '555002034', 'Street 722, City 124, State 83',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user36', 'Name_36', 'Surname_36', 'user36@example.com', '555002035', 'Street 723, City 125, State 84',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user37', 'Name_37', 'Surname_37', 'user37@example.com', '555002036', 'Street 724, City 126, State 85',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user38', 'Name_38', 'Surname_38', 'user38@example.com', '555002037', 'Street 725, City 127, State 86',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user39', 'Name_39', 'Surname_39', 'user39@example.com', '555002038', 'Street 726, City 128, State 87',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user40', 'Name_40', 'Surname_40', 'user40@example.com', '555002039', 'Street 727, City 129, State 88',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user41', 'Name_41', 'Surname_41', 'user41@example.com', '555002040', 'Street 728, City 130, State 89',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user42', 'Name_42', 'Surname_42', 'user42@example.com', '555002041', 'Street 729, City 131, State 90',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user43', 'Name_43', 'Surname_43', 'user43@example.com', '555002042', 'Street 730, City 132, State 91',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user44', 'Name_44', 'Surname_44', 'user44@example.com', '555002043', 'Street 731, City 133, State 92',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user45', 'Name_45', 'Surname_45', 'user45@example.com', '555002044', 'Street 732, City 134, State 93',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user46', 'Name_46', 'Surname_46', 'user46@example.com', '555002045', 'Street 733, City 135, State 94',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user47', 'Name_47', 'Surname_47', 'user47@example.com', '555002046', 'Street 734, City 136, State 95',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user48', 'Name_48', 'Surname_48', 'user48@example.com', '555002047', 'Street 735, City 137, State 96',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user49', 'Name_49', 'Surname_49', 'user49@example.com', '555002048', 'Street 736, City 138, State 97',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user50', 'Name_50', 'Surname_50', 'user50@example.com', '555002049', 'Street 737, City 139, State 98',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user51', 'Name_51', 'Surname_51', 'user51@example.com', '555002050', 'Street 738, City 140, State 99',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user52', 'Name_52', 'Surname_52', 'user52@example.com', '555002051', 'Street 739, City 141, State 100',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user53', 'Name_53', 'Surname_53', 'user53@example.com', '555002052', 'Street 740, City 142, State 1',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user54', 'Name_54', 'Surname_54', 'user54@example.com', '555002053', 'Street 741, City 143, State 2',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user55', 'Name_55', 'Surname_55', 'user55@example.com', '555002054', 'Street 742, City 144, State 3',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user56', 'Name_56', 'Surname_56', 'user56@example.com', '555002055', 'Street 743, City 145, State 4',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user57', 'Name_57', 'Surname_57', 'user57@example.com', '555002056', 'Street 744, City 146, State 5',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user58', 'Name_58', 'Surname_58', 'user58@example.com', '555002057', 'Street 745, City 147, State 6',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user59', 'Name_59', 'Surname_59', 'user59@example.com', '555002058', 'Street 746, City 148, State 7',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user60', 'Name_60', 'Surname_60', 'user60@example.com', '555002059', 'Street 747, City 149, State 8',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user61', 'Name_61', 'Surname_61', 'user61@example.com', '555002060', 'Street 748, City 150, State 9',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user62', 'Name_62', 'Surname_62', 'user62@example.com', '555002061', 'Street 749, City 151, State 10',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user63', 'Name_63', 'Surname_63', 'user63@example.com', '555002062', 'Street 750, City 152, State 11',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user64', 'Name_64', 'Surname_64', 'user64@example.com', '555002063', 'Street 751, City 153, State 12',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user65', 'Name_65', 'Surname_65', 'user65@example.com', '555002064', 'Street 752, City 154, State 13',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user66', 'Name_66', 'Surname_66', 'user66@example.com', '555002065', 'Street 753, City 155, State 14',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user67', 'Name_67', 'Surname_67', 'user67@example.com', '555002066', 'Street 754, City 156, State 15',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user68', 'Name_68', 'Surname_68', 'user68@example.com', '555002067', 'Street 755, City 157, State 16',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user69', 'Name_69', 'Surname_69', 'user69@example.com', '555002068', 'Street 756, City 158, State 17',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user70', 'Name_70', 'Surname_70', 'user70@example.com', '555002069', 'Street 757, City 159, State 18',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user71', 'Name_71', 'Surname_71', 'user71@example.com', '555002070', 'Street 758, City 160, State 19',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user72', 'Name_72', 'Surname_72', 'user72@example.com', '555002071', 'Street 759, City 161, State 20',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user73', 'Name_73', 'Surname_73', 'user73@example.com', '555002072', 'Street 760, City 162, State 21',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user74', 'Name_74', 'Surname_74', 'user74@example.com', '555002073', 'Street 761, City 163, State 22',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user75', 'Name_75', 'Surname_75', 'user75@example.com', '555002074', 'Street 762, City 164, State 23',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user76', 'Name_76', 'Surname_76', 'user76@example.com', '555002075', 'Street 763, City 165, State 24',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user77', 'Name_77', 'Surname_77', 'user77@example.com', '555002076', 'Street 764, City 166, State 25',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user78', 'Name_78', 'Surname_78', 'user78@example.com', '555002077', 'Street 765, City 167, State 26',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user79', 'Name_79', 'Surname_79', 'user79@example.com', '555002078', 'Street 766, City 168, State 27',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user80', 'Name_80', 'Surname_80', 'user80@example.com', '555002079', 'Street 767, City 169, State 28',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user81', 'Name_81', 'Surname_81', 'user81@example.com', '555002080', 'Street 768, City 170, State 29',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user82', 'Name_82', 'Surname_82', 'user82@example.com', '555002081', 'Street 769, City 171, State 30',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user83', 'Name_83', 'Surname_83', 'user83@example.com', '555002082', 'Street 770, City 172, State 31',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user84', 'Name_84', 'Surname_84', 'user84@example.com', '555002083', 'Street 771, City 173, State 32',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user85', 'Name_85', 'Surname_85', 'user85@example.com', '555002084', 'Street 772, City 174, State 33',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user86', 'Name_86', 'Surname_86', 'user86@example.com', '555002085', 'Street 773, City 175, State 34',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user87', 'Name_87', 'Surname_87', 'user87@example.com', '555002086', 'Street 774, City 176, State 35',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user88', 'Name_88', 'Surname_88', 'user88@example.com', '555002087', 'Street 775, City 177, State 36',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user89', 'Name_89', 'Surname_89', 'user89@example.com', '555002088', 'Street 776, City 178, State 37',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user90', 'Name_90', 'Surname_90', 'user90@example.com', '555002089', 'Street 777, City 179, State 38',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user91', 'Name_91', 'Surname_91', 'user91@example.com', '555002090', 'Street 778, City 180, State 39',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user92', 'Name_92', 'Surname_92', 'user92@example.com', '555002091', 'Street 779, City 181, State 40',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user93', 'Name_93', 'Surname_93', 'user93@example.com', '555002092', 'Street 780, City 182, State 41',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user94', 'Name_94', 'Surname_94', 'user94@example.com', '555002093', 'Street 781, City 183, State 42',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user95', 'Name_95', 'Surname_95', 'user95@example.com', '555002094', 'Street 782, City 184, State 43',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user96', 'Name_96', 'Surname_96', 'user96@example.com', '555002095', 'Street 783, City 185, State 44',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user97', 'Name_97', 'Surname_97', 'user97@example.com', '555002096', 'Street 784, City 186, State 45',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user98', 'Name_98', 'Surname_98', 'user98@example.com', '555002097', 'Street 785, City 187, State 46',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user99', 'Name_99', 'Surname_99', 'user99@example.com', '555002098', 'Street 786, City 188, State 47',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user100', 'Name_100', 'Surname_100', 'user100@example.com', '555002099', 'Street 787, City 189, State 48',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
+
+INSERT INTO users
+(username, "name", surname, email, phone_number, address, moderation_state, user_state, role_type, "password")
+VALUES ('user101', 'Name_101', 'Surname_101', 'user101@example.com', '555002100', 'Street 788, City 190, State 49',
+        'APPROVED', 'ACTIVE', 'ADMIN', '$2a$10$upL945rfcSKrz7mJ5ltPTuJfS1QJ56j4vq3T/e0Jeng1yf/yTChXO');
