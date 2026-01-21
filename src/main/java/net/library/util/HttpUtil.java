@@ -8,6 +8,9 @@ public class HttpUtil {
     public static final String USERS = "users";
     public static final String URL_ALL = "/**";
     public static final String CORRELATION_ID_HEADER_NAME = "X-Correlation-Id";
+    public static final String PASSWORD_ADMIN= "ADMIN@123";
+    public static final String PASSWORD_USER= "USER@123";
+    public static final String PASSWORD_TEST = "Test#1234";
     public static final String ERROR_ID = "errorId";
     public static final String ERROR_MSG = "errorMsg";
     public static final String CID = "cid";

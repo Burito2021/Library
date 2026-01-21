@@ -1,9 +1,10 @@
-package net.library.service.validator;
+package net.library.service.validator.phonenumber;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import net.library.exception.FilterLengthException;
 import net.library.exception.WrongState;
+import net.library.util.Utils;
 
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -11,7 +12,8 @@ import java.util.regex.Pattern;
 import static java.lang.String.format;
 import static net.library.util.Utils.deleteSpacesHyphens;
 
-public class UserValidationService implements ConstraintValidator<PhoneNumberValidator, String> {
+public class PhoneValidatorService implements ConstraintValidator<PhoneNumberValidator, String>
+{
     protected static final Pattern PATTERN1 = Pattern.compile("380\\d{9}");
     protected static final Pattern PATTERN2 = Pattern.compile("380\\d{8}");
     protected static final Pattern PATTERN3 = Pattern.compile("380\\d{7}");
@@ -21,23 +23,8 @@ public class UserValidationService implements ConstraintValidator<PhoneNumberVal
         return NUMBERS_PATTERN.matcher(msisdn).matches();
     }
 
-    private static boolean isLengthValid(String value, int min, int max) {
-        var length = value.length();
-        return length >= min && length <= max;
-    }
-
-    public static void isLength(String value, int min) {
-        if (value == null || value.isEmpty() || value.isBlank()) {
-            return;
-        }
-        var length = value.length();
-        if (length < min) {
-            throw new FilterLengthException("filer length is less that 3 letters");
-        }
-    }
-
     public static boolean lengthValidator(String msisdn, int min, int max) {
-        return ifDigit(msisdn) && isLengthValid(msisdn, min, max);
+        return ifDigit(msisdn) && Utils.isLengthValid(msisdn, min, max);
     }
 
     public static boolean msisdnCheckFormat380(String msisdn) {

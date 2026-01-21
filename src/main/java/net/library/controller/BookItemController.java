@@ -30,7 +30,7 @@ import static net.library.util.HttpUtil.ITEMS;
 @RequestMapping(ITEMS)
 public class BookItemController {
     private final BookService service;
-    // tidy the names  and order methods
+
     @Operation(summary = "Add a book item(copy) to database", description = "saves a book item(copy) to database")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successfully created"),
@@ -120,12 +120,6 @@ public class BookItemController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBookItemById(@PathVariable(required = false, value = "id") final UUID bookItemId) {
         service.removeBookItemById(bookItemId);
-        return ResponseEntity.status(204).build();
-    }
-
-    @DeleteMapping("/all")
-    public ResponseEntity<Void> deleteAllBookItems(){
-        service.removeAllBookItems();
         return ResponseEntity.status(204).build();
     }
 }

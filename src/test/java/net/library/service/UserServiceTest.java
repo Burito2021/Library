@@ -18,7 +18,7 @@ class UserServiceTest {
     @Test
     void saveUser() {
         final var userRequest = new UserRequest("SADF", "Alex",
-                "Bur", "a@gmail.com", "4984339834", "asfafas");
+                "Bur", "a@gmail.com", "4984339834", "asfafas","pass");
 
         service.addUser(userRequest);
     }
