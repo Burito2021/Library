@@ -186,11 +186,6 @@ public class UserController {
             @ApiResponse(responseCode = "204", description = "removed successfully")
     }
     )
-    @DeleteMapping
-    public ResponseEntity<Void> deleteAllUsers() {
-        service.deleteAll();
-        return ResponseEntity.status(204).build();
-    }
 
     @PatchMapping("/details")
     public ResponseEntity<UserDto> updateProfile(@RequestBody UpdateUserRequest request,

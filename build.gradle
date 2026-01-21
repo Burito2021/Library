@@ -60,4 +60,6 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    systemProperty 'DOCKER_API_VERSION', '1.51'
+    environment 'DOCKER_API_VERSION', '1.51'
 }

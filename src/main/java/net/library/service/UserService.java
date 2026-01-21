@@ -74,10 +74,6 @@ public class UserService {
         return UserMapper.toDto(userRepository.save(newUser));
     }
 
-    public void deleteAll() {
-        userRepository.deleteAll();
-    }
-
     public Optional<User> getUserById(UUID id) {
         return userRepository.findById(id);
     }

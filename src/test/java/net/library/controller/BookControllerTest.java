@@ -65,10 +65,15 @@ class BookControllerTest {
     @Autowired
     private UserService userService;
 
+
     @AfterEach
     void cleanAfter() {
-        bookService.removeAll();
-        userService.deleteAll();
+        bookItemHistoryRepository.deleteAll();
+        genreRepository.deleteAll();
+        bookGenresRepository.deleteAll();
+        bookItemRepository.deleteAll();
+        bookRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Sql("classpath:sql/states.sql")

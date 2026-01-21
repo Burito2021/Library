@@ -35,23 +35,6 @@ public class Tools {
         return randomAlphabetic(length);
     }
 
-    public static void populateUsers(
-            UserService service,
-            int numberOfUsers
-    ) {
-        final var username = "Alelxo";
-        final var surname = "Bur";
-        final var name = "Alex";
-        final var email = "efaf@gmail.com";
-        final var phoneNumber = "380679920267";
-        final var address = "assfasfd";
-
-        for (int i = 0; i < numberOfUsers; i++) {
-            service.addUser(new UserRequest(username + i, name + 1, surname + 1, 1 + email, phoneNumber, address, PASSWORD_ADMIN));
-        }
-
-    }
-
     public static void populateWithBookItems(
             BookItemRepository bookItemRepository,
             UUID bookId,

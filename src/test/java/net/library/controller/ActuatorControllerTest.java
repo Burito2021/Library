@@ -1,6 +1,7 @@
 package net.library.controller;
 
 import net.library.model.request.BookRequest;
+import net.library.repository.UserRepository;
 import net.library.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -35,9 +36,12 @@ public class ActuatorControllerTest {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @AfterEach
     void cleanAfter() {
-        userService.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test

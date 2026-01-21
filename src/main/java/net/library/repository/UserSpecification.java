@@ -19,20 +19,23 @@ public class UserSpecification {
             Predicate predicate = criteriaBuilder.conjunction();
 
             if (username != null && !username.isEmpty()) {
-
-                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("username"), "%" + username + "%"));
+                var escapedUsername = username
+                        .replace("\\", "\\\\")
+                        .replace("%", "\\%")
+                        .replace("_", "\\_");
+                predicate = criteriaBuilder.and(predicate, criteriaBuilder.like(root.get("username"), "%" + escapedUsername + "%"));
             }
 
             if (moderationState != null) {
-                predicate = filterByState(criteriaBuilder, predicate, root, roleType, "moderationState");
+                predicate = filterByState(criteriaBuilder, predicate, root, moderationState.name(), "moderationState");
             }
 
             if (userState != null) {
-                predicate = filterByState(criteriaBuilder, predicate, root, roleType, "userState");
+                predicate = filterByState(criteriaBuilder, predicate, root, userState.name(), "userState");
             }
 
             if (roleType != null) {
-                predicate = filterByState(criteriaBuilder, predicate, root, roleType, "roleType");
+                predicate = filterByState(criteriaBuilder, predicate, root, roleType.name(), "roleType");
             }
 
             if (startDate != null) {
@@ -46,11 +49,11 @@ public class UserSpecification {
         };
     }
 
-    private static Predicate filterByState(CriteriaBuilder criteriaBuilder, Predicate predicate, Root<User> root, RoleType roleType, String state) {
+    private static Predicate filterByState(CriteriaBuilder criteriaBuilder, Predicate predicate, Root<User> root, String roleType, String state) {
         return criteriaBuilder.and(predicate,
                 criteriaBuilder.equal(
                         criteriaBuilder.function("text", String.class, root.get(state)),
-                        roleType.name()
+                        roleType
                 ));
     }
 }

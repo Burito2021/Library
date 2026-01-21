@@ -7,6 +7,7 @@ import net.library.model.entity.BookItem;
 import net.library.model.entity.User;
 import net.library.model.request.UpdateUserRequest;
 import net.library.model.request.UserRequest;
+import net.library.repository.UserRepository;
 import net.library.repository.enums.BookItemStatus;
 import net.library.repository.enums.ModerationState;
 import net.library.repository.enums.RoleType;
@@ -14,6 +15,7 @@ import net.library.repository.enums.UserState;
 import net.library.service.UserService;
 import net.library.util.Utils;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -49,9 +51,12 @@ class UserControllerTest {
     @Autowired
     private UserService service;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @AfterEach
     void clean() {
-        service.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Sql("classpath:sql/3_records.sql")
@@ -162,11 +167,12 @@ class UserControllerTest {
     public void userNameFilterSeveralReturnValues() throws Exception {
         final var xCorrelation = Utils.getUUID();
 
-        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + USERS + "?username=user_8")
+        mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + USERS + "?username=user8"+"&size=20")
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelation)
                         .with(httpBasic("user1", PASSWORD_ADMIN)))
+                .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.items", hasSize(9)));
+                .andExpect(jsonPath("$.items", hasSize(11)));
     }
 
     @Sql("classpath:sql/101.sql")
@@ -1022,43 +1028,6 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.surname", is(surname)))
                 .andExpect(jsonPath("$.phoneNumber", is(phoneNumber)))
                 .andExpect(jsonPath("$.address", is(address)));
-    }
-
-    @Sql("classpath:sql/states.sql")
-    @Test
-    void deleteAllUsers() throws Exception {
-        final var username = "Alelxo";
-        final var surname = "Bur";
-        final var name = "Alex";
-        final var email = "efaf@gmail.com";
-        final var phoneNumber = "380679920267";
-        final var address = "assfasfd";
-
-        service.addUser(new UserRequest(username, name, surname, email, phoneNumber, address, PASSWORD_ADMIN));
-
-        final var userId = service.getAllUsers();
-
-        assertFalse(userId.isEmpty());
-
-        mvc.perform(MockMvcRequestBuilders.delete(GLOBAL_BASE_URI + USERS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
-                .andExpect(status().isNoContent());
-
-        final var user = service.getAllUsers();
-
-        assertTrue(user.isEmpty());
-    }
-
-    @Sql("classpath:sql/states.sql")
-    @Test
-    void deleteAllUsersIfNoUsersExist() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.delete(GLOBAL_BASE_URI + USERS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
-                .andExpect(status().isNoContent());
-
-        final var user = service.getAllUsers();
-
-        assertTrue(user.isEmpty());
     }
 
     @Sql("classpath:sql/states.sql")
@@ -2025,7 +1994,7 @@ class UserControllerTest {
 
     @Sql("classpath:sql/states.sql")
     @Test
-    void passwordValidatorPasswordLengthIs16NotVAlid() throws Exception {
+    void passwordValidatorPasswordLengthIs16NotValid() throws Exception {
         final var surname = "Bur";
         final var name = "Alex";
         final var email = "efaf@gmail.com";

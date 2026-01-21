@@ -37,3 +37,11 @@ spring:
   test:
     database:
       replace: none
+logging:
+  level:
+    org.testcontainers: DEBUG
+    com.github.dockerjava: DEBUG
+testcontainers:
+  docker:
+    client:
+      api-version: "1.51"
