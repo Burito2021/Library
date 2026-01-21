@@ -72,10 +72,4 @@ public class BookController {
         service.removeBookById(id);
         return ResponseEntity.status(204).build();
     }
-
-    @DeleteMapping("/all")
-    public ResponseEntity<Void> deleteAllBooks() {
-        service.removeAllBooks();
-        return ResponseEntity.status(204).build();
-    }
 }

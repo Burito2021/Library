@@ -15,15 +15,11 @@ import lombok.Data;
 public class BookRequest {
 
     @Schema(name = "title", example = "White fang")
-    @NotNull
-    @NotEmpty
     @NotBlank
     @Size(min = 1, max = 100, message = "Title must be between 1 and 100 characters.")
     private String title;
 
     @Schema(name = "author", example = "Jack London")
-    @NotNull
-    @NotEmpty
     @NotBlank
     @Size(min = 1, max = 50, message = "Author must be between 1 and 50 characters.")
     private String author;
@@ -33,8 +29,6 @@ public class BookRequest {
     private String description;
 
     @Schema(name = "publisher", example = "London house")
-    @NotNull
-    @NotEmpty
     @NotBlank
     @Size(min = 1, max = 100, message = "Description must not exceed 100 characters.")
     private String publisher;

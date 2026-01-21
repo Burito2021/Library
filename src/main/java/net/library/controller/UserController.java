@@ -7,17 +7,20 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.library.model.dto.UserDto;
 import net.library.model.mapper.UserMapper;
+import net.library.model.request.UpdateUserRequest;
 import net.library.model.request.UserRequest;
 import net.library.model.response.Page;
 import net.library.repository.enums.ModerationState;
 import net.library.repository.enums.RoleType;
 import net.library.repository.enums.UserState;
+import net.library.service.AuthService;
 import net.library.service.UserService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,8 +36,8 @@ import static net.library.util.HttpUtil.USERS;
 public class UserController {
 
     private final UserService service;
-    //group  contollers by get, post, put,patch, delete
-    // change user current user(update) put
+    private final AuthService authService;
+
     @Operation(summary = "Add a new user",
             description = "Saved a new user successfully")
     @ApiResponses(value = {
@@ -104,8 +107,20 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "when user id is not in the right format UUID"),
     }
     )
+
     @GetMapping("/{user_id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable(required = false, value = "user_id") final UUID userId) {
+
+        return service.getUserById(userId)
+                .map(r -> ResponseEntity.ok(UserMapper.toDto(r)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/details")
+    public ResponseEntity<UserDto> getUserById(Authentication authentication) {
+
+        var userId = authService.getCurrentUserIdOrThrow(authentication);
+
         return service.getUserById(userId)
                 .map(r -> ResponseEntity.ok(UserMapper.toDto(r)))
                 .orElse(ResponseEntity.notFound().build());
@@ -171,9 +186,22 @@ public class UserController {
             @ApiResponse(responseCode = "204", description = "removed successfully")
     }
     )
-    @DeleteMapping
-    public ResponseEntity<Void> deleteAllUsers() {
-        service.deleteAll();
-        return ResponseEntity.status(204).build();
+
+    @PatchMapping("/details")
+    public ResponseEntity<UserDto> updateProfile(@RequestBody UpdateUserRequest request,
+                                                 Authentication authentication) {
+
+        var currentUserId = authService.getCurrentUserIdOrThrow(authentication);
+        var updatedUser = service.updateUserProfile(currentUserId, request);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @PatchMapping("/{userId}")
+    public ResponseEntity<UserDto> updateProfileByUserId(
+            @RequestBody UpdateUserRequest request,
+            @PathVariable(value = "userId") final UUID userId) {
+
+        var updatedUser = service.updateUserProfile(userId, request);
+        return ResponseEntity.ok(updatedUser);
     }
 }

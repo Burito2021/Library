@@ -236,34 +236,6 @@ public class BookService {
         bookItemRepository.deleteById(bookItemId);
     }
 
-    public void removeAllBooks() {
-        bookRepository.deleteAll();
-    }
-
-    public void removeAllBookItems() {
-        bookItemRepository.deleteAll();
-    }
-
-    public void removeAllGenres() {
-        genreRepository.deleteAll();
-    }
-
-    public void removeAllBookGenres() {
-        bookGenresRepository.deleteAll();
-    }
-
-    public void removeAllHistory() {
-        bookItemHistoryRepository.deleteAll();
-    }
-
-    public void removeAll() {
-        removeAllHistory();
-        removeAllGenres();
-        removeAllBookGenres();
-        removeAllBookItems();
-        removeAllBooks();
-    }
-
     public Page<BookItemDto> getBookItems(UUID bookItemId, UUID bookId, String bookItemStatus, String startDate, String endDate, Pageable pageable
     ) {
         var startDateConverted = Utils.stringToLocalDateConverter(startDate);

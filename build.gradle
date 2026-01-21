@@ -40,6 +40,7 @@ dependencies {
     implementation "com.google.code.findbugs:jsr305:${findbugs}"
     implementation "jakarta.servlet:jakarta.servlet-api:${servlet}"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation "org.springframework.boot:spring-boot-starter-security"
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdoc}")
     implementation("org.mapstruct:mapstruct:${mapstruct}")
     implementation ("com.github.ulisesbocchio:jasypt-spring-boot-starter:${jasypt}")
@@ -51,6 +52,7 @@ dependencies {
     testImplementation "org.testcontainers:postgresql:${testcontainerspostgresql}"
     testImplementation "org.hamcrest:hamcrest:${hamcrest}"
     testImplementation "org.junit.jupiter:junit-jupiter:${junit}"
+    testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly "org.junit.platform:junit-platform-launcher"
     compileOnly "org.projectlombok:lombok:${lombok}"
     annotationProcessor "org.projectlombok:lombok:${lombok}"
@@ -58,4 +60,6 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    systemProperty 'DOCKER_API_VERSION', '1.51'
+    environment 'DOCKER_API_VERSION', '1.51'
 }

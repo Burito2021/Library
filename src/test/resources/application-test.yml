@@ -31,9 +31,17 @@ spring:
       init:
       mode: always
       schema-locations: 'classpath:sql/schema.sql'
-  #     data-locations: 'classpath:sql/data.sql'
+#      data-locations: 'classpath:sql/states.sql'
       continue-on-error: true
 
   test:
     database:
       replace: none
+logging:
+  level:
+    org.testcontainers: DEBUG
+    com.github.dockerjava: DEBUG
+testcontainers:
+  docker:
+    client:
+      api-version: "1.51"

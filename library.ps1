@@ -53,57 +53,57 @@ function Get-InfoMenu
         [string]$composePath,
         [string]$homeLocation
     )
-    Clear-Host
-    Write-Host ""
-    Write-Host "Info" -ForegroundColor Cyan
-    Write-Host "===========================" -ForegroundColor Cyan
-    $appHost = "http://localhost"
-#--------------------------------------------------------------------
-    Write-Host "Below are details(reached externally)on the containers and credentials:"
-    $сontent = Get-FileContent -filePath $composePath
-    $fitleredPostgresDbContent = Find-Content -content $сontent -expression "postgres-script:[\s\S]*?ports:([\s\S]*?)(?=\s{2}\w|\z)"
-    $postgresPortSection = $fitleredPostgresDbContent.Groups[1].Value
-    $postgresDbPortMatches = [regex]::Matches($postgresPortSection, '"(\d+):\d+"')
-    $postresDbPorts = $postgresDbPortMatches | ForEach-Object { $_.Groups[1].Value }
-    Write-Host "1. PostgresDb: $appHost`:$postresDbPorts"
-    #--------------------------------------------------------------------
-    $dbMatches = [regex]::Matches($сontent, 'POSTGRES_DB:\s*([^\s\n]+)')
-    $postgresDb = $dbMatches[0].Groups[1].Value
-    Write-Host "PostgresDb schema: $postgresDb"
-    $userMatches = [regex]::Matches($сontent, 'POSTGRES_USER:\s*([^\s\n]+)')
-    $postgresUser = $userMatches[0].Groups[1].Value
-    Write-Host "PostgresDb user: $postgresUser"
-    $passwordMatches = [regex]::Matches($сontent, 'POSTGRES_PASSWORD:\s*([^\s\n]+)')
-    $postgresPassword = $passwordMatches[0].Groups[1].Value
-    Write-Host "PostgresDb password: $postgresPassword"
-    Write-Host "-------------------------------------------------------------"
-    $appContent = Find-Content -content $сontent -expression "library-script:[\s\S]*?ports:([\s\S]*?)(?=\s{2}\w|\z)"
-    $appPortSection = $appContent.Groups[1].Value
-    $appPortMatches = [regex]::Matches($appPortSection, '"(\d+):\d+"')
-    $appPorts = $appPortMatches | ForEach-Object { $_.Groups[1].Value }
-    Write-Host "2. Library: $appHost`:$appPorts"
-    Write-Host "-------------------------------------------------------------"
-    $promContent = Find-Content -content $сontent -expression "prometheus-script:[\s\S]*?ports:([\s\S]*?)(?=\s{2}\w|\z)"
-    $promPortSection = $promContent.Groups[1].Value
-    $promPortMatches = [regex]::Matches($promPortSection, '"(\d+):\d+"')
-    $promPorts = $promPortMatches | ForEach-Object { $_.Groups[1].Value }
-    Write-Host "3. Prometheus: $appHost`:$promPorts"
-    Write-Host "-------------------------------------------------------------"
-    $grafContent = Find-Content -content $сontent -expression "grafana-script:[\s\S]*?ports:([\s\S]*?)(?=\s{2}\w|\z)"
-    $grafPortSection = $grafContent.Groups[1].Value
-    $grafPortMatches = [regex]::Matches($grafPortSection, '"(\d+):\d+"')
-    $grafPorts = $grafPortMatches | ForEach-Object { $_.Groups[1].Value }
-    Write-Host "4. Grafana: $appHost`:$grafPorts"
-    Write-Host "-------------------------------------------------------------"
-
-    Write-Host "b. Back" -ForegroundColor Gray
-
-    $selection = Read-Host "Select an option"
-
-    if ($selection.ToLower() -eq "b")
-    {
-        return "back"
-    }
+#    Clear-Host
+#    Write-Host ""
+#    Write-Host "Info" -ForegroundColor Cyan
+#    Write-Host "===========================" -ForegroundColor Cyan
+#    $appHost = "http://localhost"
+##--------------------------------------------------------------------
+#    Write-Host "Below are details(reached externally)on the containers and credentials:"
+#    $сontent = Get-FileContent -filePath $composePath
+#    $fitleredPostgresDbContent = Find-Content -content $сontent -expression "postgres-script:[\s\S]*?ports:([\s\S]*?)(?=\s{2}\w|\z)"
+#    $postgresPortSection = $fitleredPostgresDbContent.Groups[1].Value
+#    $postgresDbPortMatches = [regex]::Matches($postgresPortSection, '"(\d+):\d+"')
+#    $postresDbPorts = $postgresDbPortMatches | ForEach-Object { $_.Groups[1].Value }
+#    Write-Host "1. PostgresDb: $appHost`:$postresDbPorts"
+#    #--------------------------------------------------------------------
+#    $dbMatches = [regex]::Matches($сontent, 'POSTGRES_DB:\s*([^\s\n]+)')
+#    $postgresDb = $dbMatches[0].Groups[1].Value
+#    Write-Host "PostgresDb schema: $postgresDb"
+#    $userMatches = [regex]::Matches($сontent, 'POSTGRES_USER:\s*([^\s\n]+)')
+#    $postgresUser = $userMatches[0].Groups[1].Value
+#    Write-Host "PostgresDb user: $postgresUser"
+#    $passwordMatches = [regex]::Matches($сontent, 'POSTGRES_PASSWORD:\s*([^\s\n]+)')
+#    $postgresPassword = $passwordMatches[0].Groups[1].Value
+#    Write-Host "PostgresDb password: $postgresPassword"
+#    Write-Host "-------------------------------------------------------------"
+#    $appContent = Find-Content -content $сontent -expression "library-script:[\s\S]*?ports:([\s\S]*?)(?=\s{2}\w|\z)"
+#    $appPortSection = $appContent.Groups[1].Value
+#    $appPortMatches = [regex]::Matches($appPortSection, '"(\d+):\d+"')
+#    $appPorts = $appPortMatches | ForEach-Object { $_.Groups[1].Value }
+#    Write-Host "2. Library: $appHost`:$appPorts"
+#    Write-Host "-------------------------------------------------------------"
+#    $promContent = Find-Content -content $сontent -expression "prometheus-script:[\s\S]*?ports:([\s\S]*?)(?=\s{2}\w|\z)"
+#    $promPortSection = $promContent.Groups[1].Value
+#    $promPortMatches = [regex]::Matches($promPortSection, '"(\d+):\d+"')
+#    $promPorts = $promPortMatches | ForEach-Object { $_.Groups[1].Value }
+#    Write-Host "3. Prometheus: $appHost`:$promPorts"
+#    Write-Host "-------------------------------------------------------------"
+#    $grafContent = Find-Content -content $сontent -expression "grafana-script:[\s\S]*?ports:([\s\S]*?)(?=\s{2}\w|\z)"
+#    $grafPortSection = $grafContent.Groups[1].Value
+#    $grafPortMatches = [regex]::Matches($grafPortSection, '"(\d+):\d+"')
+#    $grafPorts = $grafPortMatches | ForEach-Object { $_.Groups[1].Value }
+#    Write-Host "4. Grafana: $appHost`:$grafPorts"
+#    Write-Host "-------------------------------------------------------------"
+#
+#    Write-Host "b. Back" -ForegroundColor Gray
+#
+#    $selection = Read-Host "Select an option"
+#
+#    if ($selection.ToLower() -eq "b")
+#    {
+#        return "back"
+#    }
 }
 
 function Get-UserRetryDecision
@@ -809,7 +809,7 @@ function New-DockerImage
         Write-Host "Creating Dockerfile..." -ForegroundColor Gray
         Write-Host ""
         @"
-            FROM openjdk:24-jdk-slim
+            FROM eclipse-temurin:24-jdk-alpine
             WORKDIR /app
             COPY $jarPath/*.jar app.jar
 
@@ -920,9 +920,9 @@ function Get-Containers
         $selectedContainers.ServiceOrder = $servicesToAdd + $selectedContainers.ServiceOrder
     }
 
-#    if ($selectedProfiles -contains "postgres" -and $selectedProfiles -notcontains "flyway")
+#    if ($selectedProfiles -contains "postgres")
 #    {
-#        Remove-DockerImages -ImageNames @("ghcr.io/burito2021/library_db:latest", "ghcr.io/burito2021/library_db-postgres:15")
+#        Remove-DockerImages -ImageNames "ghcr.io/burito2021/library-postgres:15"
 #    }
 
     $requiredProfiles = $selectedContainers.RequiredProfiles
@@ -1071,7 +1071,7 @@ while ($runAgain)
         exit 1
     }
 
-    $AVAILABLE_MODULES = @("library", "info")
+    $AVAILABLE_MODULES = @("library")
 
     if (-not $skipMenus)
     {
@@ -1115,9 +1115,9 @@ while ($runAgain)
                 continue
             }
 
-            if ($SELECTED_CONTAINERS.SelectedProfiles -contains "postgres" -and $selectedProfiles -notcontains "flyway")
+            if ($SELECTED_CONTAINERS.SelectedProfiles -contains "postgres")
             {
-                Remove-DockerImages -ImageNames @("ghcr.io/burito2021/library_db-postgres:15")
+                Remove-DockerImages -ImageNames @("ghcr.io/burito2021/library-postgres:15")
             }
 
             $PROFILES = $SELECTED_CONTAINERS.ProfilesArg
