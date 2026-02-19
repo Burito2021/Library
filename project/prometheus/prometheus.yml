@@ -8,4 +8,4 @@ scrape_configs:
       username: 'user_1'
       password: 'ADMIN'
     static_configs:
-      - targets: ['library-script:1280']
+      - targets: [ 'library-script:1280' ]

@@ -54,7 +54,7 @@ public class BookController {
         var sort = Sort.by(sortFields.stream().map(field -> new Sort.Order(direction, field)).toList());
 
         final var pages = service.getAllEntities(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort));
-        return new Page<>(pages.getSize(),pages.getNumber(),pages.getTotalElements(),
+        return new Page<>(pages.getSize(), pages.getNumber(), pages.getTotalElements(),
                 pages.get().collect(Collectors.toList()));
     }
 

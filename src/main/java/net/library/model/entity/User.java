@@ -46,23 +46,23 @@ public class User {
 
     @Enumerated
     @JdbcType(PostgreSQLEnumJdbcType.class)
-    @Column(name = "moderation_state", columnDefinition = "moderation_state_type",insertable = false, updatable = true)
-    private ModerationState moderationState ;
+    @Column(name = "moderation_state", columnDefinition = "moderation_state_type", insertable = false, updatable = true)
+    private ModerationState moderationState;
 
     @Enumerated
     @JdbcType(PostgreSQLEnumJdbcType.class)
-    @Column(name = "user_state", columnDefinition = "user_state_type",insertable = false, updatable = true)
+    @Column(name = "user_state", columnDefinition = "user_state_type", insertable = false, updatable = true)
     private UserState userState;
 
     @Enumerated
     @JdbcType(PostgreSQLEnumJdbcType.class)
-    @Column(name = "role_type", columnDefinition = "role_type_type",insertable = false, updatable = true)
+    @Column(name = "role_type", columnDefinition = "role_type_type", insertable = false, updatable = true)
     private RoleType roleType;
 
     @Column(name = "updated_at", insertable = false, updatable = true)
     private LocalDateTime updatedAt;
 
-    @Column(name = "created_at", insertable = false, updatable = false)
+    @Column(name = "created_at", insertable = false, updatable = true)
     private LocalDateTime createdAt;
 
     @Column(name = "deleted_at")

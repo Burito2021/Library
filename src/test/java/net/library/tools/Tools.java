@@ -4,22 +4,100 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.library.model.entity.BookItem;
 import net.library.model.entity.User;
+import net.library.model.request.LoginRequest;
+import net.library.model.request.RefreshTokenRequest;
 import net.library.model.request.UserRequest;
+import net.library.model.response.AuthResponse;
 import net.library.repository.BookItemRepository;
 import net.library.repository.enums.BookItemStatus;
+import net.library.service.AuthService;
 import net.library.service.UserService;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
 import static java.util.concurrent.Executors.newFixedThreadPool;
-import static net.library.util.HttpUtil.PASSWORD_ADMIN;
+import static net.library.tools.HttpUtil.PASSWORD_ADMIN;
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 public class Tools {
+
+    public static String getTime(int minusDays, int plusDays) {
+        var now = LocalDateTime.now().minusDays(minusDays).plusDays(plusDays);
+        var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
+        return now.format(formatter);
+    }
+
+    public static AuthResponse getTokens(AuthService authService, String username, String password, String fingerprint) {
+        return authService.authenticate(
+                LoginRequest.builder()
+                        .username(username)
+                        .password(password)
+                        .fingerprint(fingerprint)
+                        .build()
+        );
+    }
+
+    public static AuthResponse getTokens2(AuthService authService, String username, String password, String fingerprint) {
+        return authService.authenticate(
+                LoginRequest.builder()
+                        .username(username)
+                        .password(password)
+                        .fingerprint(fingerprint)
+                        .build()
+        );
+    }
+
+    public static void revokeAndLogout(AuthService authService, String accessToken) {
+        authService.revokeTokenAndLogout(
+                accessToken
+        );
+    }
+
+
+    public static AuthResponse refreshToken(AuthService authService, String refreshToken, String fingerprint) {
+        return authService.refreshToken(
+                RefreshTokenRequest.builder()
+                        .refreshToken(refreshToken)
+                        .fingerprint(fingerprint)
+                        .build()
+        );
+    }
+
+    public static String getAccessToken(
+            AuthService authService,
+            String username,
+            String password,
+            String fingerprint
+    ) {
+        return authService.authenticate(
+                LoginRequest.builder()
+                        .username(username)
+                        .password(password)
+                        .fingerprint(fingerprint)
+                        .build()
+        ).getAccessToken();
+    }
+
+    public static String getRefreshToken(
+            AuthService authService,
+            String username,
+            String password,
+            String fingerprint
+    ) {
+        return authService.authenticate(
+                LoginRequest.builder()
+                        .username(username)
+                        .password(password)
+                        .fingerprint(fingerprint)
+                        .build()
+        ).getRefreshToken();
+    }
 
     public static String objectToStringConverter(Object object) {
         try {
@@ -72,12 +150,12 @@ public class Tools {
 
     public static List<Integer> threadRunner(int numberOfThreads, List<Callable<Integer>> tasks) {
         var executor = newFixedThreadPool(numberOfThreads);
-         List<Integer> statusCodes = new ArrayList<>();
+        List<Integer> statusCodes = new ArrayList<>();
         try {
             executor.invokeAll(tasks).forEach(
                     future -> {
                         try {
-                           var result =  future.get();
+                            var result = future.get();
                             statusCodes.add(result);
                         } catch (Exception e) {
                             throw new RuntimeException(e);

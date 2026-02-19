@@ -1,4 +1,4 @@
-package net.library.exception;
+package net.library.util;
 
 import io.micrometer.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;

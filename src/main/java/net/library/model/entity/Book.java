@@ -1,8 +1,6 @@
 package net.library.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.Fetch;
@@ -51,11 +49,11 @@ public class Book {
 
     @OneToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.JOIN)
-    @JoinColumn(name = "book_id",referencedColumnName = "id")
+    @JoinColumn(name = "book_id", referencedColumnName = "id")
     private List<BookItem> bookItemList;
 
     @OneToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.JOIN)
-    @JoinColumn(name = "book_id",referencedColumnName = "id")
+    @JoinColumn(name = "book_id", referencedColumnName = "id")
     private List<BookGenre> bookGenres;
 }

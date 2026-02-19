@@ -19,12 +19,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Partner not found: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
         return new CustomUserDetails(
-                user.getId(),
-                user.getUsername(),
-                user.getPassword(),
+                user,
                 List.of(new SimpleGrantedAuthority("ROLE_" + user.getRoleType().name()))
         );
     }

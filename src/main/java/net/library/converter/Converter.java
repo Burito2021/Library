@@ -1,8 +1,12 @@
 package net.library.converter;
 
-import net.library.model.dto.*;
-import net.library.model.entity.*;
-import net.library.model.request.BookGenreRequest;
+import net.library.model.dto.BookItemDto;
+import net.library.model.dto.BookItemIdDto;
+import net.library.model.dto.GenreDto;
+import net.library.model.entity.Book;
+import net.library.model.entity.BookItem;
+import net.library.model.entity.BookItemHistory;
+import net.library.model.entity.Genre;
 import net.library.model.request.BookItemRequest;
 import net.library.model.request.BookRequest;
 import net.library.model.request.GenreRequest;
@@ -12,9 +16,7 @@ import org.mapstruct.Mapping;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface Converter {

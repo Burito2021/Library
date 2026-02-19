@@ -152,7 +152,7 @@ public class BookService {
 
     public BookResponse getById(UUID bookId) {
         var book = bookRepository.findById(bookId)
-              .orElseThrow(() -> new NotFoundException("Book not found with id: " + bookId));
+                .orElseThrow(() -> new NotFoundException("Book not found with id: " + bookId));
 
         return BookResponse.builder()
                 .id(book.getId())

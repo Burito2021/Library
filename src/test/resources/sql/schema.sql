@@ -1,4 +1,3 @@
-
 CREATE
 EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -24,20 +23,20 @@ ON TYPE BOOK_ACTION_TYPES IS 'CREATE ENUM TO SET THE COLUMN OF ACTION_TYPE IN BO
 
 CREATE TABLE USERS
 (
-    ID               UUID                  DEFAULT uuid_generate_v4() PRIMARY KEY,
-    USERNAME         VARCHAR(200) UNIQUE                       NOT NULL,
-    NAME             VARCHAR(200)                              NOT NULL,
-    SURNAME          VARCHAR(200)                              NOT NULL,
-    EMAIL            VARCHAR(100)                              NOT NULL,
+    ID               UUID                   DEFAULT uuid_generate_v4() PRIMARY KEY,
+    USERNAME         VARCHAR(200) UNIQUE                        NOT NULL,
+    NAME             VARCHAR(200)                               NOT NULL,
+    SURNAME          VARCHAR(200)                               NOT NULL,
+    EMAIL            VARCHAR(100)                               NOT NULL,
     PHONE_NUMBER     VARCHAR(15),
     ADDRESS          VARCHAR(300),
     MODERATION_STATE MODERATION_STATE_TYPES DEFAULT 'ON_REVIEW' NOT NULL,
     USER_STATE       USER_STATE_TYPES       DEFAULT 'ACTIVE'    NOT NULL,
     ROLE_TYPE        ROLE_TYPE_TYPES        DEFAULT 'USER'      NOT NULL,
-    UPDATED_AT       TIMESTAMP             DEFAULT CURRENT_TIMESTAMP,
-    CREATED_AT       TIMESTAMP             DEFAULT CURRENT_TIMESTAMP,
+    UPDATED_AT       TIMESTAMP              DEFAULT CURRENT_TIMESTAMP,
+    CREATED_AT       TIMESTAMP              DEFAULT CURRENT_TIMESTAMP,
     DELETED_AT       TIMESTAMP,
-    PASSWORD         VARCHAR(64)           NULL
+    PASSWORD         VARCHAR(64) NULL
 );
 COMMENT
 ON TABLE USERS IS 'CREATE THE USERS TABLE TO STORE INFORMATION ABOUT LIBRARY USERS.';
@@ -187,4 +186,19 @@ CREATE TRIGGER BOOK_ITEM_HISTORY_TRIGGER_UPDATE
       OR OLD.RETURNED_AT IS DISTINCT FROM NEW.RETURNED_AT)
 EXECUTE FUNCTION log_to_book_item_history();
 
-ALTER TABLE book_items ADD COLUMN version BIGINT DEFAULT 0;
+ALTER TABLE book_items
+    ADD COLUMN version BIGINT DEFAULT 0;
+
+
+CREATE TABLE public.refresh_tokens
+(
+    id          bigserial                           NOT NULL,
+    "token"     varchar(500)                        NOT NULL,
+    fingerprint varchar(500)                        NOT NULL,
+    expires_at  timestamp                           NOT NULL,
+    user_id     uuid                                NOT NULL,
+    created_at  timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT refresh_tokens_pkey PRIMARY KEY (id),
+    CONSTRAINT refresh_tokens_token_key UNIQUE (token),
+    CONSTRAINT fk_refresh_tokens_user_id FOREIGN KEY (user_id) REFERENCES public.users (id) ON DELETE CASCADE
+);

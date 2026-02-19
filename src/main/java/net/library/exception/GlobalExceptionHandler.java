@@ -2,10 +2,12 @@ package net.library.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import net.library.model.mapper.HttpErrorResponse;
+import net.library.util.MdcUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -19,6 +21,48 @@ import static net.library.exception.ErrorMessage.*;
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(UserDisabledException.class)
+    @ResponseStatus
+    public ResponseEntity<HttpErrorResponse> userDisabled(UserDisabledException ex) {
+        return httpErrorResponseBuilder(ex, USER_DISABLED_ID, USER_DISABLED, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(InvalidFingerprint.class)
+    @ResponseStatus
+    public ResponseEntity<HttpErrorResponse> invalidFingerprint(InvalidFingerprint ex) {
+        return httpErrorResponseBuilder(ex, INVALID_FINGERPRINT_ID, INVALID_FINGERPRINT, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(TokenBlackListed.class)
+    @ResponseStatus
+    public ResponseEntity<HttpErrorResponse> tokenBlackListed(TokenBlackListed ex) {
+        return httpErrorResponseBuilder(ex, BLACKLISTED_TOKEN_ID, TOKEN_BLACKLISTED, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(InvalidToken.class)
+    @ResponseStatus
+    public ResponseEntity<HttpErrorResponse> invalidRefreshToken(InvalidToken ex) {
+        return httpErrorResponseBuilder(ex, INVALID_TOKEN_ID, INVALID_TOKEN, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(TokenExpired.class)
+    @ResponseStatus
+    public ResponseEntity<HttpErrorResponse> tokenExpired(TokenExpired ex) {
+        return httpErrorResponseBuilder(ex, EXPIRED_TOKEN_ID, TOKEN_EXPIRED, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(RefreshTokenNotFound.class)
+    @ResponseStatus
+    public ResponseEntity<HttpErrorResponse> refreshTokenNotFound(RefreshTokenNotFound ex) {
+        return httpErrorResponseBuilder(ex, REFRESH_TOKEN_NOTFOUND, REFRESH_TOKEN_NOT_FOUND, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus
+    public ResponseEntity<HttpErrorResponse> badCredentials(BadCredentialsException ex) {
+        return httpErrorResponseBuilder(ex, BAD_CREDENTIALS_ERROR_ID, INVALID_CREDENTIALS, HttpStatus.UNAUTHORIZED);
+    }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
