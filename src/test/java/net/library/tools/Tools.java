@@ -4,12 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.library.model.entity.BookItem;
 import net.library.model.entity.User;
+import net.library.model.request.LoginRequest;
 import net.library.model.request.UserRequest;
 import net.library.repository.BookItemRepository;
 import net.library.repository.enums.BookItemStatus;
+import net.library.service.AuthService;
 import net.library.service.UserService;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +23,31 @@ import static net.library.util.HttpUtil.PASSWORD_ADMIN;
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 public class Tools {
+
+    public static String getTime(int minusDays, int plusDays){
+    var now = LocalDateTime.now().minusDays(minusDays).plusDays(plusDays);
+    var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
+    return now.format(formatter);
+    }
+
+    public static String getAccessToken(AuthService authService,String username, String password) {
+        return authService.authenticate(
+                LoginRequest.builder()
+                        .username(username)
+                        .password(password)
+                        .build()
+        ).getAccessToken();
+    }
+
+    public static String getRefreshToken(AuthService authService,String username, String password) {
+        return authService.authenticate(
+                LoginRequest.builder()
+                        .username(username)
+                        .password(password)
+                        .build()
+        ).getRefreshToken();
+    }
 
     public static String objectToStringConverter(Object object) {
         try {
@@ -72,12 +100,12 @@ public class Tools {
 
     public static List<Integer> threadRunner(int numberOfThreads, List<Callable<Integer>> tasks) {
         var executor = newFixedThreadPool(numberOfThreads);
-         List<Integer> statusCodes = new ArrayList<>();
+        List<Integer> statusCodes = new ArrayList<>();
         try {
             executor.invokeAll(tasks).forEach(
                     future -> {
                         try {
-                           var result =  future.get();
+                            var result = future.get();
                             statusCodes.add(result);
                         } catch (Exception e) {
                             throw new RuntimeException(e);

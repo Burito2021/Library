@@ -6,6 +6,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -19,6 +20,30 @@ import static net.library.exception.ErrorMessage.*;
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(InvalidToken.class)
+    @ResponseStatus
+    public ResponseEntity<HttpErrorResponse> invalidRefreshToken(InvalidToken ex) {
+        return httpErrorResponseBuilder(ex,INVALID_TOKEN_ID,INVALID_TOKEN,HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(TokenExpired.class)
+    @ResponseStatus
+    public ResponseEntity<HttpErrorResponse> tokenExpired(TokenExpired ex){
+    return httpErrorResponseBuilder(ex, EXPIRED_TOKEN_ID, TOKEN_EXPIRED, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(RefreshTokenNotFound.class)
+    @ResponseStatus
+    public ResponseEntity<HttpErrorResponse> refreshTokenNotFound(RefreshTokenNotFound ex){
+        return httpErrorResponseBuilder(ex, REFRESH_TOKEN_NOTFOUND, REFRESH_TOKEN_NOT_FOUND, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus
+    public ResponseEntity<HttpErrorResponse> badCredentials(BadCredentialsException ex) {
+        return httpErrorResponseBuilder(ex, BAD_CREDENTIALS_ERROR_ID, INVALID_CREDENTIALS, HttpStatus.UNAUTHORIZED);
+    }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

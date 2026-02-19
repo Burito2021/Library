@@ -847,6 +847,7 @@ function Get-Containers
         $availableContainers = @(
             @{ Name = "postgres"; Profile = "postgres"; Service = "postgres-script" },
             @{ Name = "library"; Profile = "library"; Service = "library-script" },
+            @{ Name = "redis"; Profile = "redis"; Service = "redis" },
             @{ Name = "prometheus"; Profile = "prometheus"; Service = "prometheus-script" },
             @{ Name = "grafana"; Profile = "grafana"; Service = "grafana-script" }
         )
@@ -872,6 +873,14 @@ function Get-Containers
 #        $servicesToAdd += "flyway-script"
     }
 
+    if ($selectedProfiles -contains "library" -and $selectedProfiles -notcontains "redis")
+    {
+        $profilesToAdd += "redis"
+        $servicesToAdd += "redis"
+        #        $profilesToAdd += "flyway"
+        #        $servicesToAdd += "flyway-script"
+    }
+
     if ($selectedProfiles -contains "library" -and $selectedProfiles -notcontains "prometheus")
     {
         $profilesToAdd += "prometheus"
@@ -894,6 +903,9 @@ function Get-Containers
 #        $servicesToAdd += "flyway-script"
         $profilesToAdd += "library"
         $servicesToAdd += "library-script"
+        $profilesToAdd += "redis"
+        $servicesToAdd += "redis"
+
     }
 
     if ($selectedProfiles -contains "prometheus" -and $selectedProfiles -notcontains "grafana")
@@ -906,6 +918,8 @@ function Get-Containers
 #        $servicesToAdd += "flyway-script"
         $profilesToAdd += "library"
         $servicesToAdd += "library-script"
+        $profilesToAdd += "redis"
+        $servicesToAdd += "redis"
     }
 
 #    if ($selectedProfiles -contains "postgres" -and $selectedProfiles -notcontains "flyway")

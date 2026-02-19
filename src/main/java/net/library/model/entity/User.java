@@ -62,7 +62,7 @@ public class User {
     @Column(name = "updated_at", insertable = false, updatable = true)
     private LocalDateTime updatedAt;
 
-    @Column(name = "created_at", insertable = false, updatable = false)
+    @Column(name = "created_at", insertable = false, updatable = true)
     private LocalDateTime createdAt;
 
     @Column(name = "deleted_at")

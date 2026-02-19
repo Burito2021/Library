@@ -8,6 +8,10 @@ import java.util.UUID;
 
 public class Utils {
 
+    public static String extractTokenFromHeader(String header) {
+        return header.substring(7);
+    }
+
     public static String getUUID() {
         return UUID.randomUUID().toString();
     }
@@ -50,6 +54,7 @@ public class Utils {
             throw new FilterLengthException("filer length is less than 3 letters");
         }
     }
+
     public static LocalDateTime currentDate() {
         return LocalDateTime.now();
     }

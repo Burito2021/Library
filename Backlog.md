@@ -14,3 +14,25 @@
 # 14. User Summary (bookItems and other info) accessible by admin and by user on user
 
 
+
+JWT
+1. token manager (create, delete revoke)(separate module)
+2. validate
+
+3. Switch to springboot 4.0.
+
+Embedded solution (how they offer to implement it)
+main point whet they offer
+https://medium.com/@victoronu/implementing-refresh-token-logout-in-a-spring-boot-jwt-application-b9d31de953d6
+
+1.
+access
+refresh token
+
+2. revoke the token (when expiration, when u logged out, u cannot use previous token, fingerprint-  simelteous login)
+3. prolong the life of token (access and refresh token configuration)
+   Implement roles
+4. Use springboot 4.0. tools(jwt, signature, clam, token decoding)
+5. for jwt springboot should module not manual issuing, logging,authentication
+6. (mirconaft, security jwt -= where to store and how to revoke, expose controller)
+7. Test coverage (three endpoint sign in, sign out, revoke, refresh toke controllers)

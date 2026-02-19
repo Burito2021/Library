@@ -2,12 +2,13 @@ package net.library.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import net.library.config.security.SecurityConfig;
+import net.library.TestContainers;
 import net.library.model.entity.*;
 import net.library.model.request.BookRequest;
 import net.library.repository.*;
 import net.library.repository.enums.BookAction;
 import net.library.repository.enums.BookItemStatus;
+import net.library.service.AuthService;
 import net.library.service.BookService;
 import net.library.service.UserService;
 import net.library.util.Utils;
@@ -16,13 +17,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -42,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-class BookControllerTest {
+class BookControllerTest extends TestContainers {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -64,7 +62,8 @@ class BookControllerTest {
     private BookItemHistoryRepository bookItemHistoryRepository;
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private AuthService authService;
 
     @AfterEach
     void cleanAfter() {
@@ -96,8 +95,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -133,8 +134,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
@@ -174,8 +177,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -206,8 +211,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -235,8 +242,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -264,8 +273,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -298,8 +309,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -330,8 +343,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -362,8 +377,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -391,8 +408,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -420,8 +439,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -452,8 +473,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -481,8 +504,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -512,8 +537,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -544,11 +571,13 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody))
-                .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isBadRequest())
                 .andExpect(header().string(CORRELATION_ID_HEADER_NAME, xCorrelationId))
                 .andExpect(jsonPath(CID, is(xCorrelationId)))
@@ -576,8 +605,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -605,11 +636,13 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody))
-                .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isCreated())
                 .andExpect(header().string(CORRELATION_ID_HEADER_NAME, xCorrelationId));
     }
@@ -634,8 +667,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -665,8 +700,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -697,8 +734,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -726,8 +765,10 @@ class BookControllerTest {
                 .publication(publication)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -752,8 +793,10 @@ class BookControllerTest {
                 .publisher(publisher)
                 .build();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + BOOKS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -786,8 +829,10 @@ class BookControllerTest {
         final var requestBody = new BookItem()
                 .setBookId(bookId);
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + ITEMS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -819,8 +864,10 @@ class BookControllerTest {
         final var requestBody = new BookItem()
                 .setBookId(null);
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + ITEMS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -838,8 +885,10 @@ class BookControllerTest {
         final var requestBody = new BookItem()
                 .setBookId(UUID.randomUUID());
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + ITEMS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -857,8 +906,10 @@ class BookControllerTest {
         final var requestBody = new BookItem()
                 .setBookId(null);
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.post(GLOBAL_BASE_URI + ITEMS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(requestBody)))
@@ -890,9 +941,10 @@ class BookControllerTest {
                 .setStatus(BookItemStatus.AVAILABLE));
 
         final var bookItemId = bookItemRepository.findAll().getFirst().getId();
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/borrowing?" + "userId=" + userId + "&status=in_progress")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isAccepted());
 
         final var bookItem = bookItemRepository.findAll().getFirst();
@@ -922,9 +974,10 @@ class BookControllerTest {
                 .setStatus(BookItemStatus.AVAILABLE));
 
         final var bookItemId = bookItemRepository.findAll().getFirst().getId();
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/borrowing?" + "userId=" + userId + "&status=removed")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isAccepted());
 
         final var bookItem = bookItemRepository.findAll().getFirst();
@@ -949,9 +1002,10 @@ class BookControllerTest {
         final var userId = userRepository.findAll().stream().sorted(Comparator.comparing(User::getUsername))
                 .findFirst().map(User::getId).orElseThrow();
         final var bookItemId = getUUID();
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/borrowing?" + "userId=" + userId + "&status=in_progress")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isNotFound());
     }
 
@@ -976,9 +1030,10 @@ class BookControllerTest {
                 .setStatus(BookItemStatus.AVAILABLE));
 
         final var bookItemId = bookItemRepository.findAll().getFirst().getId();
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/borrowing?" + "userId=" + userId + "&status=in_progress")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId)
                 )
                 .andExpect(status().isBadRequest())
@@ -1010,9 +1065,10 @@ class BookControllerTest {
                 .setStatus(BookItemStatus.AVAILABLE));
 
         final var bookItemId = bookItemRepository.findAll().getFirst().getId();
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/borrowing?" + "userId=" + userId + "&status=removal")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId))
                 .andExpect(status().isBadRequest())
                 .andExpect(header().string(CORRELATION_ID_HEADER_NAME, xCorrelationId))
@@ -1037,13 +1093,14 @@ class BookControllerTest {
         final var userId = userRepository.findAll().stream().sorted(Comparator.comparing(User::getUsername))
                 .findFirst().map(User::getId).orElseThrow();
         final var bookId = bookRepository.findAll().getFirst().getId();
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         bookItemRepository.save(new BookItem()
                 .setBookId(bookId)
                 .setStatus(BookItemStatus.AVAILABLE));
 
         mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + null + "/borrowing?" + "userId=" + userId + "&status=in_progress")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId))
                 .andExpect(status().isBadRequest())
                 .andExpect(header().string(CORRELATION_ID_HEADER_NAME, xCorrelationId))
@@ -1072,9 +1129,10 @@ class BookControllerTest {
                 .setStatus(BookItemStatus.AVAILABLE));
 
         final var bookItemId = bookItemRepository.findAll().getFirst().getId();
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/borrowing?" + "userId=" + null + "&status=in_progress")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                         .header(CORRELATION_ID_HEADER_NAME, xCorrelationId))
                 .andExpect(status().isBadRequest())
                 .andExpect(header().string(CORRELATION_ID_HEADER_NAME, xCorrelationId))
@@ -1107,9 +1165,10 @@ class BookControllerTest {
                 .setStatus(BookItemStatus.IN_PROGRESS));
 
         final var bookItemId = bookItemRepository.findAll().getFirst().getId();
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/return?" + "userId=" + userId)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                 )
                 .andExpect(status().isAccepted());
 
@@ -1138,8 +1197,10 @@ class BookControllerTest {
                 .setBookId(bookId)
                 .setStatus(BookItemStatus.AVAILABLE));
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         final var response = mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookId + "/borrowingAny?" + "userId=" + userId)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                 )
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.bookItemId", notNullValue()))
@@ -1188,9 +1249,10 @@ class BookControllerTest {
                 .setStatus(BookItemStatus.IN_PROGRESS));
 
         final var bookItemId = bookItemRepository.findAll().getFirst().getId();
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/return?" + "userId=" + userId)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                 )
                 .andExpect(status().isAccepted());
 
@@ -1229,9 +1291,10 @@ class BookControllerTest {
                 .setStatus(BookItemStatus.IN_PROGRESS));
 
         final var bookItemId = bookItemRepository.findAll().getFirst().getId();
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/return?" + "userId=" + userId)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))
+                        .header(AUTHORIZATION, BEARER + accessToken)
                 )
                 .andExpect(status().isNotFound());
     }
@@ -1260,9 +1323,10 @@ class BookControllerTest {
                 .setStatus(BookItemStatus.AVAILABLE));
 
         final var bookItemId = getUUID();
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/return?" + "userId=" + userId)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isNotFound());
 
     }
@@ -1285,9 +1349,10 @@ class BookControllerTest {
                 .setStatus(BookItemStatus.AVAILABLE));
 
         bookService.borrowActionBookItemById(bookItemRepository.findAll().getFirst().getId(), userId, BookItemStatus.IN_PROGRESS);
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?status=available")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items.length()", is(2)));
     }
@@ -1304,9 +1369,10 @@ class BookControllerTest {
                 .setStatus(BookItemStatus.AVAILABLE));
 
         bookService.borrowActionBookItemById(bookItemRepository.findAll().getFirst().getId(), userId, BookItemStatus.AVAILABLE);
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?status=available")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items[0].bookItemId", notNullValue()))
                 .andExpect(jsonPath("$.items[0].bookItemId", not(hasLength(0))))
@@ -1333,9 +1399,10 @@ class BookControllerTest {
                 .setStatus(BookItemStatus.AVAILABLE));
 
         bookService.borrowActionBookItemById(bookItemRepository.findAll().getFirst().getId(), userId, BookItemStatus.IN_PROGRESS);
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?status=available")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items.length()", is(2)))
                 .andExpect(jsonPath("$.items.length()", is(2)))
@@ -1361,9 +1428,10 @@ class BookControllerTest {
                 .setStatus(BookItemStatus.AVAILABLE));
 
         bookService.borrowActionBookItemById(bookItemRepository.findAll().getFirst().getId(), userId, BookItemStatus.REMOVED);
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?status=removed")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items.length()", is(1)));
     }
@@ -1386,9 +1454,10 @@ class BookControllerTest {
                 .setStatus(BookItemStatus.AVAILABLE));
 
         bookService.borrowActionBookItemById(bookItemRepository.findAll().getFirst().getId(), userId, BookItemStatus.IN_PROGRESS);
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?status=in_progress")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items.length()", is(1)));
     }
@@ -1416,9 +1485,10 @@ class BookControllerTest {
         final var bookItemId = bookItemRepository.findAll().getFirst().getId();
 
         bookService.borrowActionBookItemById(bookItemRepository.findAll().getFirst().getId(), userId, BookItemStatus.IN_PROGRESS);
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?bookItemId=" + bookItemId + "&status=in_progress")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items.length()", is(1)))
                 .andExpect(jsonPath("$.items[0].bookItemId", is(bookItemId.toString())));
@@ -1445,9 +1515,10 @@ class BookControllerTest {
                 .setStatus(BookItemStatus.REMOVED));
 
         bookService.borrowActionBookItemById(bookItemRepository.findAll().getFirst().getId(), userId, BookItemStatus.IN_PROGRESS);
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?sortBy=status")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items.length()", is(4)));
     }
@@ -1455,9 +1526,10 @@ class BookControllerTest {
     @Sql("classpath:sql/states.sql")
     @Test
     void getAllAvailableNoItemsNoFilters() throws Exception {
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items.length()", is(0)));
     }
@@ -1480,8 +1552,10 @@ class BookControllerTest {
                 .setEdition(edition)
                 .setPublicationYear(publicationYear));
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/all")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items[0].bookId", not(hasLength(0))))
                 .andExpect(jsonPath("$.items[0].title", is(title)))
@@ -1511,8 +1585,10 @@ class BookControllerTest {
                 .setEdition("1st")
                 .setPublicationYear(1813));
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/all" + "?sortBy=title")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items[1].title", is("Pride and Prejudice")))
                 .andExpect(jsonPath("$.items[0].title", is("The Great Gatsby")));
@@ -1538,8 +1614,10 @@ class BookControllerTest {
                 .setEdition("1st")
                 .setPublicationYear(1813));
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/all" + "?sortBy=title&order=asc")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items[0].title", is("Pride and Prejudice")))
                 .andExpect(jsonPath("$.items[1].title", is("The Great Gatsby")));
@@ -1565,8 +1643,10 @@ class BookControllerTest {
                 .setEdition("1st")
                 .setPublicationYear(1813));
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/all" + "?order=asc")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items[1].title", is("Pride and Prejudice")))
                 .andExpect(jsonPath("$.items[0].title", is("The Great Gatsby")));
@@ -1598,8 +1678,10 @@ class BookControllerTest {
                 .setBookId(bookId)
                 .setStatus(BookItemStatus.AVAILABLE));
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         final var response = mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookId + "/borrowingAny?" + "userId=" + userId)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.bookItemId", notNullValue()))
                 .andReturn()
@@ -1647,8 +1729,10 @@ class BookControllerTest {
         bookService.borrowActionBookItemById(bookItems.getFirst().getId(), userId, BookItemStatus.IN_PROGRESS);
         bookService.borrowActionBookItemById(bookItems.get(1).getId(), userId, BookItemStatus.IN_PROGRESS);
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookId + "/borrowingAny?" + "userId=" + userId)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -1672,8 +1756,10 @@ class BookControllerTest {
                 .setBookId(bookId)
                 .setStatus(BookItemStatus.AVAILABLE));
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookId + "/borrowingAny?" + "userId=" + userId)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isBadRequest());
     }
 
@@ -1684,8 +1770,10 @@ class BookControllerTest {
         final var userId = userRepository.findAll().getFirst().getId();
         final var bookId = Utils.getUUID();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.patch(GLOBAL_BASE_URI + ITEMS + "/" + bookId + "/borrowingAny?" + "userId=" + userId)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isNotFound());
     }
 
@@ -1713,8 +1801,10 @@ class BookControllerTest {
                 .setBookId(bookId)
                 .setStatus(BookItemStatus.AVAILABLE));
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?bookId=" + bookId + "&status=available")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.total", is(3)));
     }
@@ -1733,8 +1823,10 @@ class BookControllerTest {
 
         final var bookId = bookRepository.findAll().getFirst().getId();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?bookId=" + bookId + "&status=available")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.total", is(0)));
     }
@@ -1753,8 +1845,10 @@ class BookControllerTest {
 
         final var bookId = Utils.getUUID();
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?bookId=" + bookId + "&status=available")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.total", is(0)));
     }
@@ -1803,8 +1897,10 @@ class BookControllerTest {
                 .setBookId(bookId)
                 .setStatus(BookItemStatus.AVAILABLE));
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/all?order=asc")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.pageSize", is(10)))
@@ -1819,7 +1915,7 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.items[0].deletedAt", nullValue()))
                 .andExpect(jsonPath("$.items[0].bookItems[0].bookItemId", notNullValue()))
                 .andExpect(jsonPath("$.items[0].bookItems[0].user.id", notNullValue()))
-                .andExpect(jsonPath("$.items[0].bookItems[0].user.username", is("user_1")))
+                .andExpect(jsonPath("$.items[0].bookItems[0].user.username", is("user1")))
                 .andExpect(jsonPath("$.items[0].bookItems[0].user.name", is("Name_940")))
                 .andExpect(jsonPath("$.items[0].bookItems[0].user.surname", is("Surname_934")))
                 .andExpect(jsonPath("$.items[0].bookItems[0].user.email", is("user_1@example.com")))
@@ -1877,8 +1973,10 @@ class BookControllerTest {
                 LocalDateTime.now(),
                 100);
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/all?order=asc")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.pageSize", is(10)))
@@ -1889,9 +1987,10 @@ class BookControllerTest {
     @Sql("classpath:sql/states.sql")
     @Test
     void getAllBooksAndBookItemsEmptyResponse() throws Exception {
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/all")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.pageSize", is(10)))
@@ -1934,8 +2033,10 @@ class BookControllerTest {
                 .setBookId(bookId)
                 .setStatus(BookItemStatus.AVAILABLE));
 
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/" + bookId)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.bookId", notNullValue()))
@@ -1949,7 +2050,7 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.deletedAt", nullValue()))
                 .andExpect(jsonPath("$.bookItems[0].bookItemId", notNullValue()))
                 .andExpect(jsonPath("$.bookItems[0].user.id", notNullValue()))
-                .andExpect(jsonPath("$.bookItems[0].user.username", is("user_1")))
+                .andExpect(jsonPath("$.bookItems[0].user.username", is("user1")))
                 .andExpect(jsonPath("$.bookItems[0].user.name", is("Name_940")))
                 .andExpect(jsonPath("$.bookItems[0].user.surname", is("Surname_934")))
                 .andExpect(jsonPath("$.bookItems[0].user.email", is("user_1@example.com")))
@@ -1968,9 +2069,10 @@ class BookControllerTest {
     @Sql("classpath:sql/states.sql")
     @Test
     void getBookByIdNotFound() throws Exception {
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + BOOKS + "/" + UUID.randomUUID())
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -2008,15 +2110,18 @@ class BookControllerTest {
             bookItemRepository.save(bookItem);
         });
 
-        var listOfTreads = getCallables(GLOBAL_BASE_URI + ITEMS + "/" + bookItemIdOne + "/returnTransaction?userId=" + userId, 2);
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+
+        var listOfTreads = getCallables(GLOBAL_BASE_URI + ITEMS + "/" + bookItemIdOne + "/returnTransaction?userId=" + userId, 2,
+                accessToken);
 
         var statusCodes = threadRunner(2, listOfTreads);
 
         Collections.sort(statusCodes);
 
-        assertEquals(2,statusCodes.size());
-        assertEquals(202,statusCodes.getFirst());
-        assertEquals(500,statusCodes.get(1));
+        assertEquals(2, statusCodes.size());
+        assertEquals(202, statusCodes.getFirst());
+        assertEquals(500, statusCodes.get(1));
     }
 
     @Sql("classpath:sql/states.sql")
@@ -2033,7 +2138,9 @@ class BookControllerTest {
 
         final var bookItemId = bookItemRepository.findAll().getFirst().getId();
 
-        var listOfTreads = getCallables(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/borrowing?" + "userId=" + userId + "&status=in_progress", 3);
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
+        var listOfTreads = getCallables(GLOBAL_BASE_URI + ITEMS + "/" + bookItemId + "/borrowing?" + "userId=" + userId + "&status=in_progress",
+                3, accessToken);
 
         var statusCodes = threadRunner(2, listOfTreads);
 
@@ -2044,12 +2151,13 @@ class BookControllerTest {
         assertEquals(404, statusCodes.get(1));
     }
 
-    private List<Callable<Integer>> getCallables(String url, int count) {
+    private List<Callable<Integer>> getCallables(String url, int count, String accessToken) {
         List<Callable<Integer>> listOfThreads = new ArrayList<>();
         for (int x = 0; x < count; x++) {
             listOfThreads.add(() -> {
+
                 var response = mvc.perform(MockMvcRequestBuilders.patch(url)
-                        .with(httpBasic("user_1", PASSWORD_ADMIN))).andReturn().getResponse();
+                        .header(AUTHORIZATION, BEARER + accessToken)).andReturn().getResponse();
 
                 return response.getStatus();
             });
@@ -2070,9 +2178,10 @@ class BookControllerTest {
                 .setStatus(BookItemStatus.AVAILABLE));
 
         bookService.borrowActionBookItemById(bookItemRepository.findAll().getFirst().getId(), userId, BookItemStatus.AVAILABLE);
+        var accessToken = getAccessToken(authService, ADMIN_USER, PASSWORD_ADMIN);
 
         mvc.perform(MockMvcRequestBuilders.get(GLOBAL_BASE_URI + ITEMS + "?status=available")
-                        .with(httpBasic("user_1", PASSWORD_ADMIN)))
+                        .header(AUTHORIZATION, BEARER + accessToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.items[0].bookItemId", notNullValue()))
                 .andExpect(jsonPath("$.items[0].bookItemId", not(hasLength(0))))
