@@ -6,7 +6,7 @@ import net.library.util.Utils;
 
 import java.util.regex.Pattern;
 
-public class PasswordValidatorService implements ConstraintValidator<PasswordValidator,String> {
+public class PasswordValidatorService implements ConstraintValidator<PasswordValidator, String> {
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(
             "^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).*$"
     );
@@ -29,6 +29,6 @@ public class PasswordValidatorService implements ConstraintValidator<PasswordVal
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
-        return patternLengthValidator(value,8,15);
+        return patternLengthValidator(value, 8, 15);
     }
 }

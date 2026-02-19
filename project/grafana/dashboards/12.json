@@ -226,7 +226,11 @@
   ],
   "schemaVersion": 14,
   "style": "dark",
-  "tags": ["library", "jvm", "simple"],
+  "tags": [
+    "library",
+    "jvm",
+    "simple"
+  ],
   "time": {
     "from": "now-1h",
     "to": "now"

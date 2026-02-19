@@ -13,14 +13,16 @@ info:
   app:
     version: 1.0.0
 
-jasypt:
-  encryptor:
-    password: mySecretKey
-#second way of implementation
-#server:
-#  servlet:
-#    context-path: /api/v1/
-
 banner:
   time-format: yyyy-MM-dd HH:mm:ss
   current-time: ${current.time}
+
+jwt:
+  secret: ENC(p45BL6iWF16/+uh0bs/AibIWbJhjZCKgKxmvPqnMOtb29WRdC9rE/cE38YJ8WxwNz/TjE8rFGDPUbhhCa/94c+p/icN8OnKz7YrBx4N0DCJA67AdWvrXkg==)
+  access-token:
+    expiration: 900   # 15 minutes = 900 seconds
+  refresh-token:
+    expiration: 3600  # 60 minutes = 3600 seconds
+rate-limit:
+  max-attempts: 2
+  window-seconds: 10

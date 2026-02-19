@@ -9,8 +9,6 @@ import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -33,7 +31,7 @@ public class BookItem {
     private BookItemStatus status;
 
     @OneToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User userId;
 
     @Column(name = "borrowed_at", insertable = false)

@@ -2,7 +2,6 @@ package net.library.service.validator.phonenumber;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import net.library.exception.FilterLengthException;
 import net.library.exception.WrongState;
 import net.library.util.Utils;
 
@@ -12,8 +11,7 @@ import java.util.regex.Pattern;
 import static java.lang.String.format;
 import static net.library.util.Utils.deleteSpacesHyphens;
 
-public class PhoneValidatorService implements ConstraintValidator<PhoneNumberValidator, String>
-{
+public class PhoneValidatorService implements ConstraintValidator<PhoneNumberValidator, String> {
     protected static final Pattern PATTERN1 = Pattern.compile("380\\d{9}");
     protected static final Pattern PATTERN2 = Pattern.compile("380\\d{8}");
     protected static final Pattern PATTERN3 = Pattern.compile("380\\d{7}");
