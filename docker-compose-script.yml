@@ -24,6 +24,12 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  #redis
+  redis:
+    container_name: redis
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
 
   library-script:
     container_name: library-script
@@ -41,7 +47,7 @@ services:
       - shared-data:/shared
       - ${CI_PROJECT_DIR}/project/config:/config
 
-    depends_on: [ "postgres-script"]
+    depends_on: [ "postgres-script" ]
 
   prometheus-script:
     image: prom/prometheus:latest
@@ -51,7 +57,7 @@ services:
     profiles: [ "prometheus" ]
     volumes:
       - ${CI_PROJECT_DIR}/project/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    depends_on: [ "library-script"]
+    depends_on: [ "library-script" ]
 
   grafana-script:
     image: grafana/grafana:latest
@@ -65,7 +71,7 @@ services:
       - grafana-data:/var/lib/grafana
       - ${CI_PROJECT_DIR}/project/grafana/provisioning:/etc/grafana/provisioning
       - ${CI_PROJECT_DIR}/project/grafana/dashboards:/var/lib/grafana/dashboards
-    depends_on: [ "prometheus-script","library-script"]
+    depends_on: [ "prometheus-script","library-script" ]
 
 volumes:
   shared-data:

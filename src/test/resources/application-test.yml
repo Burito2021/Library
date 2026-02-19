@@ -1,6 +1,10 @@
 server.port: 1282
 
 spring:
+  data:
+    redis:
+      host: redis
+      port: 6379
   datasource:
     url: jdbc:tc:postgresql:15.0:///integration-tests-db
     username: testuser
@@ -31,16 +35,16 @@ spring:
       init:
       mode: always
       schema-locations: 'classpath:sql/schema.sql'
-#      data-locations: 'classpath:sql/states.sql'
+      #      data-locations: 'classpath:sql/states.sql'
       continue-on-error: true
 
   test:
     database:
       replace: none
-logging:
-  level:
-    org.testcontainers: DEBUG
-    com.github.dockerjava: DEBUG
+#logging:
+#  level:
+#    org.testcontainers: DEBUG
+#    com.github.dockerjava: DEBUG
 testcontainers:
   docker:
     client:

@@ -1,11 +1,9 @@
 package net.library.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -21,7 +19,6 @@ public class BookGenre {
     private UUID book_id;
 
     @OneToOne
-    @JoinColumn(name = "genre_id",referencedColumnName = "id")
+    @JoinColumn(name = "genre_id", referencedColumnName = "id")
     private Genre genre;
-
 }

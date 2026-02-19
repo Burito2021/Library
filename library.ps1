@@ -1,37 +1,52 @@
 #Function sections ----------START--------------
-function Remove-DockerImages {
+function Remove-DockerImages
+{
     param (
         [string[]]$ImageNames,
         [switch]$Force,
         [switch]$Quiet
     )
 
-    if (-not $ImageNames -or $ImageNames.Count -eq 0) {
+    if (-not $ImageNames -or $ImageNames.Count -eq 0)
+    {
         Write-Host "No image names provided" -ForegroundColor Red
         return
     }
 
-    foreach ($imageName in $ImageNames) {
-        try {
+    foreach ($imageName in $ImageNames)
+    {
+        try
+        {
             Write-Host "Removing image: $imageName" -ForegroundColor Yellow
 
-            if ($Force -and $Quiet) {
-                docker rmi -f -q $imageName 2>$null
-            } elseif ($Force) {
+            if ($Force -and $Quiet)
+            {
+                docker rmi -f -q $imageName 2> $null
+            }
+            elseif ($Force)
+            {
                 docker rmi -f $imageName
-            } elseif ($Quiet) {
-                docker rmi -q $imageName 2>$null
-            } else {
+            }
+            elseif ($Quiet)
+            {
+                docker rmi -q $imageName 2> $null
+            }
+            else
+            {
                 docker rmi $imageName
             }
 
-            if ($LASTEXITCODE -eq 0) {
+            if ($LASTEXITCODE -eq 0)
+            {
                 Write-Host "Successfully removed: $imageName" -ForegroundColor Green
-            } else {
+            }
+            else
+            {
                 Write-Host "Failed to remove: $imageName" -ForegroundColor Gray
             }
         }
-        catch {
+        catch
+        {
             Write-Host "Error removing $imageName`: $_" -ForegroundColor Gray
         }
     }
@@ -53,57 +68,57 @@ function Get-InfoMenu
         [string]$composePath,
         [string]$homeLocation
     )
-#    Clear-Host
-#    Write-Host ""
-#    Write-Host "Info" -ForegroundColor Cyan
-#    Write-Host "===========================" -ForegroundColor Cyan
-#    $appHost = "http://localhost"
-##--------------------------------------------------------------------
-#    Write-Host "Below are details(reached externally)on the containers and credentials:"
-#    $сontent = Get-FileContent -filePath $composePath
-#    $fitleredPostgresDbContent = Find-Content -content $сontent -expression "postgres-script:[\s\S]*?ports:([\s\S]*?)(?=\s{2}\w|\z)"
-#    $postgresPortSection = $fitleredPostgresDbContent.Groups[1].Value
-#    $postgresDbPortMatches = [regex]::Matches($postgresPortSection, '"(\d+):\d+"')
-#    $postresDbPorts = $postgresDbPortMatches | ForEach-Object { $_.Groups[1].Value }
-#    Write-Host "1. PostgresDb: $appHost`:$postresDbPorts"
-#    #--------------------------------------------------------------------
-#    $dbMatches = [regex]::Matches($сontent, 'POSTGRES_DB:\s*([^\s\n]+)')
-#    $postgresDb = $dbMatches[0].Groups[1].Value
-#    Write-Host "PostgresDb schema: $postgresDb"
-#    $userMatches = [regex]::Matches($сontent, 'POSTGRES_USER:\s*([^\s\n]+)')
-#    $postgresUser = $userMatches[0].Groups[1].Value
-#    Write-Host "PostgresDb user: $postgresUser"
-#    $passwordMatches = [regex]::Matches($сontent, 'POSTGRES_PASSWORD:\s*([^\s\n]+)')
-#    $postgresPassword = $passwordMatches[0].Groups[1].Value
-#    Write-Host "PostgresDb password: $postgresPassword"
-#    Write-Host "-------------------------------------------------------------"
-#    $appContent = Find-Content -content $сontent -expression "library-script:[\s\S]*?ports:([\s\S]*?)(?=\s{2}\w|\z)"
-#    $appPortSection = $appContent.Groups[1].Value
-#    $appPortMatches = [regex]::Matches($appPortSection, '"(\d+):\d+"')
-#    $appPorts = $appPortMatches | ForEach-Object { $_.Groups[1].Value }
-#    Write-Host "2. Library: $appHost`:$appPorts"
-#    Write-Host "-------------------------------------------------------------"
-#    $promContent = Find-Content -content $сontent -expression "prometheus-script:[\s\S]*?ports:([\s\S]*?)(?=\s{2}\w|\z)"
-#    $promPortSection = $promContent.Groups[1].Value
-#    $promPortMatches = [regex]::Matches($promPortSection, '"(\d+):\d+"')
-#    $promPorts = $promPortMatches | ForEach-Object { $_.Groups[1].Value }
-#    Write-Host "3. Prometheus: $appHost`:$promPorts"
-#    Write-Host "-------------------------------------------------------------"
-#    $grafContent = Find-Content -content $сontent -expression "grafana-script:[\s\S]*?ports:([\s\S]*?)(?=\s{2}\w|\z)"
-#    $grafPortSection = $grafContent.Groups[1].Value
-#    $grafPortMatches = [regex]::Matches($grafPortSection, '"(\d+):\d+"')
-#    $grafPorts = $grafPortMatches | ForEach-Object { $_.Groups[1].Value }
-#    Write-Host "4. Grafana: $appHost`:$grafPorts"
-#    Write-Host "-------------------------------------------------------------"
-#
-#    Write-Host "b. Back" -ForegroundColor Gray
-#
-#    $selection = Read-Host "Select an option"
-#
-#    if ($selection.ToLower() -eq "b")
-#    {
-#        return "back"
-#    }
+    #    Clear-Host
+    #    Write-Host ""
+    #    Write-Host "Info" -ForegroundColor Cyan
+    #    Write-Host "===========================" -ForegroundColor Cyan
+    #    $appHost = "http://localhost"
+    ##--------------------------------------------------------------------
+    #    Write-Host "Below are details(reached externally)on the containers and credentials:"
+    #    $сontent = Get-FileContent -filePath $composePath
+    #    $fitleredPostgresDbContent = Find-Content -content $сontent -expression "postgres-script:[\s\S]*?ports:([\s\S]*?)(?=\s{2}\w|\z)"
+    #    $postgresPortSection = $fitleredPostgresDbContent.Groups[1].Value
+    #    $postgresDbPortMatches = [regex]::Matches($postgresPortSection, '"(\d+):\d+"')
+    #    $postresDbPorts = $postgresDbPortMatches | ForEach-Object { $_.Groups[1].Value }
+    #    Write-Host "1. PostgresDb: $appHost`:$postresDbPorts"
+    #    #--------------------------------------------------------------------
+    #    $dbMatches = [regex]::Matches($сontent, 'POSTGRES_DB:\s*([^\s\n]+)')
+    #    $postgresDb = $dbMatches[0].Groups[1].Value
+    #    Write-Host "PostgresDb schema: $postgresDb"
+    #    $userMatches = [regex]::Matches($сontent, 'POSTGRES_USER:\s*([^\s\n]+)')
+    #    $postgresUser = $userMatches[0].Groups[1].Value
+    #    Write-Host "PostgresDb user: $postgresUser"
+    #    $passwordMatches = [regex]::Matches($сontent, 'POSTGRES_PASSWORD:\s*([^\s\n]+)')
+    #    $postgresPassword = $passwordMatches[0].Groups[1].Value
+    #    Write-Host "PostgresDb password: $postgresPassword"
+    #    Write-Host "-------------------------------------------------------------"
+    #    $appContent = Find-Content -content $сontent -expression "library-script:[\s\S]*?ports:([\s\S]*?)(?=\s{2}\w|\z)"
+    #    $appPortSection = $appContent.Groups[1].Value
+    #    $appPortMatches = [regex]::Matches($appPortSection, '"(\d+):\d+"')
+    #    $appPorts = $appPortMatches | ForEach-Object { $_.Groups[1].Value }
+    #    Write-Host "2. Library: $appHost`:$appPorts"
+    #    Write-Host "-------------------------------------------------------------"
+    #    $promContent = Find-Content -content $сontent -expression "prometheus-script:[\s\S]*?ports:([\s\S]*?)(?=\s{2}\w|\z)"
+    #    $promPortSection = $promContent.Groups[1].Value
+    #    $promPortMatches = [regex]::Matches($promPortSection, '"(\d+):\d+"')
+    #    $promPorts = $promPortMatches | ForEach-Object { $_.Groups[1].Value }
+    #    Write-Host "3. Prometheus: $appHost`:$promPorts"
+    #    Write-Host "-------------------------------------------------------------"
+    #    $grafContent = Find-Content -content $сontent -expression "grafana-script:[\s\S]*?ports:([\s\S]*?)(?=\s{2}\w|\z)"
+    #    $grafPortSection = $grafContent.Groups[1].Value
+    #    $grafPortMatches = [regex]::Matches($grafPortSection, '"(\d+):\d+"')
+    #    $grafPorts = $grafPortMatches | ForEach-Object { $_.Groups[1].Value }
+    #    Write-Host "4. Grafana: $appHost`:$grafPorts"
+    #    Write-Host "-------------------------------------------------------------"
+    #
+    #    Write-Host "b. Back" -ForegroundColor Gray
+    #
+    #    $selection = Read-Host "Select an option"
+    #
+    #    if ($selection.ToLower() -eq "b")
+    #    {
+    #        return "back"
+    #    }
 }
 
 function Get-UserRetryDecision
@@ -154,7 +169,8 @@ function Stop-Container
     }
 }
 
-function Test-MariaDbHealth {
+function Test-MariaDbHealth
+{
     param (
         [string]$containerName = "mariadb-script",
         [int]$maxRetries = 20,
@@ -164,9 +180,11 @@ function Test-MariaDbHealth {
     #    Write-Host "Checking MariaDB health in container $containerName..." -ForegroundColor Yellow
 
     for ($i = 1; $i -le $maxRetries; $i++) {
-        try {
+        try
+        {
             $containerExists = docker ps -q -f "name=$containerName"
-            if (-not $containerExists) {
+            if (-not $containerExists)
+            {
                 Write-Host "Container $containerName does not exist or is not running. Retry $i/$maxRetries" -ForegroundColor Red
                 Start-Sleep -Seconds $waitSeconds
                 continue
@@ -174,13 +192,18 @@ function Test-MariaDbHealth {
             # docker exec mariadb-script mysqladmin ping -h localhost
             #check directly
             $status = docker exec $containerName mysqladmin ping -h localhost 2>&1
-            if ($status -match "mysqld is alive") {
+            if ($status -match "mysqld is alive")
+            {
                 Write-Host "MariaDB is healthy and responding to pings!" -ForegroundColor Green
                 return $true
-            } else {
+            }
+            else
+            {
                 Write-Host "MariaDB is not ready yet. Retry $i/$maxRetries" -ForegroundColor Yellow
             }
-        } catch {
+        }
+        catch
+        {
             Write-Host "Error checking MariaDB health: $_. Retry $i/$maxRetries" -ForegroundColor Red
         }
 
@@ -191,19 +214,22 @@ function Test-MariaDbHealth {
     return $false
 }
 # Function to check Oracle DB health
-function Test-OracleDbHealth {
+function Test-OracleDbHealth
+{
     param (
         [string]$containerName = "oracledb-script",
-        [int]$maxRetries = 60,  # Oracle needs more time to start
+        [int]$maxRetries = 60, # Oracle needs more time to start
         [int]$waitSeconds = 10
     )
 
     Write-Host "Checking Oracle DB health in container $containerName..." -ForegroundColor Gray
 
     for ($i = 1; $i -le $maxRetries; $i++) {
-        try {
+        try
+        {
             $containerExists = docker ps -q -f "name=$containerName"
-            if (-not $containerExists) {
+            if (-not $containerExists)
+            {
                 Write-Host "Container $containerName does not exist or is not running. Retry $i/$maxRetries" -ForegroundColor Red
                 Start-Sleep -Seconds $waitSeconds
                 continue
@@ -212,17 +238,23 @@ function Test-OracleDbHealth {
             # Check the health status reported by Docker
             $healthStatus = docker inspect --format='{{.State.Health.Status}}' $containerName 2>&1
 
-            if ($healthStatus -eq "healthy") {
+            if ($healthStatus -eq "healthy")
+            {
                 Write-Host "Oracle DB is healthy according to Docker health check!" -ForegroundColor Green
                 Write-Host ""
                 return $true
-            } else {
+            }
+            else
+            {
                 Write-Host "Oracle DB is not ready yet (status: $healthStatus). Retry $i/$maxRetries" -ForegroundColor Yellow
-                if ($i % 5 -eq 0) {  # Only show logs every 5 retries to avoid flooding the console
+                if ($i % 5 -eq 0)
+                {
+                # Only show logs every 5 retries to avoid flooding the console
                     $healthLog = docker inspect --format='{{json .State.Health.Log}}' $containerName | ConvertFrom-Json
-                    if ($healthLog.Length -gt 0) {
+                    if ($healthLog.Length -gt 0)
+                    {
                         $lastCheck = $healthLog[-1]
-                        if(-not [string]::IsNullOrWhiteSpace($lastCheck.Output))
+                        if (-not [string]::IsNullOrWhiteSpace($lastCheck.Output))
                         {
                             Write-Host "Last health check output: $( $lastCheck.Output )" -ForegroundColor Gray
                         }
@@ -233,7 +265,9 @@ function Test-OracleDbHealth {
                     }
                 }
             }
-        } catch {
+        }
+        catch
+        {
             Write-Host "Error checking Oracle DB health: $_. Retry $i/$maxRetries" -ForegroundColor Red
         }
 
@@ -244,21 +278,24 @@ function Test-OracleDbHealth {
     return $false
 }
 
-function Start-Containers {
+function Start-Containers
+{
     param (
         [string]$composeFile,
         [string]$profileArg,
         [string[]]$serviceOrder
     )
 
-    foreach ($service in $serviceOrder) {
+    foreach ($service in $serviceOrder)
+    {
         Write-Host ""
         Write-Host "Starting $service..." -ForegroundColor Gray
         #        Write-Host "docker-compose -f `"$composeFile`" $profileArg up -d $service" -ForegroundColor Yellow
 
         Invoke-Expression "docker-compose -f `"$composeFile`" $profileArg up -d $service"
 
-        if ($LASTEXITCODE -ne 0) {
+        if ($LASTEXITCODE -ne 0)
+        {
             Write-Host "Failed to start $service" -ForegroundColor Red
             return $false
         }
@@ -267,21 +304,26 @@ function Start-Containers {
         $isReady = $false
         Write-Host "Waiting for $containerName to be ready..." -ForegroundColor Yellow
 
-        if ($containerName -match "mariadb-script") {
+        if ($containerName -match "mariadb-script")
+        {
             $isReady = Test-MariaDbHealth -containerName $containerName
         }
-        elseif ($containerName -match "oracledb-script") {
+        elseif ($containerName -match "oracledb-script")
+        {
             $isReady = Test-OracleDbHealth -containerName $containerName
         }
-        elseif ($containerName -match "node-red-script") {
+        elseif ($containerName -match "node-red-script")
+        {
 
             $containerStatus = docker inspect --format='{{.State.Status}}' $containerName 2>&1
-            if ($containerStatus -eq "running") {
+            if ($containerStatus -eq "running")
+            {
                 Write-Host "Node-RED container is running" -ForegroundColor Green
                 $isReady = $true
             }
         }
-        else {
+        else
+        {
             $maxRetries = 10
             $waitSeconds = 5
 
@@ -289,21 +331,26 @@ function Start-Containers {
                 $containerStatus = docker inspect --format='{{.State.Status}}' $containerName 2>&1
                 $containerHealth = docker inspect --format='{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}' $containerName 2>&1
 
-                if ($containerStatus -eq "running") {
-                    if ($containerHealth -eq "healthy" -or $containerHealth -eq "running" -or $i -ge 10) {
+                if ($containerStatus -eq "running")
+                {
+                    if ($containerHealth -eq "healthy" -or $containerHealth -eq "running" -or $i -ge 10)
+                    {
                         $isReady = $true
                         Write-Host "$containerName is ready (Status: $containerStatus, Health: $containerHealth)" -ForegroundColor Green
                         break
                     }
                     Write-Host "Waiting for $containerName to be healthy... (Status: $containerStatus, Health: $containerHealth) Attempt $i/$maxRetries" -ForegroundColor Yellow
-                } else {
+                }
+                else
+                {
                     Write-Host "Waiting for $containerName to start running... (Status: $containerStatus) Attempt $i/$maxRetries" -ForegroundColor Yellow
                 }
                 Start-Sleep -Seconds $waitSeconds
             }
         }
 
-        if (-not $isReady) {
+        if (-not $isReady)
+        {
             Write-Host "Container $containerName did not become ready in time" -ForegroundColor Red
             return $false
         }
@@ -352,7 +399,8 @@ function Stop-Containers
     return $true
 }
 
-function Get-FileContent {
+function Get-FileContent
+{
     param([string]$filePath)
     if (Test-Path $filePath)
     {
@@ -361,57 +409,72 @@ function Get-FileContent {
     return $null
 }
 #Get the name of git branch function
-function Get-GitBranch {
+function Get-GitBranch
+{
     param([string]$path = ".")
 
-    try {
+    try
+    {
         #        Write-Host "Getting git branch for path: $Path" -ForegroundColor Yellow
-        $resolvedPath = if (Test-Path $path) {
+        $resolvedPath = if (Test-Path $path)
+        {
             (Get-Item $path).FullName
-        } else {
+        }
+        else
+        {
             return $null
         }
 
         $gitDir = Join-Path $resolvedPath ".git"
 
-        if (Test-Path $gitDir -PathType Leaf) {
+        if (Test-Path $gitDir -PathType Leaf)
+        {
             # .git is a file → worktree
             $content = Get-Content $gitDir -Raw -ErrorAction Stop
-            if ($content -match 'gitdir:\s*(.+)') {
+            if ($content -match 'gitdir:\s*(.+)')
+            {
                 $gitDirPath = $Matches[1].Trim()
                 # Handle relative paths in worktree
-                if (-not [System.IO.Path]::IsPathRooted($gitDirPath)) {
+                if (-not [System.IO.Path]::IsPathRooted($gitDirPath))
+                {
                     $gitDir = Join-Path $resolvedPath $gitDirPath
-                } else {
+                }
+                else
+                {
                     $gitDir = $gitDirPath
                 }
             }
         }
 
         $headFile = Join-Path $gitDir "HEAD"
-        if (Test-Path $headFile) {
+        if (Test-Path $headFile)
+        {
             $head = (Get-Content $headFile -Raw -ErrorAction Stop).Trim()
-            if ($head -match '^ref:\s+refs/heads/(.+)$') {
+            if ($head -match '^ref:\s+refs/heads/(.+)$')
+            {
                 return $Matches[1]
             }
             # Return short hash for detached HEAD
-            return "$($head.Substring(0, [Math]::Min(7, $head.Length))) (detached)"
+            return "$($head.Substring(0,[Math]::Min(7, $head.Length)) ) (detached)"
         }
 
         return $null
     }
-    catch {
-        Write-Warning "Failed to get git branch: $($_.Exception.Message)"
+    catch
+    {
+        Write-Warning "Failed to get git branch: $( $_.Exception.Message )"
         return $null
     }
 }
 # Function to get project path
-function Get-ProjectPath {
+function Get-ProjectPath
+{
     param([string]$pathFileName = "last_nodered_path.txt")
     $pathFile = Join-Path -Path $PSScriptRoot -ChildPath $pathFileName
     $savedPath = $null
 
-    if (Test-Path $pathFile) {
+    if (Test-Path $pathFile)
+    {
         $savedPath = Get-Content -Path $pathFile -Raw
         $savedPath = $savedPath.Trim()
     }
@@ -420,14 +483,16 @@ function Get-ProjectPath {
     Write-Host "Project Configuration" -ForegroundColor Cyan
     Write-Host "============================" -ForegroundColor Cyan
 
-    if ($savedPath) {
+    if ($savedPath)
+    {
         Write-Host "1. Use saved path: $savedPath"
         Write-Host "2. Enter a new path"
         Write-Host "b. Back"
         Write-Host ""
         $pathChoice = Read-Host "Select an option (1-2)"
 
-        if ($pathChoice -eq "1") {
+        if ($pathChoice -eq "1")
+        {
 
             return $savedPath
         }
@@ -435,7 +500,9 @@ function Get-ProjectPath {
         {
             return "back"
         }
-    } else {
+    }
+    else
+    {
         Write-Host "No saved path found. Please enter the path to your project."
     }
 
@@ -467,19 +534,23 @@ function Watch-IntegrationTests
 
     $lastLogTime = Get-Date -Format "yyyy-MM-ddTHH:mm:ss"
 
-    while (-not $testCompleted) {
+    while (-not $testCompleted)
+    {
 
-        $containerStatus = docker inspect --format='{{.State.Status}}' $containerName 2>$null
-        $containerExitCode = docker inspect --format='{{.State.ExitCode}}' $containerName 2>$null
+        $containerStatus = docker inspect --format='{{.State.Status}}' $containerName 2> $null
+        $containerExitCode = docker inspect --format='{{.State.ExitCode}}' $containerName 2> $null
 
         if ($null -ne $containerExitCode -and $containerStatus -ne "running")
         {
             $testCompleted = $true
-            if ($containerExitCode -eq 0) {
+            if ($containerExitCode -eq 0)
+            {
                 Write-Host ""
                 Write-Host "Integration tests completed successfully!" -ForegroundColor Green
                 Write-Host ""
-            } else {
+            }
+            else
+            {
                 Write-Host ""
                 Write-Host "Integration tests failed with exit code: $containerExitCode" -ForegroundColor Red
                 Write-Host ""
@@ -492,22 +563,32 @@ function Watch-IntegrationTests
         $logs = Invoke-Expression $logCommand
         $lastLogTime = $currentTime
 
-        if ($logs) {
-            foreach ($line in $logs) {
+        if ($logs)
+        {
+            foreach ($line in $logs)
+            {
                 if ($line -match "test" -or $line -match "gradle" -or
                         $line -match "BUILD" -or $line -match "Task" -or
                         $line -match "allure" -or $line -match "PASSED" -or
-                        $line -match "FAILED" ) {
+                        $line -match "FAILED")
+                {
 
-                    if ($line -match "BUILD SUCCESSFUL") {
+                    if ($line -match "BUILD SUCCESSFUL")
+                    {
                         Write-Host $line -ForegroundColor Green
-                    } elseif ($line -match "BUILD FAILED") {
+                    }
+                    elseif ($line -match "BUILD FAILED")
+                    {
                         Write-Host $line -ForegroundColor Red
                         #                    } elseif ($line -match "allure") {
                         #                        Write-Host $line -ForegroundColor Cyan
-                    } elseif ($line -match "Starting") {
+                    }
+                    elseif ($line -match "Starting")
+                    {
                         Write-Host $line -ForegroundColor Gray
-                    } else {
+                    }
+                    else
+                    {
                         Write-Host $line -ForegroundColor $testLogColor
                     }
                 }
@@ -519,7 +600,8 @@ function Watch-IntegrationTests
         {
             Write-Host "Warning: Tests have been running for over 60 minutes." -ForegroundColor Yellow
             $continueWaiting = Read-Host "Continue waiting? (y/n) [y]"
-            if ($continueWaiting.ToLower() -eq "n") {
+            if ($continueWaiting.ToLower() -eq "n")
+            {
                 break
             }
             $startTime = Get-Date
@@ -528,17 +610,26 @@ function Watch-IntegrationTests
         Start-Sleep -Seconds $checkIntervalSeconds
     }
 
-    if ($testCompleted) {
+    if ($testCompleted)
+    {
         Write-Host "Final test results:" -ForegroundColor Gray
         $finalLogs = docker logs --tail 50 $containerName 2>&1 | Select-String -Pattern "BUILD|PASSED|FAILED|Gradle Test"
-        foreach ($line in $finalLogs) {
-            if ($line -match "FAILED") {
+        foreach ($line in $finalLogs)
+        {
+            if ($line -match "FAILED")
+            {
                 Write-Host $line -ForegroundColor Red
-            } elseif ($line -match "PASSED" -or $line -match "BUILD SUCCESSFUL") {
+            }
+            elseif ($line -match "PASSED" -or $line -match "BUILD SUCCESSFUL")
+            {
                 Write-Host $line -ForegroundColor Green
-            } elseif ($line -match "allure") {
+            }
+            elseif ($line -match "allure")
+            {
                 Write-Host $line -ForegroundColor Cyan
-            } else {
+            }
+            else
+            {
                 Write-Host $line -ForegroundColor Yellow
             }
         }
@@ -575,11 +666,13 @@ function Invoke-AllureReport
         $reportUrl = Get-Content -Path $reportLocations.ServerUrlFile -Raw
         $reportUrl = $reportUrl.Trim()
 
-        if ($reportUrl) {
+        if ($reportUrl)
+        {
             Write-Host "Found Allure server report URL: $reportUrl" -ForegroundColor Green
 
             $openReport = Read-Host "Would you like to open the test report in your browser? (y/n) [y]"
-            if ([string]::IsNullOrEmpty($openReport) -or $openReport.ToLower() -eq "y") {
+            if ([string]::IsNullOrEmpty($openReport) -or $openReport.ToLower() -eq "y")
+            {
                 Write-Host "Opening report in default browser..." -ForegroundColor Green
                 Start-Process $reportUrl | Out-Null
                 return $true
@@ -595,16 +688,21 @@ function Invoke-AllureReport
     return $false
 }
 # Function to check if Docker is actually working
-function Test-DockerRunning {
-    try {
+function Test-DockerRunning
+{
+    try
+    {
         docker info 2>&1 | Out-Null
         return ($LASTEXITCODE -eq 0)
-    } catch {
+    }
+    catch
+    {
         return $false
     }
 }
 # Function to select a module from available options
-function Select-Module {
+function Select-Module
+{
     param (
         [array]$availableModules
     )
@@ -615,15 +713,18 @@ function Select-Module {
     Write-Host "=========================" -ForegroundColor Cyan
 
     for ($i = 0; $i -lt $availableModules.Count; $i++) {
-        Write-Host "$($i+1). $($availableModules[$i])"
+        Write-Host "$( $i + 1 ). $( $availableModules[$i] )"
     }
 
     Write-Host ""
-    $moduleChoice = Read-Host "Select a module (1-$($availableModules.Count))"
+    $moduleChoice = Read-Host "Select a module (1-$( $availableModules.Count ))"
 
-    if ([int]::TryParse($moduleChoice, [ref]$null) -and [int]$moduleChoice -ge 1 -and [int]$moduleChoice -le $availableModules.Count) {
-        $selectedModule = $availableModules[[int]$moduleChoice-1]
-    } else {
+    if ([int]::TryParse($moduleChoice, [ref]$null) -and [int]$moduleChoice -ge 1 -and [int]$moduleChoice -le $availableModules.Count)
+    {
+        $selectedModule = $availableModules[[int]$moduleChoice - 1]
+    }
+    else
+    {
         #        $selectedModule = $availableModules[0]
         Write-Host ""
         #        Write-Host "Invalid selection. Using default: $($availableModules[0])" -ForegroundColor Yellow
@@ -634,7 +735,8 @@ function Select-Module {
     return $selectedModule
 }
 # Function to handle Node-Red API submenu
-function Show-NodeRedMenu {
+function Show-NodeRedMenu
+{
     Clear-Host
     Write-Host ""
     Write-Host "Node-Red type selection" -ForegroundColor Cyan
@@ -682,11 +784,11 @@ function Show-SubMenu
     Write-Host ""
     $typeChoice = Read-Host "Select action (1-2)"
 
-#    if ($typeChoice -eq "1")
-#    {
-#        return $false
-#    }
-#    else
+    #    if ($typeChoice -eq "1")
+    #    {
+    #        return $false
+    #    }
+    #    else
     if ($typeChoice -eq "1")
     {
         return $true
@@ -785,7 +887,7 @@ function New-DockerImage
     {
         Set-Location $projectPath
 
-        if ($imageName -eq "library-custom" )
+        if ($imageName -eq "library-custom")
         {
             Clear-Host
             Write-Host "Removing old image..." -ForegroundColor Gray
@@ -847,6 +949,7 @@ function Get-Containers
         $availableContainers = @(
             @{ Name = "postgres"; Profile = "postgres"; Service = "postgres-script" },
             @{ Name = "library"; Profile = "library"; Service = "library-script" },
+            @{ Name = "redis"; Profile = "redis"; Service = "redis" },
             @{ Name = "prometheus"; Profile = "prometheus"; Service = "prometheus-script" },
             @{ Name = "grafana"; Profile = "grafana"; Service = "grafana-script" }
         )
@@ -868,8 +971,16 @@ function Get-Containers
     {
         $profilesToAdd += "postgres"
         $servicesToAdd += "postgres-script"
-#        $profilesToAdd += "flyway"
-#        $servicesToAdd += "flyway-script"
+        #        $profilesToAdd += "flyway"
+        #        $servicesToAdd += "flyway-script"
+    }
+
+    if ($selectedProfiles -contains "library" -and $selectedProfiles -notcontains "redis")
+    {
+        $profilesToAdd += "redis"
+        $servicesToAdd += "redis"
+        #        $profilesToAdd += "flyway"
+        #        $servicesToAdd += "flyway-script"
     }
 
     if ($selectedProfiles -contains "library" -and $selectedProfiles -notcontains "prometheus")
@@ -890,10 +1001,13 @@ function Get-Containers
         $servicesToAdd += "prometheus-script"
         $profilesToAdd += "postgres"
         $servicesToAdd += "postgres-script"
-#        $profilesToAdd += "flyway"
-#        $servicesToAdd += "flyway-script"
+        #        $profilesToAdd += "flyway"
+        #        $servicesToAdd += "flyway-script"
         $profilesToAdd += "library"
         $servicesToAdd += "library-script"
+        $profilesToAdd += "redis"
+        $servicesToAdd += "redis"
+
     }
 
     if ($selectedProfiles -contains "prometheus" -and $selectedProfiles -notcontains "grafana")
@@ -902,17 +1016,19 @@ function Get-Containers
         $servicesToAdd += "grafana-script"
         $profilesToAdd += "postgres"
         $servicesToAdd += "postgres-script"
-#        $profilesToAdd += "flyway"
-#        $servicesToAdd += "flyway-script"
+        #        $profilesToAdd += "flyway"
+        #        $servicesToAdd += "flyway-script"
         $profilesToAdd += "library"
         $servicesToAdd += "library-script"
+        $profilesToAdd += "redis"
+        $servicesToAdd += "redis"
     }
 
-#    if ($selectedProfiles -contains "postgres" -and $selectedProfiles -notcontains "flyway")
-#    {
-#        $profilesToAdd += "flyway"
-#        $servicesToAdd += "flyway-script"
-#    }
+    #    if ($selectedProfiles -contains "postgres" -and $selectedProfiles -notcontains "flyway")
+    #    {
+    #        $profilesToAdd += "flyway"
+    #        $servicesToAdd += "flyway-script"
+    #    }
 
     if ($profilesToAdd.Count -gt 0)
     {
@@ -920,10 +1036,10 @@ function Get-Containers
         $selectedContainers.ServiceOrder = $servicesToAdd + $selectedContainers.ServiceOrder
     }
 
-#    if ($selectedProfiles -contains "postgres")
-#    {
-#        Remove-DockerImages -ImageNames "ghcr.io/burito2021/library-postgres:15"
-#    }
+    #    if ($selectedProfiles -contains "postgres")
+    #    {
+    #        Remove-DockerImages -ImageNames "ghcr.io/burito2021/library-postgres:15"
+    #    }
 
     $requiredProfiles = $selectedContainers.RequiredProfiles
     $profilesArg = ($requiredProfiles | ForEach-Object { "--profile $_" }) -join " "
@@ -1125,7 +1241,7 @@ while ($runAgain)
             $SERVICE_ORDER = $SELECTED_CONTAINERS.ServiceOrder
         }
 
-        if($REQUIRED_PROFILES -contains "library")
+        if ($REQUIRED_PROFILES -contains "library")
         {
             if (-not (Test-Path $PROJECT_PATH))
             {
@@ -1145,7 +1261,7 @@ while ($runAgain)
 
             New-DockerImage -HomeLocation $HOME_LOCATION -ProjectPath $PROJECT_PATH -JarPath "build/libs" -DockerfileName "DockerFile-Library" -ImageName "library-custom"
         }
-}
+    }
 
     #------------------ General flow-----------------------------------------------------
     $currentDir = ($HOME_LOCATION).Path
@@ -1167,25 +1283,29 @@ while ($runAgain)
     if ($success)
     {
         Write-Host ""
-            Write-Host "Containers started successfully for module: $MODULE!" -ForegroundColor Green
+        Write-Host "Containers started successfully for module: $MODULE!" -ForegroundColor Green
     }
 
     if ($CONTAINER_DEPLOYMENT)
-        {
-            $skipMenus = $false
-            $runAgain = $false
-        }
+    {
+        $skipMenus = $false
+        $runAgain = $false
+    }
 }
 
-if (Test-Path $tempComposePath) {
+if (Test-Path $tempComposePath)
+{
     Write-Host ""
     $keepRunning = Read-Host "Do you want to keep containers running? (y/n) [y]"
     Write-Host ""
-    if (-not ([string]::IsNullOrEmpty($keepRunning)) -and $keepRunning.ToLower() -eq "n") {
+    if (-not ([string]::IsNullOrEmpty($keepRunning)) -and $keepRunning.ToLower() -eq "n")
+    {
 
         Stop-Container -tempComposePath $tempComposePath -profiles $PROFILES
 
-    } else {
+    }
+    else
+    {
         Write-Host "Containers will continue running." -ForegroundColor Green
     }
     Write-Host ""

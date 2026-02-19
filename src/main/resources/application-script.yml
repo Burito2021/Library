@@ -6,6 +6,10 @@ springdoc:
     enabled: true
 
 spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
   datasource:
     url: jdbc:postgresql://localhost:5432/library_db
     username: library_user

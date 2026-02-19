@@ -33,6 +33,11 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-hateoas"
     implementation "org.hibernate.validator:hibernate-validator:${hibernate}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${fasterxml}"
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
     implementation "com.fasterxml.jackson.core:jackson-core"
     implementation "com.fasterxml.jackson.core:jackson-annotations"
     implementation "org.postgresql:postgresql:${postgresql}"
@@ -43,13 +48,14 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-security"
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdoc}")
     implementation("org.mapstruct:mapstruct:${mapstruct}")
-    implementation ("com.github.ulisesbocchio:jasypt-spring-boot-starter:${jasypt}")
+    implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:${jasypt}")
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-registry-prometheus'
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.springframework.boot:spring-boot-testcontainers:${springbootcontainer}"
     testImplementation "org.testcontainers:junit-jupiter:${junittestcontainer}"
     testImplementation "org.testcontainers:postgresql:${testcontainerspostgresql}"
+    testImplementation 'org.testcontainers:testcontainers'
     testImplementation "org.hamcrest:hamcrest:${hamcrest}"
     testImplementation "org.junit.jupiter:junit-jupiter:${junit}"
     testImplementation 'org.springframework.security:spring-security-test'

@@ -2,7 +2,8 @@
 
 ## 🚀 Project Overview
 
-This is a RESTful API application built to manage user registration, book catalog, and book borrowing in a library system.
+This is a RESTful API application built to manage user registration, book catalog, and book borrowing in a library
+system.
 
 ### 🔑 Key Features
 
@@ -44,6 +45,7 @@ Run unit and integration tests:
 For any questions, please contact the project maintainer.
 
 The key additions include:
+
 - Updated project overview to mention book catalog and borrowing
 - Added Book Management section with endpoints for adding, retrieving books
 - Added Book Item Management section with borrowing/returning functionality
