@@ -76,6 +76,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, GLOBAL_BASE_URI + "users/details").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, GLOBAL_BASE_URI + "**").hasAnyRole("ADMIN")
                         .requestMatchers("/actuator/health").permitAll()
+                        //metric role user
                         .requestMatchers("/actuator/**").hasRole("ADMIN")
                         .requestMatchers(GLOBAL_BASE_URI + "**").hasRole("ADMIN")
                         .anyRequest().denyAll())

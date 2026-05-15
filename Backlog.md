@@ -10,10 +10,10 @@
 
 # 6. Overdue book management (tracking overdue books, automatic fine calculations)-notification of users and administrator
 
-# !!! 7. Role model (admin, user) admin anything, user just give and take books
+# !!! 7. Role model (admin, user) admin anything, user just give and take books  - what should i do here  as i implememted the accessibility  ad and chek in unit tests user can only acces endpoint to get  and admin all
 
-# 8. Migration from Hibernate to Jooq
-
+# !!! - 8. Migration from Hibernate to Jooq (JooqManager, how to use  Jooq, how to integrate, Jooq (classes Pojos))
+# 
 # 9. Integrations
 
 # 10. CREATE UI (DESCRIPTION to generate code via cursor)(javascript typescript react, angular )
@@ -55,3 +55,10 @@ refresh token
 7. Test coverage (three endpoint sign in, sign out, revoke, refresh toke controllers)
 
 8. Spring doc on errros on filter (find on centralized approach to handling errors)
+
+
+Homework
+1. Dependabot implement in a different brench
+2. Bot to automatically rebase/merge changes after approval
+3. gradlewbot
+4. Policies for naming branches (feature/LP-1, fix/LP-1,version/LP-1 (LP-1- task name))
