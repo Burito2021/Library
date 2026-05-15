@@ -1,0 +1,18 @@
+name: Branch Naming Policy
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-branch-name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate branch name
+        run: |
+          branch="${{ github.head_ref }}"
+          if ! echo "$branch" | grep -qE '^(feature|fix|version)/LP-[0-9]+|^feature/.+'; then
+            echo "Branch name '$branch' does not follow naming policy."
+            echo "Expected format: feature/LP-1, fix/LP-1, version/LP-1, feature/any-name"
+            exit 1
+          fi

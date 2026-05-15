@@ -1,24 +1,21 @@
 package net.library.service;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
-public class RateLimiterServiceMockTest {
+@ExtendWith(MockitoExtension.class)
+class RateLimiterServiceMockTest {
     @InjectMocks
     private RateLimitService rateLimitService;
     @Mock
@@ -53,17 +50,14 @@ public class RateLimiterServiceMockTest {
         final var enabled = false;
         final var windowSeconds = 900;
         final var clientId = "1232131";
-        final var key = "rate_limit:login:" + clientId;
         ReflectionTestUtils.setField(rateLimitService, "enabled", enabled);
         ReflectionTestUtils.setField(rateLimitService, "maxAttempts", maxAttempts);
         ReflectionTestUtils.setField(rateLimitService, "windowSeconds", windowSeconds);
-        Mockito.when(redisTemplate.opsForValue()).thenReturn(valueOperations);
-
-        when(valueOperations.increment(key, 1)).thenReturn(4L);
 
         var isAllowed = rateLimitService.isAllowed(clientId);
 
         assertTrue(isAllowed);
+        verify(redisTemplate, never()).opsForValue();
     }
 
     @Test
