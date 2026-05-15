@@ -55,3 +55,10 @@ refresh token
 7. Test coverage (three endpoint sign in, sign out, revoke, refresh toke controllers)
 
 8. Spring doc on errros on filter (find on centralized approach to handling errors)
+
+
+Homework
+1. Dependabot implement in a different brench
+2. Bot to automatically rebase/merge changes after approval
+3. gradlewbot
+4. Policies for naming branches (feature/LP-1, fix/LP-1,version/LP-1 (LP-1- task name))
