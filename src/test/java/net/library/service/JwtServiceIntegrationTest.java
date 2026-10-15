@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
-public class JwtServiceTest {
+public class JwtServiceIntegrationTest {
     @Autowired
     JwtService jwtService;
 

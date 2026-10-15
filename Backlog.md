@@ -1,6 +1,9 @@
 # !!! 1. Security (!!!Basic, JWT token(ldap, cognito))(in security two endpoints for creating users, updating and retrieving(policies length, one upperCase) )
 
-# 2. Library analytics dashboard (most borrowed items(books))
+# 2. Library analytics dashboard (most borrowed items(books))(pagination,counters books, authors, dates of publication
+# filtering by create date and create date)
+
+-# 2.a REad JOOQ and integrate it instead of Hibernate 
 
 # 3. General statistics on the in db, number of items, number of users, available items, borrowed items
 

@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Logs and JVM crash dumps ###
+*.log
+hs_err_pid*
+replay_pid*
