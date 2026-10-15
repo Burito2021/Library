@@ -40,17 +40,18 @@ repositories {
  * does not yet include the fixed releases. Remove the overrides once the BOM catches up.
  */
 dependencies {
-    // Spring Boot
+    annotationProcessor("org.mapstruct:mapstruct-processor:${mapstruct}")
+    annotationProcessor ("org.projectlombok:lombok-mapstruct-binding:${lombokmapstruct}")
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.springframework.boot:spring-boot-starter-data-redis"
     implementation "org.springframework.boot:spring-boot-starter-hateoas"
-    implementation "org.springframework.boot:spring-boot-starter-security"
-    implementation "org.springframework.boot:spring-boot-starter-actuator"
-    implementation "org.springframework.boot:spring-boot-autoconfigure"
-
-    // Database
-    implementation "org.postgresql:postgresql"
+    implementation "org.hibernate.validator:hibernate-validator:${hibernate}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${fasterxml}"
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation "io.jsonwebtoken:jjwt-api:${jsonwebtoken}"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:${jsonwebtoken}"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jsonwebtoken}"
 
     // Validation and Jackson
     implementation "org.hibernate.validator:hibernate-validator:${hibernate}"
