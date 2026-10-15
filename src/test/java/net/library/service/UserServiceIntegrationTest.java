@@ -10,7 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
-class UserServiceTest {
+class UserServiceIntegrationTest {
 
     @Autowired
     private UserService service;
