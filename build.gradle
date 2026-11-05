@@ -47,7 +47,6 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-redis"
     implementation "org.springframework.boot:spring-boot-starter-hateoas"
     implementation "org.hibernate.validator:hibernate-validator:${hibernate}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${fasterxml}"
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation "io.jsonwebtoken:jjwt-api:${jsonwebtoken}"
     runtimeOnly "io.jsonwebtoken:jjwt-impl:${jsonwebtoken}"
@@ -59,7 +58,11 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-core"
     implementation "com.fasterxml.jackson.core:jackson-annotations"
 
+    // Database
+    runtimeOnly "org.postgresql:postgresql"
+
     // Security
+    implementation "org.springframework.boot:spring-boot-starter-security"
     implementation "io.jsonwebtoken:jjwt-api:${jsonwebtoken}"
     runtimeOnly "io.jsonwebtoken:jjwt-impl:${jsonwebtoken}"
     runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jsonwebtoken}"
@@ -67,6 +70,7 @@ dependencies {
 
     // API docs and monitoring
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdoc}"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "io.micrometer:micrometer-registry-prometheus"
 
     // Jakarta and annotations
@@ -97,4 +101,6 @@ tasks.named("test") {
     useJUnitPlatform()
     systemProperty "DOCKER_API_VERSION", "1.51"
     environment "DOCKER_API_VERSION", "1.51"
+    // The postgres:15.0 test image rejects newer zone names such as Europe/Kyiv, which the JDBC driver sends on connect.
+    systemProperty "user.timezone", "UTC"
 }

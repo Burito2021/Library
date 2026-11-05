@@ -1,8 +1,7 @@
 package net.library.service;
 
 import net.library.model.request.MostBorrowedBooksFilter;
-import net.library.repository.BookItemHistoryRepository;
-import net.library.repository.BookRepository;
+import net.library.repository.LibraryAnalyticsRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,11 +26,11 @@ class LibraryAnalyticsServiceTest {
     @InjectMocks
     private LibraryAnalyticsService analyticsService;
     @Mock
-    private BookItemHistoryRepository bookItemHistoryRepository;
+    private LibraryAnalyticsRepository analyticsRepository;
     @Mock
-    private BookRepository bookRepository;
+    private LibraryAnalyticsRepository.MostBorrowedBook projection;
     @Mock
-    private BookItemHistoryRepository.MostBorrowedBookProjection projection;
+    private LibraryAnalyticsRepository.Counters counters;
 
     private final UUID bookId = UUID.randomUUID();
 
@@ -44,7 +43,7 @@ class LibraryAnalyticsServiceTest {
         when(projection.getPublicationYear()).thenReturn(1925);
         when(projection.getBorrowCount()).thenReturn(5L);
 
-        when(bookItemHistoryRepository.findMostBorrowedBooks(
+        when(analyticsRepository.findMostBorrowedBooks(
                 any(), any(), any(), any(), any(), any(), eq(pageable)
         )).thenReturn(new PageImpl<>(List.of(projection), pageable, 1));
 
@@ -68,7 +67,7 @@ class LibraryAnalyticsServiceTest {
     @Test
     void getMostBorrowedBooksPassesEmptyFilterAsNulls() {
         final var pageable = PageRequest.of(0, 10);
-        when(bookItemHistoryRepository.findMostBorrowedBooks(
+        when(analyticsRepository.findMostBorrowedBooks(
                 eq(null), eq(null), eq(null), eq(null), eq(null), eq(null), eq(pageable)
         )).thenReturn(new PageImpl<>(List.of(), pageable, 0));
 
@@ -77,7 +76,7 @@ class LibraryAnalyticsServiceTest {
         );
 
         assertEquals(0, result.getTotalElements());
-        verify(bookItemHistoryRepository).findMostBorrowedBooks(
+        verify(analyticsRepository).findMostBorrowedBooks(
                 null, null, null, null, null, null, pageable
         );
     }
@@ -85,7 +84,7 @@ class LibraryAnalyticsServiceTest {
     @Test
     void getMostBorrowedBooksReturnsEmptyPageWhenNoResults() {
         final var pageable = PageRequest.of(0, 10);
-        when(bookItemHistoryRepository.findMostBorrowedBooks(
+        when(analyticsRepository.findMostBorrowedBooks(
                 any(), any(), any(), any(), any(), any(), eq(pageable)
         )).thenReturn(new PageImpl<>(List.of(), pageable, 0));
 
@@ -99,9 +98,10 @@ class LibraryAnalyticsServiceTest {
 
     @Test
     void getCountersReturnsAggregatedCounters() {
-        when(bookRepository.count()).thenReturn(42L);
-        when(bookRepository.countDistinctAuthors()).thenReturn(7L);
-        when(bookItemHistoryRepository.countTotalBorrows()).thenReturn(123L);
+        when(counters.getTotalBooks()).thenReturn(42L);
+        when(counters.getTotalAuthors()).thenReturn(7L);
+        when(counters.getTotalBorrows()).thenReturn(123L);
+        when(analyticsRepository.getCounters()).thenReturn(counters);
 
         var result = analyticsService.getCounters();
 
@@ -112,9 +112,7 @@ class LibraryAnalyticsServiceTest {
 
     @Test
     void getCountersReturnsZerosWhenNoData() {
-        when(bookRepository.count()).thenReturn(0L);
-        when(bookRepository.countDistinctAuthors()).thenReturn(0L);
-        when(bookItemHistoryRepository.countTotalBorrows()).thenReturn(0L);
+        when(analyticsRepository.getCounters()).thenReturn(counters);
 
         var result = analyticsService.getCounters();
 

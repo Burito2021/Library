@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.library.model.request.MostBorrowedBooksFilter;
 import net.library.model.response.AnalyticsCountersResponse;
 import net.library.model.response.MostBorrowedBookResponse;
-import net.library.repository.BookItemHistoryRepository;
-import net.library.repository.BookRepository;
+import net.library.repository.LibraryAnalyticsRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,11 +13,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LibraryAnalyticsService {
 
-    private final BookItemHistoryRepository bookItemHistoryRepository;
-    private final BookRepository bookRepository;
+    private final LibraryAnalyticsRepository analyticsRepository;
 
     public Page<MostBorrowedBookResponse> getMostBorrowedBooks(MostBorrowedBooksFilter filter, Pageable pageable) {
-        var projections = bookItemHistoryRepository.findMostBorrowedBooks(
+        var projections = analyticsRepository.findMostBorrowedBooks(
                 filter.actionFrom(), filter.actionTo(),
                 filter.createdFrom(), filter.createdTo(),
                 filter.publicationYearFrom(), filter.publicationYearTo(),
@@ -31,10 +29,9 @@ public class LibraryAnalyticsService {
     }
 
     public AnalyticsCountersResponse getCounters() {
-        var totalBooks = bookRepository.count();
-        var totalAuthors = bookRepository.countDistinctAuthors();
-        var totalBorrows = bookItemHistoryRepository.countTotalBorrows();
+        var counters = analyticsRepository.getCounters();
 
-        return new AnalyticsCountersResponse(totalBooks, totalAuthors, totalBorrows);
+        return new AnalyticsCountersResponse(
+                counters.getTotalBooks(), counters.getTotalAuthors(), counters.getTotalBorrows());
     }
 }
