@@ -894,7 +894,7 @@ function New-DockerImage
             docker rmi library-custom:latest 2> $null
         }
 
-        docker run --rm -v "${PWD}:/workspace" -w /workspace gradle:9.0.0-jdk24 gradle clean bootJar --no-daemon
+        docker run --rm -v "${PWD}:/workspace" -w /workspace gradle:9.2.0-jdk25 gradle clean bootJar --no-daemon
 
 
         if ($LASTEXITCODE -ne 0)
@@ -911,7 +911,7 @@ function New-DockerImage
         Write-Host "Creating Dockerfile..." -ForegroundColor Gray
         Write-Host ""
         @"
-            FROM eclipse-temurin:24-jdk-alpine
+            FROM eclipse-temurin:25-jdk-alpine
             WORKDIR /app
             COPY $jarPath/*.jar app.jar
 

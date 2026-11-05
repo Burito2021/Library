@@ -57,3 +57,6 @@ git submodule add https://github.com/yourusername/library_db.git db-migrations
 git submodule add https://github.com/Burito2021/library_db.git db-migrations
 
 # 1.Add description of features by items in general
+
+#Check list of dependency versions in spring boot,  go by
+~/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-dependencies/3.5.16/*/spring-boot-dependencies-3.5.16.pom

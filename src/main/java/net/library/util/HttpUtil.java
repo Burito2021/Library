@@ -8,6 +8,7 @@ public class HttpUtil {
     public static final String GENRES = "genres";
     public static final String ITEMS = "items";
     public static final String USERS = "users";
+    public static final String ANALYTICS = "analytics";
     public static final String AUTH_LOGIN = "/auth/login";
     public static final String AUTH_REFRESH = "/auth/refresh";
     public static final String AUTH_REVOKE = "/auth/revoke";
